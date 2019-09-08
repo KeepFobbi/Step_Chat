@@ -21,7 +21,7 @@ namespace Client_WPF.Windows
     /// </summary>
     public partial class Login : Window
     {
-        private const string host = "127.0.0.1";
+        private const string host = "178.92.84.69";
         private const int port = 9090;
         static TcpClient client;
         static NetworkStream stream;
@@ -39,7 +39,7 @@ namespace Client_WPF.Windows
                 client.Connect(host, port); //подключение клиента
                 stream = client.GetStream(); // получаем поток
 
-                string message = $"reg {login} {password}";
+                string message = $"auth {login} {password}";
                 byte[] data = Encoding.Unicode.GetBytes(message);
                 stream.Write(data, 0, data.Length);
 
@@ -60,6 +60,20 @@ namespace Client_WPF.Windows
             }
             this.DialogResult = true;
         }
+
+        static void SendMessage()
+        {
+          
+
+            while (true)
+            {
+                string message = Console.ReadLine();
+                byte[] data = Encoding.Unicode.GetBytes(message);
+                stream.Write(data, 0, data.Length);
+            }
+        }
+
+
         static void ReceiveMessage()
         {
             while (true)
@@ -77,7 +91,7 @@ namespace Client_WPF.Windows
                     while (stream.DataAvailable);
 
                     string message = builder.ToString();
-                    if (message == "1")
+                    if (message == "auth")
                     {
                         MessageBox.Show("Авторизация пройдена");
 

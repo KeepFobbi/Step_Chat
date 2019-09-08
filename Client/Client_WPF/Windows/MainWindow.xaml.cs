@@ -32,13 +32,10 @@ namespace Client_WPF
 
             Login l = new Login();
             l.ShowDialog();
+            
 
             
-                 
-                 
-
-
-
+              
 
         }
 

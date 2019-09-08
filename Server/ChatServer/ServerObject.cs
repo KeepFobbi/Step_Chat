@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
-using System.Net;
+using System.Net; 
 using System.Text;
 using System.Threading;
 
@@ -12,21 +12,20 @@ namespace ChatServer
     {
         static TcpListener tcpListener; // сервер для прослушивания
         List<ClientObject> clients = new List<ClientObject>(); // все подключения
-        public List<string> Rum_1 { get; set; }
-        public List<string> Rum_2 { get; set; }
+      
         //public Dictionary<int, string[]> countries = new Dictionary<int, string[]>(5);
 
         protected internal void AddConnection(ClientObject clientObject)
         {
-            clients.Add(clientObject);
+             clients.Add(clientObject);
         }
         protected internal void RemoveConnection(string id)
         {
             // получаем по id закрытое подключение
-            ClientObject client = clients.FirstOrDefault(c => c.Id == id);
+            ClientObject client = clients.FirstOrDefault(c => c.id == id);
             // и удаляем его из списка подключений
             if (client != null)
-                clients.Remove(client);
+               clients.Remove(client);
         }
 
         // прослушивание входящих подключений
@@ -45,7 +44,7 @@ namespace ChatServer
                 {
                     TcpClient tcpClient = tcpListener.AcceptTcpClient();
 
-                    ClientObject clientObject = new ClientObject(tcpClient, this);
+                    ClientObject clientObject =  new ClientObject(tcpClient, this);
                     Thread clientThread = new Thread(new ThreadStart(clientObject.Process));
                     clientThread.Start();
                 }
@@ -63,7 +62,7 @@ namespace ChatServer
             byte[] data = Encoding.Unicode.GetBytes(message);
             for (int i = 0; i < clients.Count; i++)
             {
-                if (clients[i].Id == id) // если id клиента не равно id отправляющего
+                if (clients[i].id == id) // если id клиента не равно id отправляющего
                 {
                     clients[i].Stream.Write(data, 0, data.Length); //передача данных
                 }

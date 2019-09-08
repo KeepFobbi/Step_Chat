@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChatServer
+namespace ChatServer.BD_Entities
 {
     class User
     {
+        [Key]
         public int userId { get; set; }
         public string userName { get; set; }
-        public string passwordUser { get; set; }
-        public string firstName { get; set; }
-        public string secondName { get; set; }
-        public DateTime Birthday { get; set; }
-        public string phoneNum { get; set; }
-        public string groupName { get; set; }
+        public string userPassword { get; set; }
+        public string userFio { get; set; }
+        public DateTime userBirthday { get; set; }
+        public string userPhone { get; set; }
+        [NotMapped]
+        public byte[] userImage { get; set; }
+      
     }
 }

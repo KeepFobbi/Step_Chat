@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChatServer
+namespace ChatServer.BD_Entities
 {
     class userMessages
     {
-        public int MessageId { get; set; }
+        [Key]
+        public int messageId { get; set; }
         public int senderId { get; set; }
         public int recipientId { get; set; }
-        public int contentId { get; set; }
         public DateTime createAt { get; set; }
-        public DateTime updatedAt { get; set; }
+        public Nullable <DateTime> updateAt { get; set; }
+        public string content { get; set; }
     }
 }

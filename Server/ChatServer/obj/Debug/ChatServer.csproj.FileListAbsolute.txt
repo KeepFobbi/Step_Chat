@@ -17,3 +17,17 @@ D:\GitDiploma\Server_Fox_Chat\ChatServer\obj\Debug\ChatServer.csproj.CoreCompile
 D:\GitDiploma\Server_Fox_Chat\ChatServer\obj\Debug\ChatServer.csproj.CopyComplete
 D:\GitDiploma\Server_Fox_Chat\ChatServer\obj\Debug\ChatServer.exe
 D:\GitDiploma\Server_Fox_Chat\ChatServer\obj\Debug\ChatServer.pdb
+D:\StepChat\Step_Chat\Server\ChatServer\bin\Debug\ChatServer.exe.config
+D:\StepChat\Step_Chat\Server\ChatServer\bin\Debug\ChatServer.exe
+D:\StepChat\Step_Chat\Server\ChatServer\bin\Debug\ChatServer.pdb
+D:\StepChat\Step_Chat\Server\ChatServer\bin\Debug\EntityFramework.dll
+D:\StepChat\Step_Chat\Server\ChatServer\bin\Debug\EntityFramework.SqlServer.dll
+D:\StepChat\Step_Chat\Server\ChatServer\bin\Debug\EntityFramework.xml
+D:\StepChat\Step_Chat\Server\ChatServer\bin\Debug\EntityFramework.SqlServer.xml
+D:\StepChat\Step_Chat\Server\ChatServer\obj\Debug\ChatServer.csprojAssemblyReference.cache
+D:\StepChat\Step_Chat\Server\ChatServer\obj\Debug\ChatServer.csproj.CoreCompileInputs.cache
+D:\StepChat\Step_Chat\Server\ChatServer\obj\Debug\ChatServer.csproj.CopyComplete
+D:\StepChat\Step_Chat\Server\ChatServer\obj\Debug\ChatServer.exe
+D:\StepChat\Step_Chat\Server\ChatServer\obj\Debug\ChatServer.pdb
+D:\StepChat\Step_Chat\Server\ChatServer\bin\Debug\Newtonsoft.Json.dll
+D:\StepChat\Step_Chat\Server\ChatServer\bin\Debug\Newtonsoft.Json.xml

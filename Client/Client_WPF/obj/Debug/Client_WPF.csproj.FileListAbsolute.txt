@@ -25,3 +25,30 @@ C:\Users\Sad Existentialist\source\repos\Client_WPF\Client_WPF\bin\Debug\EntityF
 C:\Users\Sad Existentialist\source\repos\Client_WPF\Client_WPF\bin\Debug\EntityFramework.SqlServer.dll
 C:\Users\Sad Existentialist\source\repos\Client_WPF\Client_WPF\bin\Debug\EntityFramework.xml
 C:\Users\Sad Existentialist\source\repos\Client_WPF\Client_WPF\bin\Debug\EntityFramework.SqlServer.xml
+D:\StepChat\Step_Chat\Client\Client_WPF\bin\Debug\Client_WPF.exe.config
+D:\StepChat\Step_Chat\Client\Client_WPF\bin\Debug\Client_WPF.exe
+D:\StepChat\Step_Chat\Client\Client_WPF\bin\Debug\Client_WPF.pdb
+D:\StepChat\Step_Chat\Client\Client_WPF\bin\Debug\EntityFramework.dll
+D:\StepChat\Step_Chat\Client\Client_WPF\bin\Debug\EntityFramework.SqlServer.dll
+D:\StepChat\Step_Chat\Client\Client_WPF\bin\Debug\MaterialDesignColors.dll
+D:\StepChat\Step_Chat\Client\Client_WPF\bin\Debug\MaterialDesignThemes.Wpf.dll
+D:\StepChat\Step_Chat\Client\Client_WPF\bin\Debug\EntityFramework.xml
+D:\StepChat\Step_Chat\Client\Client_WPF\bin\Debug\EntityFramework.SqlServer.xml
+D:\StepChat\Step_Chat\Client\Client_WPF\bin\Debug\MaterialDesignColors.pdb
+D:\StepChat\Step_Chat\Client\Client_WPF\bin\Debug\MaterialDesignThemes.Wpf.pdb
+D:\StepChat\Step_Chat\Client\Client_WPF\bin\Debug\MaterialDesignThemes.Wpf.xml
+D:\StepChat\Step_Chat\Client\Client_WPF\obj\Debug\Client_WPF.csprojAssemblyReference.cache
+D:\StepChat\Step_Chat\Client\Client_WPF\obj\Debug\Windows\Login.g.cs
+D:\StepChat\Step_Chat\Client\Client_WPF\obj\Debug\Windows\MainWindow.g.cs
+D:\StepChat\Step_Chat\Client\Client_WPF\obj\Debug\App.g.cs
+D:\StepChat\Step_Chat\Client\Client_WPF\obj\Debug\Client_WPF_MarkupCompile.cache
+D:\StepChat\Step_Chat\Client\Client_WPF\obj\Debug\Client_WPF_MarkupCompile.lref
+D:\StepChat\Step_Chat\Client\Client_WPF\obj\Debug\Windows\Login.baml
+D:\StepChat\Step_Chat\Client\Client_WPF\obj\Debug\Windows\MainWindow.baml
+D:\StepChat\Step_Chat\Client\Client_WPF\obj\Debug\Client_WPF.g.resources
+D:\StepChat\Step_Chat\Client\Client_WPF\obj\Debug\Client_WPF.Properties.Resources.resources
+D:\StepChat\Step_Chat\Client\Client_WPF\obj\Debug\Client_WPF.csproj.GenerateResource.cache
+D:\StepChat\Step_Chat\Client\Client_WPF\obj\Debug\Client_WPF.csproj.CoreCompileInputs.cache
+D:\StepChat\Step_Chat\Client\Client_WPF\obj\Debug\Client_WPF.csproj.CopyComplete
+D:\StepChat\Step_Chat\Client\Client_WPF\obj\Debug\Client_WPF.exe
+D:\StepChat\Step_Chat\Client\Client_WPF\obj\Debug\Client_WPF.pdb

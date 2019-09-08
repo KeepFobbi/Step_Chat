@@ -1,22 +1,28 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using ChatServer.BD_Entities;
 
 namespace ChatServer
 {
+
+
     public class ClientObject
     {
-        protected internal string Id { get; private set; }
+        protected internal string id { get; private set; }
         protected internal NetworkStream Stream { get; private set; }
         string userName;
         TcpClient client;
         ServerObject server; // объект сервера
+        
+        JSendAfterLogin jSendAfterLogin = new JSendAfterLogin();
 
         public ClientObject(TcpClient tcpClient, ServerObject serverObject)
         {
-            Id = Guid.NewGuid().ToString();
+            var id = Guid.NewGuid().ToString();
             client = tcpClient;
             server = serverObject;
             serverObject.AddConnection(this);
@@ -27,66 +33,43 @@ namespace ChatServer
             try
             {
                 Stream = client.GetStream();
-              
+                string message;
 
 
-                // получаем имя пользователя
-                string message = GetMessage();
-                using (UserContext db = new UserContext())
-                {
-                    List<string> words = new List<string>();
-                    string[] _words = message.Split(new char[] { ' ' });
-                    foreach(var kek in _words)
-                    {
-                        words.Add(kek);
-                    }
-                    if (words[0] == "reg")
-                    {
-                        string temp = words[1];
-                        var userId = from e in db.Users where e.userName == temp select e.userId;
-
-                        var wow = userId.First();
-
-                        userName = words[1];
-                        server.BroadcastMessage(wow.ToString(), Id);
-
-                    }
-                    
-                }
-
-
-                /* message = GetMessage();
-                 if (message == "1")
-                 {
-                     server.Rum_1 = new List<string>();
-                     server.Rum_1.Add(this.Id);
-
-                 }*/
-              //  server.BroadcastMessage("ok", this.Id);
-                message = userName + " вошел в чат";
-                // посылаем сообщение о входе в чат всем подключенным пользователям
-               
-                Console.WriteLine(message);
                 // в бесконечном цикле получаем сообщения от клиента
                 while (true)
-                {
-                    try
-                    {
-                        
-                        message = GetMessage();
-                       
-                        message = String.Format("{0}: {1}", userName, message);
-                        Console.WriteLine(message);
-                        server.BroadcastMessage(message, this.Id);
-                    }
-                    catch
-                    {
-                        message = String.Format("{0}: покинул чат", userName);
-                        Console.WriteLine(message);
-                        server.BroadcastMessage(message, this.Id);
-                        break;
-                    }
-                }
+                 {
+                     
+
+                         message = GetMessage();
+
+                        string[] _words = message.Split(' ');
+
+                        if (_words[0] == "auth")
+                        {
+                            bool chek = Authorization(_words);
+                            if (chek)
+                            {
+                                message = _words[1] + " вошел в чат";
+                                Console.WriteLine(message);
+                                server.BroadcastMessage(СompileResponseAfterLogin(), this.id);
+
+                            }
+                        }
+                         if (_words[0] == "send")
+                        {
+                           // AfterReceiveMessage(_words);
+                            server.BroadcastMessage(message, _words[1]);
+
+                        }
+                         if (_words[0] == "update")
+                        {
+                            AfterUpdateMessage(_words);
+                            server.BroadcastMessage(message+$" {this.id}", _words[1]);
+                        }
+                    
+                     
+                 }
             }
             catch (Exception e)
             {
@@ -95,7 +78,7 @@ namespace ChatServer
             finally
             {
                 // в случае выхода из цикла закрываем ресурсы
-                server.RemoveConnection(this.Id);
+                server.RemoveConnection(this.id);
                 Close();
             }
         }
@@ -103,22 +86,120 @@ namespace ChatServer
         // чтение входящего сообщения и преобразование в строку
         private string GetMessage()
         {
-            byte[] data = new byte[64]; // буфер для получаемых данных
+            byte[] data = new byte[1024]; // буфер для получаемых данных
             StringBuilder builder = new StringBuilder();
             int bytes = 0;
+            string message;
             do
             {
                 bytes = Stream.Read(data, 0, data.Length);
                 builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
-                   // Unicode.GetString(data, 0, bytes));
+                message = builder.ToString();
             }
             while (Stream.DataAvailable);
 
-            return builder.ToString();
+
+
+
+            return message;
         }
 
-        // закрытие подключения
-        protected internal void Close()
+        private bool Authorization(string[] str)
+        {
+            using (UserContext db = new UserContext())
+            {
+                var _login = str[1];
+                var _password = str[2];
+
+                var query = from e in db.Users where (e.userName == _login && e.userPassword == _password) select e;
+
+
+                var user = query.FirstOrDefault();
+
+                jSendAfterLogin.User = user;
+
+                if (user != null)
+                {
+                    this.id = user.userId.ToString();
+
+                    return true;
+                }
+                else
+                    return false;
+
+            }
+        }
+
+        private string СompileResponseAfterLogin()
+        {
+            using (UserContext db = new UserContext())
+            {
+                int _id = Convert.ToInt32(this.id);
+
+                var query_groups = from g in db.Groups
+                                   join gm in db.GroupsMembers on g.groupId equals gm.groupId
+                                   where gm.userId == _id
+                                   select g;
+
+
+                var g_all = query_groups.ToList();
+
+                /* var query_mess = from um in db.userMessages
+                                  where um.senderId == _id 
+                                  select um;*/
+
+                jSendAfterLogin.Groups = g_all;
+
+                string jsonData = JsonConvert.SerializeObject(jSendAfterLogin);
+
+                return jsonData;
+
+            }
+        }
+
+        private void AfterReceiveMessage(string[] content)
+        {
+            using (UserContext db = new UserContext())
+            {
+                userMessages userMessages = new userMessages();
+
+                userMessages.senderId = Convert.ToInt32(this.id);
+                userMessages.recipientId = Convert.ToInt32(content[1]);
+                userMessages.createAt = Convert.ToDateTime(content[2]);
+                userMessages.content = content[3];
+
+                db.userMessages.Add(userMessages);
+                db.SaveChanges();
+
+
+            }
+        }
+
+        private void AfterUpdateMessage(string[] content)
+        {
+            using (UserContext db = new UserContext())
+            {
+                var updateTime = Convert.ToDateTime(content[3]);
+                int mess_id = Convert.ToInt32(content[2]);
+
+                var query = from um in db.userMessages
+                            where um.messageId == mess_id
+                            select um;
+
+                foreach (userMessages userMessages in query)
+                {
+                    userMessages.content = content[4];
+                }
+
+                db.SaveChangesAsync();
+
+
+            }
+        }
+
+
+            // закрытие подключения
+            protected internal void Close()
         {
             if (Stream != null)
                 Stream.Close();
