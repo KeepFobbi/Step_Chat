@@ -31,3 +31,17 @@ D:\StepChat\Step_Chat\Server\ChatServer\obj\Debug\ChatServer.exe
 D:\StepChat\Step_Chat\Server\ChatServer\obj\Debug\ChatServer.pdb
 D:\StepChat\Step_Chat\Server\ChatServer\bin\Debug\Newtonsoft.Json.dll
 D:\StepChat\Step_Chat\Server\ChatServer\bin\Debug\Newtonsoft.Json.xml
+D:\Development\Step_Chat\Server\ChatServer\bin\Debug\ChatServer.exe.config
+D:\Development\Step_Chat\Server\ChatServer\bin\Debug\ChatServer.exe
+D:\Development\Step_Chat\Server\ChatServer\bin\Debug\ChatServer.pdb
+D:\Development\Step_Chat\Server\ChatServer\bin\Debug\EntityFramework.dll
+D:\Development\Step_Chat\Server\ChatServer\bin\Debug\EntityFramework.SqlServer.dll
+D:\Development\Step_Chat\Server\ChatServer\bin\Debug\Newtonsoft.Json.dll
+D:\Development\Step_Chat\Server\ChatServer\bin\Debug\EntityFramework.xml
+D:\Development\Step_Chat\Server\ChatServer\bin\Debug\EntityFramework.SqlServer.xml
+D:\Development\Step_Chat\Server\ChatServer\bin\Debug\Newtonsoft.Json.xml
+D:\Development\Step_Chat\Server\ChatServer\obj\Debug\ChatServer.csprojAssemblyReference.cache
+D:\Development\Step_Chat\Server\ChatServer\obj\Debug\ChatServer.csproj.CoreCompileInputs.cache
+D:\Development\Step_Chat\Server\ChatServer\obj\Debug\ChatServer.csproj.CopyComplete
+D:\Development\Step_Chat\Server\ChatServer\obj\Debug\ChatServer.exe
+D:\Development\Step_Chat\Server\ChatServer\obj\Debug\ChatServer.pdb
