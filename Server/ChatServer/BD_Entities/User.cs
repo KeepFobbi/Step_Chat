@@ -17,8 +17,8 @@ namespace ChatServer.BD_Entities
         public string userFio { get; set; }
         public DateTime userBirthday { get; set; }
         public string userPhone { get; set; }
-        [NotMapped]
         public byte[] userImage { get; set; }
-      
+        
+
     }
 }

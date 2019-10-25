@@ -42,9 +42,13 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json.Schema, Version=3.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.Schema.3.0.11\lib\net45\Newtonsoft.Json.Schema.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -56,18 +60,30 @@
   <ItemGroup>
     <Compile Include="BD_Entities\Groups.cs" />
     <Compile Include="BD_Entities\GroupsMembers.cs" />
+    <Compile Include="BD_Entities\PrivateChats.cs" />
     <Compile Include="BD_Entities\User.cs" />
     <Compile Include="BD_Entities\userMessages.cs" />
-    <Compile Include="ClientObject.cs" />
-    <Compile Include="JSendAfterLogin.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Core\ClientObject.cs" />
+    <Compile Include="Json_Classes\JSendAfterLogin.cs" />
+    <Compile Include="Json_Classes\LoginEvent.cs" />
+    <Compile Include="Json_Classes\MessageEvent.cs" />
+    <Compile Include="Core\Program.cs" />
+    <Compile Include="Json_Classes\OpenCorrespondence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServerObject.cs" />
-    <Compile Include="UserContext.cs" />
+    <Compile Include="Core\ServerObject.cs" />
+    <Compile Include="Json_Classes\StartInfo.cs" />
+    <Compile Include="BD_Entities\UserContext.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="Configs\App.config" />
+    <None Include="Configs\packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Photos\lera_1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Photos\1200px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

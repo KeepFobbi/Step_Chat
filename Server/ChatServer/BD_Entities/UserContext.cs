@@ -17,6 +17,7 @@ namespace ChatServer
         public DbSet<Groups> Groups { get; set; }
         public DbSet<GroupsMembers> GroupsMembers { get; set; }
         public DbSet<userMessages> userMessages { get; set; }
+        public DbSet<PrivateChats> PrivateChats { get; set; }
 
     }
 }
