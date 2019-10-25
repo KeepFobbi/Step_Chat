@@ -10,7 +10,8 @@ using System.IO;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 using ChatServer.Json_Classes;
-using Newtonsoft.Json.Schema.Generation;
+using NJsonSchema;
+using NJsonSchema.Validation;
 
 namespace ChatServer
 {
@@ -44,11 +45,14 @@ namespace ChatServer
 
                     message = GetMessage();
 
-                    JSchemaGenerator generator = new JSchemaGenerator();
+                    var loginSchemaFrame = NJsonSchema.JsonSchema.FromType<LoginEvent>();
+                    var messageSchemaFrame = NJsonSchema.JsonSchema.FromType<MessageEvent>();
+                    var openCorrSchemaFrame = NJsonSchema.JsonSchema.FromType<OpenCorrespondence>();
 
-                    JSchema loginSchema = generator.Generate(typeof(LoginEvent));
-                    JSchema messageSchema = generator.Generate(typeof(MessageEvent));
-                    JSchema openCorrSchema = generator.Generate(typeof(OpenCorrespondence));
+                    JSchema loginSchema = JSchema.Parse(loginSchemaFrame.ToJson().ToString());
+                    JSchema messageSchema = JSchema.Parse(messageSchemaFrame.ToJson().ToString());
+                    JSchema openCorrSchema = JSchema.Parse(openCorrSchemaFrame.ToJson().ToString());
+
 
 
                     if (JObject.Parse(message).IsValid(loginSchema))
