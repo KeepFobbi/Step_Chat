@@ -112,7 +112,7 @@ namespace ChatServer
 
         private string GetMessage()
         {
-            byte[] data = new byte[16384]; // буфер для получаемых данных
+            byte[] data = new byte[16384]; 
             StringBuilder builder = new StringBuilder();
             int bytes = 0;
             string message;
@@ -147,7 +147,28 @@ namespace ChatServer
                 return "ok";
 
             }
-            else
+            else if (messageEvent.statusType == "Delete")
+            {
+                for(int i=0;i<messageEvent.messages.Count();i++)
+                {
+                    int id_del = messageEvent.messages.Keys.ElementAt(i);
+                    userMessages delMessage = db.userMessages.Where(um => um.messageId == id_del).FirstOrDefault();
+
+                    db.userMessages.Remove(delMessage);
+                }
+                db.SaveChanges();
+            }
+            else if(messageEvent.statusType == "Update")
+            {
+                int id_update = messageEvent.messages.Keys.ElementAt(0);
+                userMessages updateMessage = db.userMessages.Where(um => um.messageId == id_update).FirstOrDefault();
+
+                db.SaveChanges();
+            }
+            else if (messageEvent.statusType == "ReSend")
+            {
+
+            }
                 return "kk";
 
         }
@@ -241,36 +262,6 @@ namespace ChatServer
                 m_last.Add(mess);
             }
 
-            //недописано, в блок отправки при клике на группу
-            /*  var query_all_members = from u in db.Users
-                                      join gm in db.GroupsMembers on u.userId equals gm.userId
-                                      where
-                                            (from gm0 in db.GroupsMembers
-                                             where
-                                              gm0.userId == 1
-                                             select new
-                                             {
-                                                 gm0.Groups.GroupId
-                                             }).Contains(new { GroupId = gm.GroupId })
-                                      select new
-                                      {
-                                          u,
-                                          gm
-                                      };
-
-  */
-
-            //var qallm = query_all_members.ToList();
-
-
-            // jSendAfterLogin.users = qallm;
-
-            /*jSendAfterLogin.Groups = g_all;
-            jSendAfterLogin.UserChats=q_pc;
-            jSendAfterLogin.userMessages=m_last;
-            jSendAfterLogin.UsersInChats = q_uinc;*/
-            // jSendAfterLogin.userMessages = m_last;
-
             foreach (var kek in g_all)
             {
                 StartInfo startInfo = new StartInfo
@@ -344,27 +335,6 @@ namespace ChatServer
                 db.SaveChanges();
                 return jsonData;
             }
-
-        }
-
-        private void AfterUpdateMessage(string[] content)
-        {
-
-            var updateTime = Convert.ToDateTime(content[3]);
-            int mess_id = Convert.ToInt32(content[2]);
-
-            var query = from um in db.userMessages
-                        where um.messageId == mess_id
-                        select um;
-
-            foreach (userMessages userMessages in query)
-            {
-                userMessages.content = content[4];
-            }
-
-            db.SaveChanges();
-
-
 
         }
 
