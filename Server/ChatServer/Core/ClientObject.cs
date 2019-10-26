@@ -18,7 +18,7 @@ namespace ChatServer
 
     public class ClientObject
     {
-        protected internal string id { get; private set; }
+        protected internal int id { get; private set; }
         protected internal NetworkStream Stream { get; private set; }
         TcpClient client;
         ServerObject server;
@@ -27,7 +27,7 @@ namespace ChatServer
 
         public ClientObject(TcpClient tcpClient, ServerObject serverObject)
         {
-            var id = Guid.NewGuid().ToString();
+            id = 0;
             client = tcpClient;
             server = serverObject;
             serverObject.AddConnection(this);
@@ -58,21 +58,26 @@ namespace ChatServer
                     if (JObject.Parse(message).IsValid(loginSchema))
                     {
 
-                            LoginEvent loginEvent = new LoginEvent();
-                            loginEvent = JsonConvert.DeserializeObject<LoginEvent>(message);
+                        LoginEvent loginEvent = new LoginEvent();
+                        loginEvent = JsonConvert.DeserializeObject<LoginEvent>(message);
 
-                            bool chek = Authorization(loginEvent);
-                            if (chek)
+                        bool chek = Authorization(loginEvent);
+
+                        if (chek)
+                        {
+
+                            Console.WriteLine(loginEvent.login + " вошел в чат");
+                            foreach (var client in server.clients)
                             {
-
-                                Console.WriteLine(loginEvent.login + " вошел в чат");
-
-
-                                //   Image image = Image.FromFile(@"D:\Archive\Archive\StepChat\StepChat\Step_Chat\Server\ChatServer\Photos\1200px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg");
-
-                                server.BroadcastMessage(СompileResponseAfterLogin(), this.id);
-
+                                Console.WriteLine(client.id + "-- idUser");
                             }
+                            //   Image image = Image.FromFile(@"D:\Archive\Archive\StepChat\StepChat\Step_Chat\Server\ChatServer\Photos\1200px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg");
+                            int[] ids_rec = new int[1];
+                            ids_rec[0] = id;
+
+                            server.BroadcastMessage(СompileResponseAfterLogin(), ids_rec);
+
+                        }
 
                     }
 
@@ -80,20 +85,21 @@ namespace ChatServer
                     {
 
 
-                         MessageEvent messageEvent = JsonConvert.DeserializeObject<MessageEvent>(message);
+                        MessageEvent messageEvent = JsonConvert.DeserializeObject<MessageEvent>(message);
 
-                            MessagesEventsFunc(messageEvent);
-                        
+                        MessagesEventsFunc(messageEvent);
+
                     }
 
                     if (JObject.Parse(message).IsValid(openCorrSchema))
                     {
 
                         OpenCorrespondence openCorrespondence = JsonConvert.DeserializeObject<OpenCorrespondence>(message);
-
-                        server.BroadcastMessage(AfterOpenChat(openCorrespondence), this.id);
+                        int[] ids_rec = new int[1];
+                        ids_rec[0] = id;
+                        server.BroadcastMessage(AfterOpenChat(openCorrespondence), ids_rec);
                     }
-                    
+
 
                 }
             }
@@ -112,7 +118,7 @@ namespace ChatServer
 
         private string GetMessage()
         {
-            byte[] data = new byte[16384]; 
+            byte[] data = new byte[16384];
             StringBuilder builder = new StringBuilder();
             int bytes = 0;
             string message;
@@ -134,31 +140,67 @@ namespace ChatServer
 
                 int _id = Convert.ToInt32(this.id);
 
-                var idrec = from u in db.Users
-                            from pc in db.PrivateChats
-                            where ((u.userId == pc.user_1_Id && (pc.user_1_Id != _id && pc.user_2_Id == _id)) || (u.userId == pc.user_2_Id) && (pc.user_1_Id == _id && pc.user_2_Id != _id)) && pc.chatId == messageEvent.recipientIid
 
-                            select u.userId;
+                if (messageEvent.recipientTtype == "chat")
+                {
+                    PrivateChats privateChatSend = db.PrivateChats.Where(pc => pc.chatId == messageEvent.recipientIid).FirstOrDefault();
 
-                var rec = idrec.First();
+                    int[] ids_rec = new int[1];
+                    ids_rec[0] = privateChatSend.user_1_Id == _id ? privateChatSend.user_2_Id : privateChatSend.user_1_Id;
 
-                server.BroadcastMessage(SaveAfterReceiveMessage(messageEvent), rec.ToString());
+                    server.BroadcastMessage(SaveAfterReceiveMessage(messageEvent), ids_rec);
+                }
+
+                else if (messageEvent.recipientTtype == "group")
+                {
+                    GroupsMembers groupsMemberSend = db.GroupsMembers.Where(gm => gm.groupId == messageEvent.recipientIid).FirstOrDefault();
+
+                    var userArr = from u in db.Users
+                                  join gm in db.GroupsMembers on u.userId equals gm.userId
+                                  where gm.groupId == messageEvent.recipientIid && gm.userId != _id
+                                  select u.userId;
+
+                    int[] ids_rec = new int[userArr.Count()];
+
+                    for (int i = 0; i < userArr.Count(); i++)
+                    {
+                        ids_rec[i] = userArr.ElementAt(i);
+                    }
+
+                    server.BroadcastMessage(SaveAfterReceiveMessage(messageEvent), ids_rec);
+
+                }
+
+
+
 
                 return "ok";
 
             }
             else if (messageEvent.statusType == "Delete")
             {
-                for(int i=0;i<messageEvent.messages.Count();i++)
+                List<MessageEvent> listDeleted = new List<MessageEvent>();
+
+                for (int i = 0; i < messageEvent.messages.Count(); i++)
                 {
                     int id_del = messageEvent.messages.Keys.ElementAt(i);
                     userMessages delMessage = db.userMessages.Where(um => um.messageId == id_del).FirstOrDefault();
+
+                    listDeleted.Add(new MessageEvent
+                    {
+                        statusType = "respounseDelete",
+                        recipientTtype = messageEvent.recipientTtype,
+                        recipientIid = messageEvent.recipientIid,
+                        eventTime = messageEvent.eventTime,
+                        messages = messageEvent.messages
+                    });
+
 
                     db.userMessages.Remove(delMessage);
                 }
                 db.SaveChanges();
             }
-            else if(messageEvent.statusType == "Update")
+            else if (messageEvent.statusType == "Update")
             {
                 int id_update = messageEvent.messages.Keys.ElementAt(0);
                 userMessages updateMessage = db.userMessages.Where(um => um.messageId == id_update).FirstOrDefault();
@@ -169,7 +211,7 @@ namespace ChatServer
             {
 
             }
-                return "kk";
+            return "kk";
 
         }
         private bool Authorization(LoginEvent login)
@@ -187,7 +229,7 @@ namespace ChatServer
 
             if (user != null)
             {
-                this.id = user.userId.ToString();
+                id = user.userId;
 
                 return true;
             }
@@ -311,7 +353,7 @@ namespace ChatServer
                     createAt = messageEvent.eventTime,
                     senderId = Convert.ToInt32(this.id),
                     content = messageEvent.messages[-1]
-                }); 
+                });
 
                 jsonData = "chat" + JsonConvert.SerializeObject(userMessage, Formatting.Indented);
                 Console.WriteLine(jsonData);
@@ -319,7 +361,7 @@ namespace ChatServer
                 db.SaveChanges();
                 return jsonData;
             }
-            else 
+            else
             {
                 userMessage.Add(new userMessages
                 {
@@ -327,7 +369,7 @@ namespace ChatServer
                     createAt = messageEvent.eventTime,
                     senderId = Convert.ToInt32(this.id),
                     content = messageEvent.messages[-1]
-                }) ;
+                });
 
                 jsonData = "group" + JsonConvert.SerializeObject(userMessage, Formatting.Indented);
                 Console.WriteLine(jsonData);
@@ -343,7 +385,7 @@ namespace ChatServer
 
             int _id = Convert.ToInt32(this.id);
 
-            if (openCorr.statusType=="chat")
+            if (openCorr.statusType == "chat")
             {
                 var query_mess_c = from um in db.userMessages
                                    join pc in db.PrivateChats on um.recipientChatId equals pc.chatId

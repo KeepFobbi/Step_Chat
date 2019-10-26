@@ -82,3 +82,4 @@ D:\Diploma\Step_Chat\Server\ChatServer\bin\Debug\NJsonSchema.xml
 D:\Diploma\Step_Chat\Server\ChatServer\bin\Debug\NJsonSchema.CodeGeneration.xml
 D:\Diploma\Step_Chat\Server\ChatServer\bin\Debug\it\DotLiquid.resources.dll
 D:\Diploma\Step_Chat\Server\ChatServer\obj\Debug\ChatServer.csproj.CopyComplete
+D:\Diploma\Step_Chat\Server\ChatServer\obj\Debug\ChatServer.csprojAssemblyReference.cache

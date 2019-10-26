@@ -15,7 +15,7 @@ namespace ChatServer
     {
         
         static TcpListener tcpListener; // сервер для прослушивания
-        List<ClientObject> clients = new List<ClientObject>(); // все подключения
+        public List<ClientObject> clients = new List<ClientObject>(); // все подключения
       
         //public Dictionary<int, string[]> countries = new Dictionary<int, string[]>(5);
 
@@ -23,7 +23,7 @@ namespace ChatServer
         {
              clients.Add(clientObject);
         }
-        protected internal void RemoveConnection(string id)
+        protected internal void RemoveConnection(int id)
         {
             // получаем по id закрытое подключение
             ClientObject client = clients.FirstOrDefault(c => c.id == id);
@@ -61,9 +61,9 @@ namespace ChatServer
         }
 
         // трансляция сообщения подключенным клиентам
-        protected internal void BroadcastMessage(string message, string id, Image image=null)
+        protected internal void BroadcastMessage(string message, int[] ids_rec, Image image=null)
         {
-            if(image!=null)
+            /*if(image!=null)
             {
                 //BinaryFormatter formatter = new BinaryFormatter();
 
@@ -96,11 +96,11 @@ namespace ChatServer
 
                     }
                 }
-            }
+            }*/
             byte[] data = Encoding.Unicode.GetBytes(message);
-            for (int i = 0; i < clients.Count; i++)
+            for (int i = 0; i < ids_rec.Count(); i++)
             {
-                if (clients[i].id == id) // если id клиента не равно id отправляющего
+                if (clients[i].id == ids_rec[i]) // если id клиента не равно id отправляющего
                 {
                     clients[i].Stream.Write(data, 0, data.Length); //передача данных
                 }
