@@ -91,8 +91,9 @@
                     <materialDesign:PackIcon Kind="Archive" Foreground="White"/>
                 </Button>
             </Grid>
-            <ScrollViewer x:Name="scrollViewerUser" VerticalScrollBarVisibility="Auto" Margin="0,100,0,63" CanContentScroll="True">
-                <ListView x:Name="listView1">
+
+            <ListView x:Name="listView1">
+                <ScrollViewer x:Name="scrollViewerUser" VerticalScrollBarVisibility="Auto" Margin="0,100,0,63" CanContentScroll="True">
                     <ListViewItem x:Name="listViewItem_1" Visibility="Collapsed" HorizontalAlignment="Stretch" Selected="ListViewItem_1_Selected">
                         <Grid HorizontalAlignment="Center" Margin="5">
                             <Grid.ColumnDefinitions>
@@ -118,9 +119,9 @@
                             </Border>
                         </Grid>
                     </ListViewItem>
+                </ScrollViewer>
+            </ListView>
 
-                </ListView>
-            </ScrollViewer>
         </StackPanel>
 
         <StackPanel Grid.Column="2" Background="White" Grid.RowSpan="2">

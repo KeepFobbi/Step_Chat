@@ -25,7 +25,10 @@ namespace Chat
                 //ServerNotFaund notFaund = new ServerNotFaund();
                 //this.Content = new ServerNotFaund();
                 //notFaund.Visibility = Visibility.Visible;
+
+                LoadGif.Visibility = Visibility.Visible;
             }));
+            LoadGif.Visibility = Visibility.Visible;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

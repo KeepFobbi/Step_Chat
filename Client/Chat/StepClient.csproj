@@ -160,5 +160,23 @@
   <ItemGroup>
     <Resource Include="Assets\welcome.jpeg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\u7PRM.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\12.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\load.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\g0R9.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\731.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\1233.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

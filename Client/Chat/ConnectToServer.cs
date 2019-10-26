@@ -90,6 +90,7 @@ namespace Chat
                 }
 
                 string textReceiveMessage = builder.ToString();
+
                 if (textReceiveMessage != "")
                 {
                     if (textReceiveMessage.Contains(passwordToServer))

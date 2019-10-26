@@ -41,7 +41,6 @@ D:\Development\Step_Chat\Client\Chat\bin\Debug\MaterialDesignColors.pdb
 D:\Development\Step_Chat\Client\Chat\bin\Debug\MaterialDesignThemes.Wpf.pdb
 D:\Development\Step_Chat\Client\Chat\bin\Debug\MaterialDesignThemes.Wpf.xml
 D:\Development\Step_Chat\Client\Chat\bin\Debug\Newtonsoft.Json.xml
-D:\Development\Step_Chat\Client\Chat\obj\Debug\StepClient.csprojAssemblyReference.cache
 D:\Development\Step_Chat\Client\Chat\obj\Debug\Login.baml
 D:\Development\Step_Chat\Client\Chat\obj\Debug\App.baml
 D:\Development\Step_Chat\Client\Chat\obj\Debug\ChatWindow.g.cs
@@ -64,3 +63,4 @@ D:\Development\Step_Chat\Client\Chat\obj\Debug\StepClient.csproj.GenerateResourc
 D:\Development\Step_Chat\Client\Chat\obj\Debug\StepClient.csproj.CopyComplete
 D:\Development\Step_Chat\Client\Chat\obj\Debug\Chat.exe
 D:\Development\Step_Chat\Client\Chat\obj\Debug\Chat.pdb
+D:\Development\Step_Chat\Client\Chat\obj\Debug\StepClient.csprojAssemblyReference.cache
