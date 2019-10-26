@@ -34,7 +34,7 @@ namespace Chat
             ConnectToServer.loginToServer = loginBox.Text;
             ConnectToServer.passwordToServer = passwordBox.Password.ToString();
             ConnectToServer.SendRequest();
-        }                          
+        }
         ChatWindow chatWindow = new ChatWindow();
         private void createMainWindow(JSendAfterLogin jSend)
         {
@@ -48,12 +48,15 @@ namespace Chat
             }
             else
             {
-                loginBox.Foreground = Brushes.White;
-                loginBox.Background = Brushes.OrangeRed;
-                passwordBox.Foreground = Brushes.White;
-                passwordBox.Background = Brushes.OrangeRed;
-                loginBox.Text = "Ошибка!";
-                passwordBox.Clear();
+                Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                {
+                    loginBox.Foreground = Brushes.White;
+                    loginBox.Background = Brushes.OrangeRed;
+                    passwordBox.Foreground = Brushes.White;
+                    passwordBox.Background = Brushes.OrangeRed;
+                    loginBox.Text = "Ошибка!";
+                    passwordBox.Clear();
+                }));
             }
         }
 

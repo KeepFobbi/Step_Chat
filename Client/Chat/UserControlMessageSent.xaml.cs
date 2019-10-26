@@ -64,6 +64,9 @@ namespace Chat
                     e.Handled = true;
                     messageText.Text = messageTextBox.Text;
 
+                    MessageEvent @event = new MessageEvent("Update", "chat", ChatWindow.selectedId, System.DateTime.Now, Id, "");
+                    ConnectToServer.SendRequest(@event);
+
                     TextBoxGrid.Visibility = Visibility.Collapsed;
                 }
             }

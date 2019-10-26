@@ -27,7 +27,6 @@ namespace Chat
         public ChatWindow()
         {
             InitializeComponent();
-            //ConnectToServer.createStream();
             ConnectToServer.UserMessEvent += senderMessage;
             ConnectToServer.receiveLoginEv += addUserChat;
             ConnectToServer.SystemErrorConnectToServer += SystemError;
