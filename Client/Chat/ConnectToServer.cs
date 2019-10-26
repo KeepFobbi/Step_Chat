@@ -14,9 +14,9 @@ namespace Chat
     public static class ConnectToServer
     {
         //37.115.128.11  178.92.84.69
-        private const string host = "178.92.84.69";
+        private const string host = "192.168.43.87";
         //private const string host = "37.115.128.11";
-        private const int port = 9090;
+        private const int port = 9092;
         private const int V = 16384;
         static TcpClient client;
         static NetworkStream stream;

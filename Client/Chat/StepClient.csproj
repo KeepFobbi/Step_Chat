@@ -155,7 +155,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\face1.jpg" />
-    <Resource Include="Assets\logo.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\welcome.jpeg" />
@@ -176,7 +175,10 @@
     <Resource Include="Assets\731.gif" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\1233.png" />
+    <Resource Include="Assets\qwe.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\logo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
