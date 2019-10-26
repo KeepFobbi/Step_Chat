@@ -41,7 +41,6 @@ D:\Development\Step_Chat\Server\ChatServer\bin\Debug\EntityFramework.xml
 D:\Development\Step_Chat\Server\ChatServer\bin\Debug\EntityFramework.SqlServer.xml
 D:\Development\Step_Chat\Server\ChatServer\bin\Debug\Newtonsoft.Json.xml
 D:\Development\Step_Chat\Server\ChatServer\obj\Debug\ChatServer.csprojAssemblyReference.cache
-D:\Development\Step_Chat\Server\ChatServer\obj\Debug\ChatServer.csproj.CoreCompileInputs.cache
 D:\Development\Step_Chat\Server\ChatServer\obj\Debug\ChatServer.csproj.CopyComplete
 D:\Development\Step_Chat\Server\ChatServer\obj\Debug\ChatServer.exe
 D:\Development\Step_Chat\Server\ChatServer\obj\Debug\ChatServer.pdb
@@ -83,3 +82,14 @@ D:\Diploma\Step_Chat\Server\ChatServer\bin\Debug\NJsonSchema.CodeGeneration.xml
 D:\Diploma\Step_Chat\Server\ChatServer\bin\Debug\it\DotLiquid.resources.dll
 D:\Diploma\Step_Chat\Server\ChatServer\obj\Debug\ChatServer.csproj.CopyComplete
 D:\Diploma\Step_Chat\Server\ChatServer\obj\Debug\ChatServer.csprojAssemblyReference.cache
+D:\Development\Step_Chat\Server\ChatServer\bin\Debug\DotLiquid.dll
+D:\Development\Step_Chat\Server\ChatServer\bin\Debug\Namotion.Reflection.dll
+D:\Development\Step_Chat\Server\ChatServer\bin\Debug\Newtonsoft.Json.Schema.dll
+D:\Development\Step_Chat\Server\ChatServer\bin\Debug\NJsonSchema.CodeGeneration.dll
+D:\Development\Step_Chat\Server\ChatServer\bin\Debug\NJsonSchema.dll
+D:\Development\Step_Chat\Server\ChatServer\bin\Debug\DotLiquid.xml
+D:\Development\Step_Chat\Server\ChatServer\bin\Debug\Namotion.Reflection.xml
+D:\Development\Step_Chat\Server\ChatServer\bin\Debug\Newtonsoft.Json.Schema.xml
+D:\Development\Step_Chat\Server\ChatServer\bin\Debug\NJsonSchema.xml
+D:\Development\Step_Chat\Server\ChatServer\bin\Debug\NJsonSchema.CodeGeneration.xml
+D:\Development\Step_Chat\Server\ChatServer\bin\Debug\it\DotLiquid.resources.dll

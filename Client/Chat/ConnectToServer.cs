@@ -16,10 +16,11 @@ namespace Chat
         //37.115.128.11  178.92.84.69
         private const string host = "178.92.84.69";
         //private const string host = "37.115.128.11";
-        private const int port = 9090;
+        private const int port = 9092;
         private const int V = 16384;
         static TcpClient client;
         static NetworkStream stream;
+        static Thread receiveThread;
 
         public delegate void receiveLogin(JSendAfterLogin mess);
         public static event receiveLogin receiveLoginEv;
@@ -40,7 +41,7 @@ namespace Chat
                 client.Connect(host, port);
                 stream = client.GetStream();
 
-                Thread receiveThread = new Thread(new ThreadStart(ReceiveMessage));
+                receiveThread = new Thread(new ThreadStart(ReceiveMessage));
                 receiveThread.Start();
             }
             catch (Exception ex)
@@ -159,6 +160,7 @@ namespace Chat
                 stream.Close();
             if (client != null)
                 client.Close();
+            receiveThread.Abort();
         }
     }
 }

@@ -71,5 +71,11 @@ namespace Chat
             passwordBox.Background = Brushes.White;
             loginBox.Clear();
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            //ConnectToServer.Disconnect();
+            //Application.Current.Shutdown();
+        }
     }
 }

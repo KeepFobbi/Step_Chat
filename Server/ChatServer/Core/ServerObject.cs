@@ -38,7 +38,7 @@ namespace ChatServer
         {
             try
             {
-                tcpListener = new TcpListener(9090);
+                tcpListener = new TcpListener(9092);
 
                 tcpListener.Start();
                

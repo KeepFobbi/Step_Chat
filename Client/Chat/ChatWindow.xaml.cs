@@ -27,7 +27,7 @@ namespace Chat
         public ChatWindow()
         {
             InitializeComponent();
-            ConnectToServer.createStream();
+            //ConnectToServer.createStream();
             ConnectToServer.UserMessEvent += senderMessage;
             ConnectToServer.receiveLoginEv += addUserChat;
             ConnectToServer.SystemErrorConnectToServer += SystemError;
@@ -407,6 +407,12 @@ namespace Chat
             UserControlMessageReceived userControlMessageReceived = new UserControlMessageReceived();
             MessageEvent @event = new MessageEvent("Delete", "chat", selectedId, DateTime.Now, 3030, "");
             ConnectToServer.SendRequest(@event);
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            ConnectToServer.Disconnect();
+            Application.Current.Shutdown();
         }
     }
 }
