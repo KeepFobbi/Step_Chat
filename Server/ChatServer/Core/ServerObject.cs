@@ -100,7 +100,7 @@ namespace ChatServer
             byte[] data = Encoding.Unicode.GetBytes(message);
             for (int i = 0; i < ids_rec.Count(); i++)
             {
-                if (clients[i].id == ids_rec[i]) // если id клиента не равно id отправляющего
+                if (clients.Where(c=>c.id==ids_rec[i]).FirstOrDefault().id==ids_rec[i]) // если id клиента не равно id отправляющего
                 {
                     clients[i].Stream.Write(data, 0, data.Length); //передача данных
                 }

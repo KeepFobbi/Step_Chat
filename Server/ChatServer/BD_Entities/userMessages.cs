@@ -18,6 +18,8 @@ namespace ChatServer.BD_Entities
         public Nullable <DateTime> updateAt { get; set; }
         public string content { get; set; }
 
+        
+
 
             
 
