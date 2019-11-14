@@ -64,3 +64,9 @@ D:\Diploma\Step_Chat\Client\Chat\obj\Debug\StepClient.csproj.GenerateResource.ca
 D:\Diploma\Step_Chat\Client\Chat\obj\Debug\StepClient.csproj.CopyComplete
 D:\Diploma\Step_Chat\Client\Chat\obj\Debug\Chat.exe
 D:\Diploma\Step_Chat\Client\Chat\obj\Debug\Chat.pdb
+D:\Diploma\Step_Chat\Client\Chat\bin\Debug\Namotion.Reflection.dll
+D:\Diploma\Step_Chat\Client\Chat\bin\Debug\Newtonsoft.Json.Schema.dll
+D:\Diploma\Step_Chat\Client\Chat\bin\Debug\NJsonSchema.dll
+D:\Diploma\Step_Chat\Client\Chat\bin\Debug\Namotion.Reflection.xml
+D:\Diploma\Step_Chat\Client\Chat\bin\Debug\Newtonsoft.Json.Schema.xml
+D:\Diploma\Step_Chat\Client\Chat\bin\Debug\NJsonSchema.xml

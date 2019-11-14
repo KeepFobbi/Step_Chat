@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Schema;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -8,6 +9,8 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using NJsonSchema;
+using Newtonsoft.Json.Linq;
 
 namespace Chat
 {
@@ -89,32 +92,49 @@ namespace Chat
                 }
 
                 string textReceiveMessage = builder.ToString();
-                if (textReceiveMessage != "")
-                {
-                    if (textReceiveMessage.Contains(passwordToServer))
+
+                var jSendAfterLoginSchemaFrame = NJsonSchema.JsonSchema.FromType<JSendAfterLogin>();
+                //var openCorrespondenceSchemaFrame = NJsonSchema.JsonSchema.FromType<OpenCorrespondence>();
+
+                JSchema jSendAfterLoginSchema = JSchema.Parse(jSendAfterLoginSchemaFrame.ToJson().ToString());
+                // JSchema openCorrespondenceSchema = JSchema.Parse(openCorrespondenceSchemaFrame);
+
+                //var jSendAfterLoginSchemaFrame = NJsonSchema.JsonSchema.FromType<JSendAfterLogin>();
+                ////var openCorrespondenceSchemaFrame = NJsonSchema.JsonSchema.FromType<OpenCorrespondence>();
+
+                //JSchema jSendAfterLoginSchema = JSchema.Parse(jSendAfterLoginSchemaFrame.ToJson().ToString());
+
+                //var jSendAfterLoginSchemaFrame = NJsonSchema.JsonSchema.FromType<JSendAfterLogin>();
+                ////var openCorrespondenceSchemaFrame = NJsonSchema.JsonSchema.FromType<OpenCorrespondence>();
+
+                //JSchema jSendAfterLoginSchema = JSchema.Parse(jSendAfterLoginSchemaFrame.ToJson().ToString());
+
+                //= JsonConvert.DeserializeObject<JObject>(textReceiveMessage);
+                    if (JObject.Parse(textReceiveMessage).IsValid(jSendAfterLoginSchema))
                     {
                         JSendAfterLogin jSend = JsonConvert.DeserializeObject<JSendAfterLogin>(textReceiveMessage);
+                        
                         receiveLoginEv(jSend);
                     }
-                    else if (textReceiveMessage.Contains("group"))
+                    if (false)
                     {
-                        textReceiveMessage = textReceiveMessage.Remove(0, 5);
+                        
                         var jSend = JsonConvert.DeserializeObject<List<userMessages>>(textReceiveMessage);
                         UserMessEvent(jSend, true);
                     }
-                    else if (textReceiveMessage.Contains("chat"))
+                    if (false)
                     {
                         textReceiveMessage = textReceiveMessage.Remove(0,4);
                         var jSend = JsonConvert.DeserializeObject<List<userMessages>>(textReceiveMessage);
                         UserMessEvent(jSend, false);
                     }
-                }
-                else
-                {
+                
+                    else
+                    {
                     SystemErrorConnectToServer(false);
                     Thread.Sleep(1500);
                     continue;
-                }
+                    }
             }
         }
 

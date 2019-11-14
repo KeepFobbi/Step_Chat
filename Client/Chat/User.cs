@@ -14,7 +14,7 @@ namespace Chat
         public string userFio { get; set; }
         public DateTime userBirthday { get; set; }
         public string userPhone { get; set; }
-        //public byte[] userImage { get; set; }
+        public byte[] userImage { get; set; }
 
     }
 }

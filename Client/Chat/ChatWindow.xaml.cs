@@ -86,7 +86,7 @@ namespace Chat
             userPhone = jSend.User.userPhone;
             Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
             {
-                for (int i = 0; i < jSend.StartInfos.Count; i++)
+                for (int i = 0; i < jSend.startInfos.Count; i++)
                 {
                     TextBlock textBlock;
                     listViewItem_1.Visibility = Visibility.Visible;
@@ -97,23 +97,23 @@ namespace Chat
                     listViewI.Add(listViewItem);
 
                     textBlock = (TextBlock)listViewItem.FindName("userName");
-                    if (jSend.StartInfos[i].groupId != null)
+                    if (jSend.startInfos[i].groupId != null)
                     {
 
-                        textBlock.Text = jSend.StartInfos[i].groupName;
-                        listViewItem.Name = "id" + jSend.StartInfos[i].groupId.ToString();
+                        textBlock.Text = jSend.startInfos[i].groupName;
+                        listViewItem.Name = "id" + jSend.startInfos[i].groupId.ToString();
                         listViewItem.Tag = true;
                     }
                     else
                     {
-                        textBlock.Text = jSend.StartInfos[i].userName;
-                        listViewItem.Name = "id" + jSend.StartInfos[i].chatId.ToString();
+                        textBlock.Text = jSend.startInfos[i].userName;
+                        listViewItem.Name = "id" + jSend.startInfos[i].chatId.ToString();
                         listViewItem.Tag = false;
                     }
-                    if (jSend.StartInfos[i].content != null)
+                    if (jSend.startInfos[i].content != null)
                     {
                         textBlock = (TextBlock)listViewItem.FindName("lastMessage");
-                        textBlock.Text = jSend.StartInfos[i].content;
+                        textBlock.Text = jSend.startInfos[i].content;
                     }
                     else
                         lastMessage.Text = "";

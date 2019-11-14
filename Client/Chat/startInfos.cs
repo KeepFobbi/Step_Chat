@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Chat
 {
-    public class startInfos
+    public class StartInfos
     {
         public int? groupId { get; set; }
         public int? chatId { get; set; }

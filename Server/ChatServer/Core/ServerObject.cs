@@ -8,6 +8,8 @@ using System.Threading;
 using System.Drawing;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ChatServer
 {
@@ -97,6 +99,8 @@ namespace ChatServer
                     }
                 }
             }*/
+           
+
             byte[] data = Encoding.Unicode.GetBytes(message);
             for (int i = 0; i < ids_rec.Count(); i++)
             {
@@ -105,6 +109,7 @@ namespace ChatServer
                     clients[i].Stream.Write(data, 0, data.Length); //передача данных
                 }
             }
+     
         }
         // отключение всех клиентов
         protected internal void Disconnect()

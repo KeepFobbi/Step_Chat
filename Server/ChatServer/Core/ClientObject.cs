@@ -54,16 +54,16 @@ namespace ChatServer
                     JSchema messageSchema = JSchema.Parse(messageSchemaFrame.ToJson().ToString());
                     JSchema openCorrSchema = JSchema.Parse(openCorrSchemaFrame.ToJson().ToString());
 
+                    var message_Json = JObject.Parse(message);
 
-
-                    if (JObject.Parse(message).IsValid(loginSchema))
+                    if (message_Json.IsValid(loginSchema))
                     {
 
                         LoginEvent loginEvent = new LoginEvent();
-                        loginEvent = JsonConvert.DeserializeObject<LoginEvent>(message);
+                        loginEvent = JsonConvert.DeserializeObject<LoginEvent>(message_Json.ToString());
 
                         bool chek = Authorization(loginEvent);
-                        string kek;
+                        
                         if (chek)
                         {
 
@@ -76,31 +76,26 @@ namespace ChatServer
                             int[] ids_rec = new int[1];
                             ids_rec[0] = id;
 
-                            server.BroadcastMessage(kek = СompileResponseAfterLogin(), ids_rec);
+                            server.BroadcastMessage(СompileResponseAfterLogin(), ids_rec);
 
-                            var jSendAfterLoginFrame = NJsonSchema.JsonSchema.FromType<JSendAfterLogin>();
-                            JSchema jSendAfterLoginSchema = JSchema.Parse(jSendAfterLoginFrame.ToJson().ToString());
-                            if (JObject.Parse(kek).IsValid(jSendAfterLoginSchema))
-                            {
-                                Console.WriteLine("WOW");
-                            }
+                            
 
                         }
                     }
-                    if (JObject.Parse(message).IsValid(messageSchema))
+                    if (message_Json.IsValid(messageSchema))
                     {
 
 
-                        MessageEvent messageEvent = JsonConvert.DeserializeObject<MessageEvent>(message);
+                        MessageEvent messageEvent = JsonConvert.DeserializeObject<MessageEvent>(message_Json.ToString());
 
                         MessagesEventsFunc(messageEvent);
 
                     }
 
-                    if (JObject.Parse(message).IsValid(openCorrSchema))
+                    if (message_Json.IsValid(openCorrSchema))
                     {
 
-                        OpenCorrespondence openCorrespondence = JsonConvert.DeserializeObject<OpenCorrespondence>(message);
+                        OpenCorrespondence openCorrespondence = JsonConvert.DeserializeObject<OpenCorrespondence>(message_Json.ToString());
                         int[] ids_rec = new int[1];
                         ids_rec[0] = id;
                         server.BroadcastMessage(AfterOpenChat(openCorrespondence), ids_rec);
@@ -342,9 +337,11 @@ namespace ChatServer
 
             string jsonData = JsonConvert.SerializeObject(jSendAfterLogin, Formatting.Indented);
 
-            Console.WriteLine(jsonData);
+            var dataJson = JObject.Parse(jsonData);
 
-            return jsonData;
+            Console.WriteLine(dataJson);
+
+            return dataJson.ToString();
 
 
         }
@@ -403,7 +400,9 @@ namespace ChatServer
                                    where (um.recipientChatId == openCorr.idCorr)
                                    select um;
                 var qm = query_mess_c.OrderBy(q => q.createAt).ToList();
+
                 List<userMessages> userMessagesTemp = new List<userMessages>();
+
                 foreach (var message in qm)
                 {
 
@@ -418,18 +417,15 @@ namespace ChatServer
 
                     };
 
-                    userM+= JObject.FromObject(message);
+                    userMessagesTemp.Add(userMessage);
 
                 }
 
-
-
-
-                string jsonData =JsonConvert.SerializeObject(userM, Formatting.Indented);
+                string jsonData =JsonConvert.SerializeObject(userMessagesTemp, Formatting.Indented);
                 
           
-                var userMessagesSchemaFrame = NJsonSchema.JsonSchema.FromSampleJson(jsonData);
-                JSchema userMessagesSchema = JSchema.Parse(userMessagesSchemaFrame.ToJson().ToString());
+               // var userMessagesSchemaFrame = NJsonSchema.JsonSchema.FromSampleJson(jsonData);
+               // JSchema userMessagesSchema = JSchema.Parse(userMessagesSchemaFrame.ToJson().ToString());
 
             
 
