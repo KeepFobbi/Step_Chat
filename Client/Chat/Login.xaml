@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="Login" Height="400" Width="600" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen" Icon="Assets/Ico.ico">
+        Title="Login" Height="400" Width="600" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen" Icon="sms-icon.ico">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -62,8 +62,12 @@
             <TextBlock Text="Сделай невозможное возможным, легкое легкое и стильное легкое" Foreground="White" HorizontalAlignment="Center" Width="280" FontSize="24" FontFamily="Champagne &amp; Limousines" TextWrapping="Wrap" TextAlignment="Center" Margin="0,50,0,0"/>
             <TextBlock Text="Feldenkrais" Foreground="White" FontSize="18" FontFamily="Champagne &amp; Limousines" TextWrapping="Wrap" TextAlignment="Right" Margin="10"/>
         </StackPanel>
-        <StackPanel x:Name="ConnectStatus" Margin="-265,387,0,3" Grid.Column="2" Visibility="Collapsed">
-            <ProgressBar  IsIndeterminate="True" />
+        <StackPanel x:Name="ConnectStatus" Margin="11,360,-276,13" Grid.Column="2" Visibility="Collapsed">
+            <ProgressBar  Style="{StaticResource MaterialDesignCircularProgressBar}"  
+                          Value="0"  IsIndeterminate="True" Margin="282,0,290,0" Foreground="White" 
+                          Height="19" Width="Auto"/>
+            <!--<ProgressBar  IsIndeterminate="True" />-->
+            <!--<ProgressBar  IsIndeterminate="True" />-->
         </StackPanel>
         <Button HorizontalAlignment="Right" Margin="0,1,0,367" Style="{StaticResource MaterialDesignFlatButton}" Click="Button_Click_2" Height="Auto" IsCancel="True" Grid.Column="2">
             <materialDesign:PackIcon Kind="Close" Foreground="#FF3AB7B1"/>

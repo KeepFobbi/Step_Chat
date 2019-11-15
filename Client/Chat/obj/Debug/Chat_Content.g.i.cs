@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/ico.ico")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/sms-icon.ico")]
 
 

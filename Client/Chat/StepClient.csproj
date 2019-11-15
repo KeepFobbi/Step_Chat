@@ -182,5 +182,14 @@
   <ItemGroup>
     <Resource Include="Assets\Ico.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\sms-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="sms-icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\sms-icon.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

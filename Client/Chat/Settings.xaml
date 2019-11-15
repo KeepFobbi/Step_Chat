@@ -6,21 +6,51 @@
         xmlns:local="clr-namespace:Chat"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Settings" Height="400" Width="300" Icon="Assets/Ico.ico" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" WindowStyle="None" Background="#FF5131A6">
+        Title="Settings" Height="235" Width="704" Icon="Assets/Ico.ico" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" WindowStyle="None">
     <Grid>
-        
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Height="60" Margin="0,2,1,338">
-            <Border BorderBrush="Gainsboro" BorderThickness="1">
-                <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFlatButton}" IsCancel="True" Foreground="White">
-                    <materialDesign:PackIcon Kind="Close" Width="32" Height="31"/>
-                </Button>
+        <TextBlock Text="Настройки" FontSize="28" VerticalAlignment="Center" Margin="80,4,77,458" Foreground="White" TextDecorations="{x:Null}" FontFamily="Nirmala UI"/>
+        <Rectangle HorizontalAlignment="Stretch" Fill="#FF30309E" Height="4" Margin="0,60,0,436"/>
+        <Border CornerRadius="30" Margin="19,82,209,351">
+            <Border.Background>
+                <ImageBrush ImageSource="Assets/face1.jpg"/>
+            </Border.Background>
         </Border>
-        </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Height="60" Margin="0,2,237,338">
-                <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFlatButton}" IsCancel="True" Foreground="White">
-                    <materialDesign:PackIcon Kind="ArrowBack" Width="31" Height="31"/>
+        <Border CornerRadius="30" Margin="19,82,209,351">
+            <Border.Background>
+                <ImageBrush ImageSource="Assets/face1.jpg"/>
+            </Border.Background>
+        </Border>
+        <StackPanel Grid.Column="0" Background="{StaticResource PrimaryHueDarkBrush}" Grid.RowSpan="2">
+            <StackPanel Orientation="Horizontal" Background="White" Height="65">
+                <Button Style="{StaticResource MaterialDesignFlatButton}">
+                    <materialDesign:PackIcon Kind="ArrowBackCircle" Width="24" Height="24"/>
+                </Button>
+                <TextBlock x:Name="chatTitle" Text="Настройки" FontSize="20" VerticalAlignment="Center" Margin="45 12 50 14"/>
+                <Button Style="{StaticResource MaterialDesignFlatButton}" Margin="0,16,0,17" Click="Button_Click">
+                    <materialDesign:PackIcon Kind="CloseBox" Width="24" Height="24"/>
                 </Button>
             </StackPanel>
-        <Rectangle HorizontalAlignment="Stretch" Fill="Blue" Height="4" Margin="10,63,-10,333"/>
+            <materialDesign:ColorZone Mode="PrimaryMid" Width="200" HorizontalAlignment="Left">
+
+                <StackPanel Orientation="Vertical" Margin="2">
+                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Width="200" IsChecked="True" Content="Профиль" HorizontalAlignment="Center"/>
+                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Width="200" IsChecked="False" Content="Уведомления" HorizontalAlignment="Left"/>
+                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Width="200" IsChecked="False" Content="Кофиденциальность" HorizontalAlignment="Left"/>
+                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Width="200" IsChecked="False" Content="Продвинутые настройки" HorizontalAlignment="Left"/>
+                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Width="200" IsChecked="False" Content="Язык" HorizontalAlignment="Center"/>
+
+                </StackPanel>
+            </materialDesign:ColorZone>
+        </StackPanel>
+        <Border Width="169" HorizontalAlignment="Center" BorderBrush="Gainsboro" BorderThickness="2" Margin="216,72,319,12">
+            <StackPanel HorizontalAlignment="Left" Margin="10">
+                <Border Width="65" Height="65" CornerRadius="30" BorderBrush="White" BorderThickness="2">
+                    <Border.Background>
+                        <ImageBrush ImageSource="Assets/face1.jpg"/>
+                    </Border.Background>
+                </Border>
+                <TextBlock x:Name="chatName" Text="Дубнюк Андрей" HorizontalAlignment="Center" Margin="0 10 0 0" Foreground="White" FontSize="18" FontWeight="Bold"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>

@@ -124,6 +124,7 @@ namespace Chat
                     listView1.Items.Add(listViewItem);
                 }
                 listView1.Items[0] = null;
+                scrollViewerListItem.ScrollToBottom();
             }));
         }
 
@@ -406,6 +407,12 @@ namespace Chat
             UserControlMessageReceived userControlMessageReceived = new UserControlMessageReceived();
             MessageEvent @event = new MessageEvent("Delete", "chat", selectedId, DateTime.Now, 3030, "");
             ConnectToServer.SendRequest(@event);
+        }
+
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+            Settings settings = new Settings();
+            settings.Show();
         }
     }
 }
