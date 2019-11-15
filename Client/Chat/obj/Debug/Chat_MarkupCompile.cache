@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-D:\Diploma\Step_Chat\Client\Chat\obj\Debug\
+D:\Development\Step_Chat\Client\Chat\obj\Debug\
 Chat
 none
 false
 DEBUG;TRACE
-D:\Diploma\Step_Chat\Client\Chat\App.xaml
-6595799203
+D:\Development\Step_Chat\Client\Chat\App.xaml
+7805035837
 
-211140575439
-22261352787
-ChatWindow.xaml;Login.xaml;MyUserInfo.xaml;ServerError.xaml;UserControlMessageReceived.xaml;UserControlMessageSent.xaml;
+22-630901888
+221842744060
+ChatWindow.xaml;Login.xaml;MyUserInfo.xaml;ServerError.xaml;Settings.xaml;UserControlMessageReceived.xaml;UserControlMessageSent.xaml;
 
 False
 

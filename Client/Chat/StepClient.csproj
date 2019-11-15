@@ -92,6 +92,9 @@
     <Compile Include="ServerError.xaml.cs">
       <DependentUpon>ServerError.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings.xaml.cs">
+      <DependentUpon>Settings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="startInfos.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserControlMessageReceived.xaml.cs">
@@ -123,6 +126,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ServerError.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -171,6 +178,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\welcome.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Ico.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

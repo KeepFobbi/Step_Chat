@@ -20,14 +20,16 @@ namespace Chat
         private const string host = "178.92.84.69";
         //private const string host = "37.115.128.11";
         private const int port = 9090;
-        private const int V = 16384;
+        private const int V = 120000;
         static TcpClient client;
         static NetworkStream stream;
 
         public delegate void receiveLogin(JSendAfterLogin mess);
         public static event receiveLogin receiveLoginEv;
-        public delegate void UserMess(userMessagesList mess, bool totalFlag);
+        public delegate void UserMess(MessageEvent mess, bool totalFlag);
         public static event UserMess UserMessEvent;
+        public delegate void UserMessList(userMessagesList mess, bool totalFlag);
+        public static event UserMessList UserMessListItem;
         public delegate void SystemError(bool Connect);
         public static event SystemError SystemErrorConnectToServer;
 
@@ -56,7 +58,7 @@ namespace Chat
         {
             while (true)
             {
-                byte[] data = new byte[550000];
+                byte[] data = new byte[120000];
                 StringBuilder builder = new StringBuilder();
                 int bytes;
                 try
@@ -136,13 +138,17 @@ namespace Chat
                 {
 
                     var jSend = JsonConvert.DeserializeObject<userMessagesList>(textReceiveMessage);
-                    UserMessEvent(jSend, true);
+                    UserMessListItem(jSend, true);
                 }
 
                 else if (message_Json.IsValid(messageEventSchema))
                 {
 
-                    var jSend = JsonConvert.DeserializeObject<userMessagesList>(textReceiveMessage);
+                    var jSend = JsonConvert.DeserializeObject<MessageEvent>(textReceiveMessage);
+                    if(jSend.statusType=="sendReapounse")
+                    {
+
+                    }
                     UserMessEvent(jSend, true);
                 }
 
