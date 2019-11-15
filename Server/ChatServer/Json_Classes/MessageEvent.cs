@@ -8,13 +8,14 @@ namespace ChatServer.Json_Classes
 {
     class MessageEvent
     {
-        
 
-            public string statusType;
-            public string recipientTtype;
-            public int recipientIid;
-            public DateTime eventTime;
-            public Dictionary<int, string> messages;
-        
+        public string statusType;
+        public string recipientTtype;
+        public int recipientIid;
+        public DateTime eventTime;
+        public Dictionary<int, string> messages;
+
+
+
     }
 }

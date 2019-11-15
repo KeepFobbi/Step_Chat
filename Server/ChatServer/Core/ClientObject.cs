@@ -27,7 +27,7 @@ namespace ChatServer
 
         public ClientObject(TcpClient tcpClient, ServerObject serverObject)
         {
-            
+            id = 0;
             client = tcpClient;
             server = serverObject;
             serverObject.AddConnection(this);
@@ -63,7 +63,7 @@ namespace ChatServer
                         loginEvent = JsonConvert.DeserializeObject<LoginEvent>(message_Json.ToString());
 
                         bool chek = Authorization(loginEvent);
-                        
+
                         if (chek)
                         {
 
@@ -78,7 +78,7 @@ namespace ChatServer
 
                             server.BroadcastMessage(СompileResponseAfterLogin(), ids_rec);
 
-                            
+
 
                         }
                     }
@@ -120,7 +120,7 @@ namespace ChatServer
 
         private string GetMessage()
         {
-            byte[] data = new byte[16384];
+            byte[] data = new byte[120000];
             StringBuilder builder = new StringBuilder();
             int bytes = 0;
             string message;
@@ -164,7 +164,7 @@ namespace ChatServer
 
                     db.userMessages.Remove(delMessage);
                 }
-                var jsonDeleted = JsonConvert.SerializeObject(listDeleted,Formatting.Indented);
+                var jsonDeleted = JsonConvert.SerializeObject(listDeleted, Formatting.Indented);
                 server.BroadcastMessage(jsonDeleted, ids_del);
                 db.SaveChanges();
             }
@@ -349,33 +349,31 @@ namespace ChatServer
         private string SaveAfterReceiveMessage(MessageEvent messageEvent)
         {
 
-            userMessages userMessage = new userMessages();
-            MessageEvent mEvent = new MessageEvent();
+
             string jsonData;
 
             if (messageEvent.recipientTtype == "chat")
             {
-                userMessage = new userMessages
+
+
+                userMessages userMessage = new userMessages
                 {
+
                     recipientChatId = messageEvent.recipientIid,
                     createAt = messageEvent.eventTime,
                     senderId = Convert.ToInt32(this.id),
                     content = messageEvent.messages[-1]
                 };
 
-                
+                MessageEvent mEvent = new MessageEvent
+                {
+                    statusType = "sendRespounse",
+                    recipientTtype = messageEvent.recipientTtype,
+                    recipientIid = messageEvent.recipientIid,
+                    eventTime = messageEvent.eventTime,
+                    messages[-1] = messageEvent[-1];
+                };
 
-                //public string statusType;
-                //public string recipientTtype;
-                //public int recipientIid;
-                //public DateTime eventTime;
-                //public Dictionary<int, string> messages;
-
-                mEvent.statusType = "sendRespounse";
-                mEvent.recipientTtype = messageEvent.recipientTtype;
-                mEvent.recipientIid = messageEvent.recipientIid;
-                mEvent.eventTime = messageEvent.eventTime;
-                mEvent.messages.Add(-1, messageEvent.messages[-1]);
 
                 jsonData = JsonConvert.SerializeObject(mEvent, Formatting.Indented);
 
@@ -387,6 +385,9 @@ namespace ChatServer
             }
             else
             {
+                userMessages userMessage = new userMessages();
+                MessageEvent mEvent = new MessageEvent();
+
                 userMessage = new userMessages
                 {
                     recipientGroupId = messageEvent.recipientIid,
@@ -419,7 +420,7 @@ namespace ChatServer
 
             int _id = Convert.ToInt32(this.id);
             userMessagesList uMessList = new userMessagesList();
-            string userM=null;
+
             if (openCorr.statusType == "chat")
             {
                 var query_mess_c = from um in db.userMessages
@@ -433,8 +434,8 @@ namespace ChatServer
                     uMessList.uMList.Add(mess);
                 }
 
-                string jsonData =JsonConvert.SerializeObject(uMessList, Formatting.Indented);
-                
+                string jsonData = JsonConvert.SerializeObject(uMessList, Formatting.Indented);
+
 
                 Console.WriteLine(jsonData);
 
@@ -449,13 +450,13 @@ namespace ChatServer
                 var qm = query_mess_g.OrderBy(q => q.createAt).ToList();
 
 
-                foreach(var mess in qm)
+                foreach (var mess in qm)
                 {
                     uMessList.uMList.Add(mess);
                 }
-                
 
-                string jsonData =JsonConvert.SerializeObject(uMessList, Formatting.Indented);
+
+                string jsonData = JsonConvert.SerializeObject(uMessList, Formatting.Indented);
 
                 Console.WriteLine(jsonData);
 

@@ -142,7 +142,7 @@ namespace Chat
                 else if (message_Json.IsValid(messageEventSchema))
                 {
 
-                    var jSend = JsonConvert.DeserializeObject<userMessagesList>(textReceiveMessage);
+                    var jSend = JsonConvert.DeserializeObject<MessageEvent>(textReceiveMessage);
                     UserMessEvent(jSend, true);
                 }
 
