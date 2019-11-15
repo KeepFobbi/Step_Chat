@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Chat"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Settings" Height="235" Width="704" Icon="Assets/Ico.ico" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" WindowStyle="None">
+        Title="Settings" Height="450" Width="800" ScrollViewer.HorizontalScrollBarVisibility="Auto" WindowStartupLocation="CenterScreen" WindowStyle="None">
     <Grid>
         <TextBlock Text="Настройки" FontSize="28" VerticalAlignment="Center" Margin="80,4,77,458" Foreground="White" TextDecorations="{x:Null}" FontFamily="Nirmala UI"/>
         <Rectangle HorizontalAlignment="Stretch" Fill="#FF30309E" Height="4" Margin="0,60,0,436"/>
@@ -26,7 +26,7 @@
                     <materialDesign:PackIcon Kind="ArrowBackCircle" Width="24" Height="24"/>
                 </Button>
                 <TextBlock x:Name="chatTitle" Text="Настройки" FontSize="20" VerticalAlignment="Center" Margin="45 12 50 14"/>
-                <Button Style="{StaticResource MaterialDesignFlatButton}" Margin="0,16,0,17" Click="Button_Click">
+                <Button Style="{StaticResource MaterialDesignFlatButton}" Margin="0,16,0,17" Click="Button_Click" >
                     <materialDesign:PackIcon Kind="CloseBox" Width="24" Height="24"/>
                 </Button>
             </StackPanel>
@@ -50,7 +50,32 @@
                     </Border.Background>
                 </Border>
                 <TextBlock x:Name="chatName" Text="Дубнюк Андрей" HorizontalAlignment="Center" Margin="0 10 0 0" Foreground="White" FontSize="18" FontWeight="Bold"/>
+
+                <TextBlock x:Name="descriptionInfo" Text="C# Designer" FontSize="13" Foreground="White" HorizontalAlignment="Center" Opacity="0.8"/>
+                <StackPanel Margin="0">
+                    <StackPanel Orientation="Horizontal" Margin="0 3">
+                        <materialDesign:PackIcon Kind="User" Foreground="White"/>
+                        <TextBlock x:Name="Username" Text="Fobbi" Margin="10 0" Foreground="White"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0 3">
+                        <materialDesign:PackIcon Kind="Cellphone" Foreground="White"/>
+                        <TextBlock x:Name="Phone" Text="+(380) 98 102 0036" Margin="10 0" Foreground="White"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0 3">
+                        <materialDesign:PackIcon Kind="Calendar" Foreground="White"/>
+                        <TextBlock x:Name="Birthday" Text="aforster@gmail.com" Margin="10 0" Foreground="White"/>
+                    </StackPanel>
+                </StackPanel>
+                <Border Width="169" HorizontalAlignment="Center" BorderBrush="Gainsboro" BorderThickness="2">
+                    <StackPanel>
+                        <TextBlock x:Name="CountGroup" Text="2" HorizontalAlignment="Center" Margin="0 10 0 0" Foreground="White" FontSize="18" FontWeight="Bold"/>
+
+                        <TextBlock x:Name="TixtGroup" Text="Место в группе" FontSize="13" Foreground="White" HorizontalAlignment="Center" Opacity="0.8"/>
+                    </StackPanel>
+                </Border>
             </StackPanel>
+            
         </Border>
+        
     </Grid>
 </Window>

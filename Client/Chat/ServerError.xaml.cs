@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Chat
@@ -17,7 +18,7 @@ namespace Chat
     /// <summary>
     /// Логика взаимодействия для ServerError.xaml
     /// </summary>
-    public partial class ServerError : Window
+    public partial class ServerError : UserControl
     {
         public ServerError()
         {

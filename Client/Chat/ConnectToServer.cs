@@ -145,10 +145,6 @@ namespace Chat
                 {
 
                     var jSend = JsonConvert.DeserializeObject<MessageEvent>(textReceiveMessage);
-<<<<<<< HEAD
-=======
-           
->>>>>>> ee4c1f1d719e14bbfa22689af2b30e2e215b3b51
                     UserMessEvent(jSend, true);
                 }
 

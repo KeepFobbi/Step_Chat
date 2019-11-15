@@ -34,14 +34,13 @@
                 </Button>
             </StackPanel>
             <!--<StackPanel Margin="0 100" VerticalAlignment="Bottom">
-                <local:UserControlMessageReceived HorizontalAlignment="Left"/>
-                <local:UserControlMessageSent HorizontalAlignment="Right"/>
+                <local:ServerError Height="200" Width="531"/>
             </StackPanel>-->
             <ScrollViewer x:Name="scrollViewerMess" VerticalScrollBarVisibility="Auto" Margin="0,100,0,63" CanContentScroll="True">
                 <StackPanel x:Name="messagePlace" VerticalAlignment="Bottom"/>
             </ScrollViewer>
             <!---Mess                                                               _______________________________________________________________Panel-->
-            <Border x:Name="MessPanel" Background="#FFAFE6B2" VerticalAlignment="Bottom" Visibility="Collapsed" IsVisibleChanged="Border_IsVisibleChanged">
+            <Border x:Name="MessPanel" Background="#FFAFE6B2" VerticalAlignment="Bottom" Visibility="Visible" IsVisibleChanged="Border_IsVisibleChanged">
                 <Grid Margin="0 10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>

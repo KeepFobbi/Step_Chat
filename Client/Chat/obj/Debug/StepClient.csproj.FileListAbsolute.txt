@@ -111,3 +111,4 @@ D:\Development\Step_Chat\Client\Chat\obj\Debug\Chat.exe
 D:\Development\Step_Chat\Client\Chat\obj\Debug\Chat.pdb
 D:\Development\Step_Chat\Client\Chat\obj\Debug\Settings.g.cs
 D:\Development\Step_Chat\Client\Chat\obj\Debug\Settings.baml
+D:\Development\Step_Chat\Client\Chat\obj\Debug\GeneratedInternalTypeHelper.g.cs
