@@ -17,10 +17,10 @@ namespace Chat
     public static class ConnectToServer
     {
         //37.115.128.11  178.92.84.69
-        private const string host = "178.92.84.69";
+        private const string host = "192.168.1.65";
         //private const string host = "37.115.128.11";
         private const int port = 9090;
-        private const int V = 120000;
+        private const int V = 500000;
         static TcpClient client;
         static NetworkStream stream;
 
@@ -67,7 +67,7 @@ namespace Chat
                     {
                         try
                         {
-                            bytes = stream.Read(data, 0, data.Length);
+                                bytes = stream.Read(data, 0, data.Length);
                             try
                             {
                                 builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
@@ -94,6 +94,8 @@ namespace Chat
                 }
 
                 string textReceiveMessage = builder.ToString();
+
+                 
 
 
 
@@ -145,10 +147,12 @@ namespace Chat
                 {
 
                     var jSend = JsonConvert.DeserializeObject<MessageEvent>(textReceiveMessage);
-<<<<<<< HEAD
-=======
-           
->>>>>>> ee4c1f1d719e14bbfa22689af2b30e2e215b3b51
+
+                    if(jSend.statusType== "sendRespounse")
+                    {
+                        string kek = "kek";
+                    }
+
                     UserMessEvent(jSend, true);
                 }
 

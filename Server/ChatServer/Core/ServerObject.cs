@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
-using System.Net; 
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Drawing;
@@ -15,15 +15,15 @@ namespace ChatServer
 {
     public class ServerObject
     {
-        
+
         static TcpListener tcpListener; // сервер для прослушивания
         public List<ClientObject> clients = new List<ClientObject>(); // все подключения
-      
+
         //public Dictionary<int, string[]> countries = new Dictionary<int, string[]>(5);
 
         protected internal void AddConnection(ClientObject clientObject)
         {
-             clients.Add(clientObject);
+            clients.Add(clientObject);
         }
         protected internal void RemoveConnection(int id)
         {
@@ -31,7 +31,7 @@ namespace ChatServer
             ClientObject client = clients.FirstOrDefault(c => c.id == id);
             // и удаляем его из списка подключений
             if (client != null)
-               clients.Remove(client);
+                clients.Remove(client);
         }
 
         // прослушивание входящих подключений
@@ -43,14 +43,14 @@ namespace ChatServer
                 tcpListener = new TcpListener(9090);
 
                 tcpListener.Start();
-               
+
                 Console.WriteLine("Сервер запущен. Ожидание подключений...");
 
                 while (true)
                 {
                     TcpClient tcpClient = tcpListener.AcceptTcpClient();
 
-                    ClientObject clientObject =  new ClientObject(tcpClient, this);
+                    ClientObject clientObject = new ClientObject(tcpClient, this);
                     Thread clientThread = new Thread(new ThreadStart(clientObject.Process));
                     clientThread.Start();
                 }
@@ -63,7 +63,7 @@ namespace ChatServer
         }
 
         // трансляция сообщения подключенным клиентам
-        protected internal void BroadcastMessage(string message, int[] ids_rec, Image image=null)
+        protected internal void BroadcastMessage(string message, int ids_rec, Image image = null)
         {
             /*if(image!=null)
             {
@@ -99,18 +99,24 @@ namespace ChatServer
                     }
                 }
             }*/
-           
+
 
             byte[] data = Encoding.Unicode.GetBytes(message);
-            for (int i = 0; i < ids_rec.Count(); i++)
+
+            for (int i = 0; i < clients.Count(); i++)
             {
-                if (clients.Where(c=>c.id==ids_rec[i]).FirstOrDefault().id==ids_rec[i]) // если id клиента не равно id отправляющего
+                if (clients[i].id==ids_rec)
                 {
                     clients[i].Stream.Write(data, 0, data.Length); //передача данных
                 }
             }
-     
+
+
+
         }
+
+        // if (clients.Where(c=>c.id==ids_rec[i]).FirstOrDefault().id==ids_rec[i]) // если id клиента не равно id отправляющего
+
         // отключение всех клиентов
         protected internal void Disconnect()
         {

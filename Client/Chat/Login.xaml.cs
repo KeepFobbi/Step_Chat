@@ -13,8 +13,8 @@ namespace Chat
             InitializeComponent();
             ConnectToServer.receiveLoginEv += createMainWindow;
             ConnectToServer.SystemErrorConnectToServer += SystemError;
-            loginBox.Text = "Fobbi";
-            passwordBox.Password = "Fobbi";
+            loginBox.Text = "Sad";
+            passwordBox.Password = "Sad";
             Button_Click(null, null);
         }
 
