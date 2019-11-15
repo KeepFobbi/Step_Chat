@@ -13,9 +13,11 @@ namespace Chat
             InitializeComponent();
             ConnectToServer.receiveLoginEv += createMainWindow;
             ConnectToServer.SystemErrorConnectToServer += SystemError;
+
             loginBox.Text = "Sad";
             passwordBox.Password = "Sad";
             Button_Click(null, null);
+
         }
 
         private void SystemError(bool Connect)
@@ -30,11 +32,11 @@ namespace Chat
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            ConnectStatus.Visibility = Visibility.Visible;
             ConnectToServer.createStream();
             ConnectToServer.loginToServer = loginBox.Text;
             ConnectToServer.passwordToServer = passwordBox.Password.ToString();
             ConnectToServer.SendRequest();
-            ConnectStatus.Visibility = Visibility.Visible;
         }                          
         ChatWindow chatWindow = new ChatWindow();
         private void createMainWindow(JSendAfterLogin jSend)
