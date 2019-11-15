@@ -101,6 +101,7 @@
       <DependentUpon>UserControlMessageSent.xaml</DependentUpon>
     </Compile>
     <Compile Include="userMessages.cs" />
+    <Compile Include="userMessagesList.cs" />
     <Page Include="ChatWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

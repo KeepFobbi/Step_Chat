@@ -337,11 +337,11 @@ namespace ChatServer
 
             string jsonData = JsonConvert.SerializeObject(jSendAfterLogin, Formatting.Indented);
 
-            var dataJson = JObject.Parse(jsonData);
+            //var dataJson = JObject.Parse(jsonData);
 
-            Console.WriteLine(dataJson);
+            Console.WriteLine(jsonData);
 
-            return dataJson.ToString();
+            return jsonData.ToString();
 
 
         }
@@ -349,39 +349,66 @@ namespace ChatServer
         private string SaveAfterReceiveMessage(MessageEvent messageEvent)
         {
 
-            List<userMessages> userMessage = new List<userMessages>();
+            userMessages userMessage = new userMessages();
+            MessageEvent mEvent = new MessageEvent();
             string jsonData;
 
             if (messageEvent.recipientTtype == "chat")
             {
-                userMessage.Add(new userMessages
+                userMessage = new userMessages
                 {
                     recipientChatId = messageEvent.recipientIid,
                     createAt = messageEvent.eventTime,
                     senderId = Convert.ToInt32(this.id),
                     content = messageEvent.messages[-1]
-                });
+                };
 
-                jsonData = "chat" + JsonConvert.SerializeObject(userMessage, Formatting.Indented);
+                
+
+                //public string statusType;
+                //public string recipientTtype;
+                //public int recipientIid;
+                //public DateTime eventTime;
+                //public Dictionary<int, string> messages;
+
+                mEvent.statusType = "sendRespounse";
+                mEvent.recipientTtype = messageEvent.recipientTtype;
+                mEvent.recipientIid = messageEvent.recipientIid;
+                mEvent.eventTime = messageEvent.eventTime;
+                mEvent.messages.Add(-1, messageEvent.messages[-1]);
+
+                jsonData = JsonConvert.SerializeObject(mEvent, Formatting.Indented);
+
                 Console.WriteLine(jsonData);
-                db.userMessages.Add(userMessage[0]);
+                db.userMessages.Add(userMessage);
                 db.SaveChanges();
+
                 return jsonData;
             }
             else
             {
-                userMessage.Add(new userMessages
+                userMessage = new userMessages
                 {
                     recipientGroupId = messageEvent.recipientIid,
                     createAt = messageEvent.eventTime,
                     senderId = Convert.ToInt32(this.id),
                     content = messageEvent.messages[-1]
-                });
+                };
 
-                jsonData = "group" + JsonConvert.SerializeObject(userMessage, Formatting.Indented);
+                mEvent.statusType = "sendRespounse";
+                mEvent.recipientTtype = messageEvent.recipientTtype;
+                mEvent.recipientIid = messageEvent.recipientIid;
+                mEvent.eventTime = messageEvent.eventTime;
+                mEvent.messages.Add(-1, messageEvent.messages[-1]);
+
+
+                jsonData = JsonConvert.SerializeObject(mEvent, Formatting.Indented);
+
+
                 Console.WriteLine(jsonData);
-                db.userMessages.Add(userMessage[0]);
+                db.userMessages.Add(userMessage);
                 db.SaveChanges();
+
                 return jsonData;
             }
 
@@ -391,7 +418,7 @@ namespace ChatServer
         {
 
             int _id = Convert.ToInt32(this.id);
-            List<userMessages> userMessagesList = new List<userMessages>();
+            userMessagesList uMessList = new userMessagesList();
             string userM=null;
             if (openCorr.statusType == "chat")
             {
@@ -401,33 +428,13 @@ namespace ChatServer
                                    select um;
                 var qm = query_mess_c.OrderBy(q => q.createAt).ToList();
 
-                List<userMessages> userMessagesTemp = new List<userMessages>();
-
-                foreach (var message in qm)
+                foreach (var mess in qm)
                 {
-
-                    userMessages userMessage = new userMessages
-                    {
-                        content = message.content,
-                        createAt = message.createAt,
-                        messageId = message.messageId,
-                        recipientChatId = message.recipientChatId,
-                        senderId = message.senderId,
-                        updateAt = message.updateAt
-
-                    };
-
-                    userMessagesTemp.Add(userMessage);
-
+                    uMessList.uMList.Add(mess);
                 }
 
-                string jsonData =JsonConvert.SerializeObject(userMessagesTemp, Formatting.Indented);
+                string jsonData =JsonConvert.SerializeObject(uMessList, Formatting.Indented);
                 
-          
-               // var userMessagesSchemaFrame = NJsonSchema.JsonSchema.FromSampleJson(jsonData);
-               // JSchema userMessagesSchema = JSchema.Parse(userMessagesSchemaFrame.ToJson().ToString());
-
-            
 
                 Console.WriteLine(jsonData);
 
@@ -440,10 +447,15 @@ namespace ChatServer
                                    where um.recipientGroupId == openCorr.idCorr
                                    select um;
                 var qm = query_mess_g.OrderBy(q => q.createAt).ToList();
-               
-                userMessagesList = qm;
 
-                string jsonData =JsonConvert.SerializeObject(userMessagesList, Formatting.Indented);
+
+                foreach(var mess in qm)
+                {
+                    uMessList.uMList.Add(mess);
+                }
+                
+
+                string jsonData =JsonConvert.SerializeObject(uMessList, Formatting.Indented);
 
                 Console.WriteLine(jsonData);
 

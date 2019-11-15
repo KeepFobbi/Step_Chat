@@ -83,6 +83,7 @@
     <Compile Include="Json_Classes\MessageEvent.cs" />
     <Compile Include="Core\Program.cs" />
     <Compile Include="Json_Classes\OpenCorrespondence.cs" />
+    <Compile Include="Json_Classes\userMessagesList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\ServerObject.cs" />
     <Compile Include="Json_Classes\StartInfo.cs" />

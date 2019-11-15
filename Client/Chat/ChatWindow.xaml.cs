@@ -151,20 +151,20 @@ namespace Chat
             scrollViewerMess.ScrollToBottom();
         }
 
-        public void senderMessage(List<userMessages> mess, bool totalFlag)
+        public void senderMessage(userMessagesList mess, bool totalFlag)
         {
-            if (mess.Count > 1)
-                for (int i = 0; i < mess.Count; i++)
+            if (mess.uMList.Count > 1)
+                for (int i = 0; i < mess.uMList.Count; i++)
                 {
-                    if (mess[i].senderId == userId)
+                    if (mess.uMList[i].senderId == userId)
                     {
                         Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
                         {
                             UserControlMessageSent userControlMessageSent = new UserControlMessageSent();
-                            userControlMessageSent.changeText(mess[i].content);
-                            userControlMessageSent.Id = mess[i].messageId;
+                            userControlMessageSent.changeText(mess.uMList[i].content);
+                            userControlMessageSent.Id = mess.uMList[i].messageId;
                             userControlMessageSent.HorizontalAlignment = HorizontalAlignment.Right;
-                            userControlMessageSent.timeSent.Text = mess[i].createAt.ToString();
+                            userControlMessageSent.timeSent.Text = mess.uMList[i].createAt.ToString();
                             messagePlace.Children.Add(userControlMessageSent);
                             scrollViewerMess.ScrollToBottom();
                             messageTextBox.Focus();
@@ -175,9 +175,9 @@ namespace Chat
                         Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
                         {
                             UserControlMessageReceived userControlMessageReceived = new UserControlMessageReceived();
-                            userControlMessageReceived.timeRec.Text = mess[i].createAt.ToString();
-                            userControlMessageReceived.messageText.Text = mess[i].content;
-                            userControlMessageReceived.Id = mess[i].messageId;
+                            userControlMessageReceived.timeRec.Text = mess.uMList[i].createAt.ToString();
+                            userControlMessageReceived.messageText.Text = mess.uMList[i].content;
+                            userControlMessageReceived.Id = mess.uMList[i].messageId;
                             userControlMessageReceived.HorizontalAlignment = HorizontalAlignment.Left;
                             messagePlace.Children.Add(userControlMessageReceived);
                             scrollViewerMess.ScrollToBottom();
@@ -189,14 +189,14 @@ namespace Chat
             {
                 if (totalFlag)
                 {
-                    if (mess[0].recipientGroupId == Convert.ToInt32(selectedId))
+                    if (mess.uMList[0].recipientGroupId == Convert.ToInt32(selectedId))
                     {
                         Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
                         {
                             UserControlMessageReceived userControlMessageReceived = new UserControlMessageReceived();
-                            userControlMessageReceived.timeRec.Text = mess[0].createAt.ToString();
-                            userControlMessageReceived.messageText.Text = mess[0].content;
-                            userControlMessageReceived.Id = mess[0].messageId;
+                            userControlMessageReceived.timeRec.Text = mess.uMList[0].createAt.ToString();
+                            userControlMessageReceived.messageText.Text = mess.uMList[0].content;
+                            userControlMessageReceived.Id = mess.uMList[0].messageId;
                             userControlMessageReceived.HorizontalAlignment = HorizontalAlignment.Left;
                             messagePlace.Children.Add(userControlMessageReceived);
                             scrollViewerMess.ScrollToBottom();
@@ -209,7 +209,7 @@ namespace Chat
                         {
                             foreach (ListViewItem lvi in this.listViewI)
                             {
-                                if (lvi.Name == $"id{mess[0].recipientGroupId}")
+                                if (lvi.Name == $"id{mess.uMList[0].recipientGroupId}")
                                 {
                                     ListViewItem listViewItem = (ListViewItem)listViewI[listViewI.IndexOf(lvi)];
                                     if ((bool)listViewItem.Tag)
@@ -228,14 +228,14 @@ namespace Chat
                 }
                 else
                 {
-                    if (mess[0].recipientChatId == Convert.ToInt32(selectedId))
+                    if (mess.uMList[0].recipientChatId == Convert.ToInt32(selectedId))
                     {
                         Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
                         {
                             UserControlMessageReceived userControlMessageReceived = new UserControlMessageReceived();
-                            userControlMessageReceived.timeRec.Text = mess[0].createAt.ToString();
-                            userControlMessageReceived.messageText.Text = mess[0].content;
-                            userControlMessageReceived.Id = mess[0].messageId;
+                            userControlMessageReceived.timeRec.Text = mess.uMList[0].createAt.ToString();
+                            userControlMessageReceived.messageText.Text = mess.uMList[0].content;
+                            userControlMessageReceived.Id = mess.uMList[0].messageId;
                             userControlMessageReceived.HorizontalAlignment = HorizontalAlignment.Left;
                             messagePlace.Children.Add(userControlMessageReceived);
                             messageTextBox.Focus();
@@ -248,7 +248,7 @@ namespace Chat
                         {
                             foreach (ListViewItem lvi in this.listViewI)
                             {
-                                if (lvi.Name == $"id{mess[0].recipientChatId}")
+                                if (lvi.Name == $"id{mess.uMList[0].recipientChatId}")
                                 {
                                     ListViewItem listViewItem = (ListViewItem)listViewI[listViewI.IndexOf(lvi)];
                                     if (!(bool)listViewItem.Tag)

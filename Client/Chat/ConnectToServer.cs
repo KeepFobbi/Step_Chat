@@ -26,7 +26,7 @@ namespace Chat
 
         public delegate void receiveLogin(JSendAfterLogin mess);
         public static event receiveLogin receiveLoginEv;
-        public delegate void UserMess(List<userMessages> mess, bool totalFlag);
+        public delegate void UserMess(userMessagesList mess, bool totalFlag);
         public static event UserMess UserMessEvent;
         public delegate void SystemError(bool Connect);
         public static event SystemError SystemErrorConnectToServer;
@@ -79,7 +79,7 @@ namespace Chat
                         catch
                         {
                             Disconnect();
-                                SystemErrorConnectToServer(false);
+                            SystemErrorConnectToServer(false);
                             Thread.Sleep(1500);
                             continue;
                         }
@@ -93,11 +93,23 @@ namespace Chat
 
                 string textReceiveMessage = builder.ToString();
 
+
+
                 var jSendAfterLoginSchemaFrame = NJsonSchema.JsonSchema.FromType<JSendAfterLogin>();
-                //var openCorrespondenceSchemaFrame = NJsonSchema.JsonSchema.FromType<OpenCorrespondence>();
+
+                var userMessagesListSchemaFrame = NJsonSchema.JsonSchema.FromType<userMessagesList>();
+
+                var messageEventSchemaFrame = NJsonSchema.JsonSchema.FromType<MessageEvent>();
+
 
                 JSchema jSendAfterLoginSchema = JSchema.Parse(jSendAfterLoginSchemaFrame.ToJson().ToString());
-                // JSchema openCorrespondenceSchema = JSchema.Parse(openCorrespondenceSchemaFrame);
+
+                JSchema userMessagesListSchema = JSchema.Parse(userMessagesListSchemaFrame.ToJson().ToString());
+
+                JSchema messageEventSchema = JSchema.Parse(messageEventSchemaFrame.ToJson().ToString());
+
+
+
 
                 //var jSendAfterLoginSchemaFrame = NJsonSchema.JsonSchema.FromType<JSendAfterLogin>();
                 ////var openCorrespondenceSchemaFrame = NJsonSchema.JsonSchema.FromType<OpenCorrespondence>();
@@ -110,31 +122,37 @@ namespace Chat
                 //JSchema jSendAfterLoginSchema = JSchema.Parse(jSendAfterLoginSchemaFrame.ToJson().ToString());
 
                 //= JsonConvert.DeserializeObject<JObject>(textReceiveMessage);
-                    if (JObject.Parse(textReceiveMessage).IsValid(jSendAfterLoginSchema))
-                    {
-                        JSendAfterLogin jSend = JsonConvert.DeserializeObject<JSendAfterLogin>(textReceiveMessage);
-                        
-                        receiveLoginEv(jSend);
-                    }
-                    if (false)
-                    {
-                        
-                        var jSend = JsonConvert.DeserializeObject<List<userMessages>>(textReceiveMessage);
-                        UserMessEvent(jSend, true);
-                    }
-                    if (false)
-                    {
-                        textReceiveMessage = textReceiveMessage.Remove(0,4);
-                        var jSend = JsonConvert.DeserializeObject<List<userMessages>>(textReceiveMessage);
-                        UserMessEvent(jSend, false);
-                    }
-                
-                    else
-                    {
+
+                var message_Json = JObject.Parse(textReceiveMessage);
+
+                if (message_Json.IsValid(jSendAfterLoginSchema))
+                {
+                    JSendAfterLogin jSend = JsonConvert.DeserializeObject<JSendAfterLogin>(textReceiveMessage);
+
+                    receiveLoginEv(jSend);
+                }
+
+                else if (message_Json.IsValid(userMessagesListSchema))
+                {
+
+                    var jSend = JsonConvert.DeserializeObject<userMessagesList>(textReceiveMessage);
+                    UserMessEvent(jSend, true);
+                }
+
+                else if (message_Json.IsValid(messageEventSchema))
+                {
+
+                    var jSend = JsonConvert.DeserializeObject<userMessagesList>(textReceiveMessage);
+                    UserMessEvent(jSend, true);
+                }
+
+
+                else
+                {
                     SystemErrorConnectToServer(false);
                     Thread.Sleep(1500);
                     continue;
-                    }
+                }
             }
         }
 
@@ -151,7 +169,7 @@ namespace Chat
         public static void SendRequest(MessageEvent @event)
         {
             var jSend = JsonConvert.SerializeObject(@event, Formatting.Indented);
-            
+
 
             byte[] data = Encoding.Unicode.GetBytes(jSend.ToString());
             stream.Write(data, 0, data.Length);
