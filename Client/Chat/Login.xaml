@@ -5,16 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="Login" Height="400" Width="600" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen">
+        Title="Login" Height="400" Width="600" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen" Icon="Assets/Ico.ico">
 
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="241*"/>
-            <ColumnDefinition Width="359*"/>
+            <ColumnDefinition Width="24*"/>
+            <ColumnDefinition Width="335*"/>
         </Grid.ColumnDefinitions>
-        <Rectangle RadiusY="8" RadiusX="8" Fill="White" Grid.ColumnSpan="2"/>
-        <Image Source="Assets/welcome.jpeg" Margin="69.167,0,0,0" Stretch="UniformToFill" Grid.Column="1"/>
-        <Rectangle Margin="69.167,0,0,0" Grid.Column="1">
+        <Rectangle RadiusY="8" RadiusX="8" Fill="White" Grid.ColumnSpan="3"/>
+        <Image Source="Assets/welcome.jpeg" Margin="44.702,0,0,0" Stretch="UniformToFill" Grid.Column="2"/>
+        <Rectangle Margin="44.702,0,0,0" Grid.Column="2">
             <Rectangle.Fill>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#CC935E12" Offset="1"/>
@@ -23,7 +24,7 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <StackPanel Margin="20,10,290,10" Grid.ColumnSpan="2">
+        <StackPanel Margin="20,10,290,10" Grid.ColumnSpan="3">
             <Label Content="Login" FontFamily="Segoe UI Black" FontSize="24" Margin="0,10" VerticalAlignment="Top" HorizontalAlignment="Left"/>
             <StackPanel Orientation="Horizontal">
                 <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap" Foreground="#707070"><Run Text="У вас нет аккаунта?  "/></TextBlock>
@@ -56,12 +57,15 @@
                 </Button>
             </StackPanel>
         </StackPanel>
-        <StackPanel Margin="69.167,50,0,50" Grid.Column="1">
+        <StackPanel Margin="44.702,50,0,50" Grid.Column="2">
             <TextBlock Text="It-Step" Foreground="White" HorizontalAlignment="Center" FontSize="48" FontFamily="Champagne &amp; Limousines" FontWeight="Bold"/>
             <TextBlock Text="Сделай невозможное возможным, легкое легкое и стильное легкое" Foreground="White" HorizontalAlignment="Center" Width="280" FontSize="24" FontFamily="Champagne &amp; Limousines" TextWrapping="Wrap" TextAlignment="Center" Margin="0,50,0,0"/>
             <TextBlock Text="Feldenkrais" Foreground="White" FontSize="18" FontFamily="Champagne &amp; Limousines" TextWrapping="Wrap" TextAlignment="Right" Margin="10"/>
         </StackPanel>
-        <Button HorizontalAlignment="Right" Margin="0,1,0,367" Style="{StaticResource MaterialDesignFlatButton}" Click="Button_Click_2" Height="Auto" IsCancel="True" Grid.Column="1">
+        <StackPanel x:Name="ConnectStatus" Margin="-265,387,0,3" Grid.Column="2" Visibility="Collapsed">
+            <ProgressBar  IsIndeterminate="True" />
+        </StackPanel>
+        <Button HorizontalAlignment="Right" Margin="0,1,0,367" Style="{StaticResource MaterialDesignFlatButton}" Click="Button_Click_2" Height="Auto" IsCancel="True" Grid.Column="2">
             <materialDesign:PackIcon Kind="Close" Foreground="#FF3AB7B1"/>
         </Button>
     </Grid>
