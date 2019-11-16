@@ -1,0 +1,54 @@
+﻿<Window x:Class="Chat.MyUserInfo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Chat"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Height="470" Width="300" ResizeMode="CanResizeWithGrip"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" FontFamily="Dosis">
+    <Grid>
+        <StackPanel Grid.Column="2" Background="White" Grid.RowSpan="2">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Height="60">
+                <Button HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFlatButton}" IsCancel="True" Click="Button_Click">
+                    <materialDesign:PackIcon Kind="Close"/>
+                </Button>
+            </StackPanel>
+
+            <Border Width="150" Height="150" CornerRadius="80" BorderThickness="1" BorderBrush="Gray">
+                <Border.Background>
+                    <ImageBrush ImageSource="Assets/JustHuman.jpg" Stretch="UniformToFill"/>
+                </Border.Background>
+            </Border>
+
+            <TextBlock x:Name="chatName" Text="Aleksander Forster" HorizontalAlignment="Center" Margin="0 10 0 0" Foreground="Gray" FontSize="18" FontWeight="Bold"/>
+            <TextBlock x:Name="descriptionInfo" Text="Game Designer" FontSize="13" Foreground="Gray" HorizontalAlignment="Center" Opacity="0.8"/>
+            <TextBlock x:Name="aboutMe" Text="Shallow men believe in luck. Strong men believe in cause and effect." FontSize="8" Foreground="Gray" HorizontalAlignment="Center" Opacity="0.8"/>
+
+            <StackPanel Margin="20">
+                <StackPanel Orientation="Horizontal" Margin="0 3">
+                    <materialDesign:PackIcon Kind="User" Foreground="Gray"/>
+                    <TextBlock x:Name="Username" Text="São Paulo, Brazil" Margin="10 0" Foreground="Gray"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0 3">
+                    <materialDesign:PackIcon Kind="Cellphone" Foreground="Gray"/>
+                    <TextBlock x:Name="Phone" Text="(11) 95555-5555" Margin="10 0" Foreground="Gray"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0 3">
+                    <materialDesign:PackIcon Kind="Calendar" Foreground="Gray"/>
+                    <TextBlock x:Name="Birthday" Text="aforster@gmail.com" Margin="10 0" Foreground="Gray"/>
+                </StackPanel>
+            </StackPanel>
+
+            <TextBlock Text="MEDIA" Margin="20 0" Foreground="Gray"/>
+            <StackPanel Orientation="Horizontal" Margin="20 0">
+                <Border Width="50" Height="50" CornerRadius="30" Margin="5">
+                    <Border.Background>
+                        <ImageBrush ImageSource="Assets/JustHuman.jpg" Stretch="UniformToFill"/>
+                    </Border.Background>
+                </Border>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
