@@ -17,10 +17,10 @@ namespace Chat
     public static class ConnectToServer
     {
         //37.115.128.11  178.92.84.69
-        private const string host = "192.168.1.65";
+        private const string host = "178.92.84.69";
         //private const string host = "37.115.128.11";
         private const int port = 9090;
-        private const int V = 500000;
+        private const int V = 120000;
         static TcpClient client;
         static NetworkStream stream;
 
@@ -67,7 +67,7 @@ namespace Chat
                     {
                         try
                         {
-                                bytes = stream.Read(data, 0, data.Length);
+                            bytes = stream.Read(data, 0, data.Length);
                             try
                             {
                                 builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
@@ -95,57 +95,32 @@ namespace Chat
 
                 string textReceiveMessage = builder.ToString();
 
-                 
-
-
-
                 var jSendAfterLoginSchemaFrame = NJsonSchema.JsonSchema.FromType<JSendAfterLogin>();
-
                 var userMessagesListSchemaFrame = NJsonSchema.JsonSchema.FromType<userMessagesList>();
-
                 var messageEventSchemaFrame = NJsonSchema.JsonSchema.FromType<MessageEvent>();
 
 
                 JSchema jSendAfterLoginSchema = JSchema.Parse(jSendAfterLoginSchemaFrame.ToJson().ToString());
-
                 JSchema userMessagesListSchema = JSchema.Parse(userMessagesListSchemaFrame.ToJson().ToString());
-
                 JSchema messageEventSchema = JSchema.Parse(messageEventSchemaFrame.ToJson().ToString());
 
-
-
-
-                //var jSendAfterLoginSchemaFrame = NJsonSchema.JsonSchema.FromType<JSendAfterLogin>();
-                ////var openCorrespondenceSchemaFrame = NJsonSchema.JsonSchema.FromType<OpenCorrespondence>();
-
-                //JSchema jSendAfterLoginSchema = JSchema.Parse(jSendAfterLoginSchemaFrame.ToJson().ToString());
-
-                //var jSendAfterLoginSchemaFrame = NJsonSchema.JsonSchema.FromType<JSendAfterLogin>();
-                ////var openCorrespondenceSchemaFrame = NJsonSchema.JsonSchema.FromType<OpenCorrespondence>();
-
-                //JSchema jSendAfterLoginSchema = JSchema.Parse(jSendAfterLoginSchemaFrame.ToJson().ToString());
-
-                //= JsonConvert.DeserializeObject<JObject>(textReceiveMessage);
 
                 var message_Json = JObject.Parse(textReceiveMessage);
 
                 if (message_Json.IsValid(jSendAfterLoginSchema))
                 {
                     JSendAfterLogin jSend = JsonConvert.DeserializeObject<JSendAfterLogin>(textReceiveMessage);
-
                     receiveLoginEv(jSend);
                 }
 
                 else if (message_Json.IsValid(userMessagesListSchema))
                 {
-
                     var jSend = JsonConvert.DeserializeObject<userMessagesList>(textReceiveMessage);
                     UserMessListItem(jSend, true);
                 }
 
                 else if (message_Json.IsValid(messageEventSchema))
                 {
-
                     var jSend = JsonConvert.DeserializeObject<MessageEvent>(textReceiveMessage);
                     UserMessEvent(jSend, true);
                 }

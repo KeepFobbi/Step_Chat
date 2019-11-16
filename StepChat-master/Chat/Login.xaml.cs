@@ -17,7 +17,6 @@ namespace Chat
             loginBox.Text = "Fobbi";
             passwordBox.Password = "Fobbi";
             //Button_Click(null, null);
-
         }
 
         private void SystemError(bool Connect)

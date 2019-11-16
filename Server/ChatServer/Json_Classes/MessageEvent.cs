@@ -6,23 +6,16 @@ using System.Threading.Tasks;
 
 namespace ChatServer.Json_Classes
 {
-    public class MessageEvent
+    class MessageEvent
     {
 
         public string statusType;
         public string recipientTtype;
         public int recipientIid;
         public DateTime eventTime;
-        public Dictionary<int, string> messages = new Dictionary<int, string>();
+        public Dictionary<int, string> messages;
 
-        public MessageEvent(string statusType, string recipientTtype, string recipientIid, DateTime eventTime, int tempIdMess, string content)
-        {
-            this.statusType = statusType;
-            this.recipientTtype = recipientTtype;
-            this.recipientIid = Convert.ToInt32(recipientIid);
-            this.eventTime = eventTime;
-            this.messages.Add(tempIdMess, content);
-        }
+
 
     }
 }

@@ -44,7 +44,8 @@ namespace Chat
 
         private void MenuItem_Click_4(object sender, RoutedEventArgs e)
         {
-            TextBoxGrid.Visibility = Visibility.Visible;            
+            TextBoxGrid.Visibility = Visibility.Visible;
+            messageTextBox.Focus();
         }
 
         private void messageTextBox_PreviewKeyDown(object sender, KeyEventArgs e)

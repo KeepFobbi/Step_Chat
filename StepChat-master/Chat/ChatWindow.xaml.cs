@@ -15,6 +15,7 @@ namespace Chat
     public partial class ChatWindow : Window
     {
         public static string selectedId = null;
+        public static string MessEventText = null;
         bool selectedStatus;
         List<ListViewItem> listViewI = new List<ListViewItem>();
         int userId;
@@ -31,16 +32,6 @@ namespace Chat
             ConnectToServer.receiveLoginEv += addUserChat;
             ConnectToServer.SystemErrorConnectToServer += SystemError;
             messageTextBox.AcceptsReturn = true;
-            messageTextBox.Focus();
-        }
-
-        private void OpenContextMenu(FrameworkElement element)
-        {
-            if (element.ContextMenu != null)
-            {
-                element.ContextMenu.PlacementTarget = element;
-                element.ContextMenu.IsOpen = true;
-            }
         }
 
         private void SystemError(bool Connect)
@@ -63,16 +54,6 @@ namespace Chat
             }));
         }
 
-        public void ChangeMessTextBox(string messageTextBox)
-        {
-            this.messageTextBox.Focus();
-            this.messageTextBox.Text += messageTextBox;
-            Binding binding = new Binding();
-
-            binding.ElementName = "messageText"; // элемент-источник
-            binding.Path = new PropertyPath("Text"); // свойство элемента-источника
-            this.messageTextBox.SetBinding(TextBlock.TextProperty, binding); // установка привязки для элемента-приемника
-        }
 
         #region full
         public void addUserChat(JSendAfterLogin jSend)
@@ -437,6 +418,11 @@ namespace Chat
                 MessPanelGrid.Visibility = Visibility.Hidden;
                 MessPanel.Visibility = Visibility.Hidden;
             }
+        }
+
+        private void Button_Click_8(object sender, RoutedEventArgs e)
+        {
+            messageTextBox.Text = "qweqweqwe";
         }
     }
 }

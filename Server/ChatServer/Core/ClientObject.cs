@@ -42,7 +42,7 @@ namespace ChatServer
 
                 while (true)
                 {
-                    //JObject message_Json = null;
+
 
                     message = GetMessage();
 
@@ -73,8 +73,13 @@ namespace ChatServer
                                 Console.WriteLine(client.id + "-- idUser");
                             }
                             //   Image image = Image.FromFile(@"D:\Archive\Archive\StepChat\StepChat\Step_Chat\Server\ChatServer\Photos\1200px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg");
+<<<<<<< HEAD
                             // int[] ids_rec = new int[1];
                             int ids_rec = id;
+=======
+                            int[] ids_rec = new int[1];
+                            ids_rec[0] = id;
+>>>>>>> parent of 4699339... 2212
 
                             server.BroadcastMessage(СompileResponseAfterLogin(), ids_rec);
 
@@ -96,8 +101,8 @@ namespace ChatServer
                     {
 
                         OpenCorrespondence openCorrespondence = JsonConvert.DeserializeObject<OpenCorrespondence>(message_Json.ToString());
-                        //int[] ids_rec = new int[1];
-                        int ids_rec = id;
+                        int[] ids_rec = new int[1];
+                        ids_rec[0] = id;
                         server.BroadcastMessage(AfterOpenChat(openCorrespondence), ids_rec);
                     }
 
@@ -120,7 +125,7 @@ namespace ChatServer
 
         private string GetMessage()
         {
-            byte[] data = new byte[500000];
+            byte[] data = new byte[120000];
             StringBuilder builder = new StringBuilder();
             int bytes = 0;
             string message;
@@ -141,27 +146,33 @@ namespace ChatServer
             {
                 SendMessages(messageEvent);
             }
-            //else if (messageEvent.statusType == "Delete")
-            //{
-            //    List<MessageEvent> listDeleted = new List<MessageEvent>();
-            //    int[] ids_del = new int[messageEvent.messages.Count()];
+            else if (messageEvent.statusType == "Delete")
+            {
+                List<MessageEvent> listDeleted = new List<MessageEvent>();
+                int[] ids_del = new int[messageEvent.messages.Count()];
 
-            //    for (int i = 0; i < messageEvent.messages.Count(); i++)
-            //    {
-            //        int id_del = messageEvent.messages.Keys.ElementAt(i);
-            //        ids_del[i] = id_del;
+                for (int i = 0; i < messageEvent.messages.Count(); i++)
+                {
+                    int id_del = messageEvent.messages.Keys.ElementAt(i);
+                    ids_del[i] = id_del;
 
-            //        userMessages delMessage = db.userMessages.Where(um => um.messageId == id_del).FirstOrDefault();
+                    userMessages delMessage = db.userMessages.Where(um => um.messageId == id_del).FirstOrDefault();
 
-            //        listDeleted.Add(new MessageEvent(("sendRespounse", messageEvent.recipientTtype, messageEvent.recipientIid.ToString(), messageEvent.eventTime, -1, messageEvent.messages[-1])));
+                    listDeleted.Add(new MessageEvent
+                    {
+                        statusType = "respounseDelete",
+                        recipientTtype = messageEvent.recipientTtype,
+                        recipientIid = messageEvent.recipientIid,
+                        eventTime = messageEvent.eventTime,
+                        messages = messageEvent.messages
+                    });
 
-
-            //        db.userMessages.Remove(delMessage);
-            //    }
-            //    var jsonDeleted = JsonConvert.SerializeObject(listDeleted, Formatting.Indented);
-            //    server.BroadcastMessage(jsonDeleted, ids_del);
-            //    db.SaveChanges();
-            //}
+                    db.userMessages.Remove(delMessage);
+                }
+                var jsonDeleted = JsonConvert.SerializeObject(listDeleted, Formatting.Indented);
+                server.BroadcastMessage(jsonDeleted, ids_del);
+                db.SaveChanges();
+            }
             else if (messageEvent.statusType == "Update")
             {
                 int id_update = messageEvent.messages.Keys.ElementAt(0);
@@ -186,31 +197,31 @@ namespace ChatServer
             {
                 PrivateChats privateChatSend = db.PrivateChats.Where(pc => pc.chatId == messageEvent.recipientIid).FirstOrDefault();
 
-                //int[] ids_rec = new int[1];
-                int ids_rec = privateChatSend.user_1_Id == _id ? privateChatSend.user_2_Id : privateChatSend.user_1_Id;
+                int[] ids_rec = new int[1];
+                ids_rec[0] = privateChatSend.user_1_Id == _id ? privateChatSend.user_2_Id : privateChatSend.user_1_Id;
 
                 server.BroadcastMessage(SaveAfterReceiveMessage(messageEvent), ids_rec);
             }
 
-            //else if (messageEvent.recipientTtype == "group")
-            //{
-            //    GroupsMembers groupsMemberSend = db.GroupsMembers.Where(gm => gm.groupId == messageEvent.recipientIid).FirstOrDefault();
+            else if (messageEvent.recipientTtype == "group")
+            {
+                GroupsMembers groupsMemberSend = db.GroupsMembers.Where(gm => gm.groupId == messageEvent.recipientIid).FirstOrDefault();
 
-            //    var userArr = from u in db.Users
-            //                  join gm in db.GroupsMembers on u.userId equals gm.userId
-            //                  where gm.groupId == messageEvent.recipientIid && gm.userId != _id
-            //                  select u.userId;
+                var userArr = from u in db.Users
+                              join gm in db.GroupsMembers on u.userId equals gm.userId
+                              where gm.groupId == messageEvent.recipientIid && gm.userId != _id
+                              select u.userId;
 
-            //    int[] ids_rec = new int[userArr.Count()];
+                int[] ids_rec = new int[userArr.Count()];
 
-            //    for (int i = 0; i < userArr.Count(); i++)
-            //    {
-            //        ids_rec[i] = userArr.ElementAt(i);
-            //    }
+                for (int i = 0; i < userArr.Count(); i++)
+                {
+                    ids_rec[i] = userArr.ElementAt(i);
+                }
 
-            //    server.BroadcastMessage(SaveAfterReceiveMessage(messageEvent), ids_rec);
+                server.BroadcastMessage(SaveAfterReceiveMessage(messageEvent), ids_rec);
 
-            //}
+            }
         }
 
         private bool Authorization(LoginEvent login)
@@ -363,34 +374,61 @@ namespace ChatServer
 
         private string SaveAfterReceiveMessage(MessageEvent messageEvent)
         {
-            userMessages userMessage = new userMessages();
-            MessageEvent mEvent = new MessageEvent("sendRespounse", messageEvent.recipientTtype, messageEvent.recipientIid.ToString(), messageEvent.eventTime, -1, messageEvent.messages[-1]);
 
+
+            string jsonData;
 
             if (messageEvent.recipientTtype == "chat")
             {
 
+<<<<<<< HEAD
                 //  userMessage.recipientChatId = messageEvent.recipientIid;
 
                 userMessage.recipientChatId = messageEvent.recipientIid;
                 userMessage.createAt = messageEvent.eventTime;
                 userMessage.senderId = id;
                 userMessage.content = messageEvent.messages[-1];
+=======
 
+                userMessages userMessage = new userMessages
+                {
+>>>>>>> parent of 4699339... 2212
+
+                    recipientChatId = messageEvent.recipientIid,
+                    createAt = messageEvent.eventTime,
+                    senderId = Convert.ToInt32(this.id),
+                    content = messageEvent.messages[-1]
+                };
+
+                MessageEvent mEvent = new MessageEvent
+                {
+                    statusType = "sendRespounse",
+                    recipientTtype = messageEvent.recipientTtype,
+                    recipientIid = messageEvent.recipientIid,
+                    eventTime = messageEvent.eventTime,
+                    messages[-1] = messageEvent[-1];
+                };
+
+
+                jsonData = JsonConvert.SerializeObject(mEvent, Formatting.Indented);
+
+<<<<<<< HEAD
+
+=======
+                Console.WriteLine(jsonData);
                 db.userMessages.Add(userMessage);
                 db.SaveChanges();
-
-
-                string jsonData = JsonConvert.SerializeObject(mEvent, Formatting.Indented);
-
-                Console.WriteLine(jsonData);
-
-
+>>>>>>> parent of 4699339... 2212
 
                 return jsonData;
             }
             else
             {
+<<<<<<< HEAD
+=======
+                userMessages userMessage = new userMessages();
+                MessageEvent mEvent = new MessageEvent();
+>>>>>>> parent of 4699339... 2212
 
                 userMessage = new userMessages
                 {
@@ -400,9 +438,14 @@ namespace ChatServer
                     content = messageEvent.messages[-1]
                 };
 
+                mEvent.statusType = "sendRespounse";
+                mEvent.recipientTtype = messageEvent.recipientTtype;
+                mEvent.recipientIid = messageEvent.recipientIid;
+                mEvent.eventTime = messageEvent.eventTime;
+                mEvent.messages.Add(-1, messageEvent.messages[-1]);
 
 
-                string jsonData = JsonConvert.SerializeObject(mEvent, Formatting.Indented);
+                jsonData = JsonConvert.SerializeObject(mEvent, Formatting.Indented);
 
 
                 Console.WriteLine(jsonData);
