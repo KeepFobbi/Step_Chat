@@ -63,7 +63,7 @@ namespace ChatServer
         }
 
         // трансляция сообщения подключенным клиентам
-        protected internal void BroadcastMessage(string message, int ids_rec, Image image = null)
+        protected internal void BroadcastMessage(string message, int id_rec, Image image = null)
         {
             /*if(image!=null)
             {
@@ -105,7 +105,7 @@ namespace ChatServer
 
             for (int i = 0; i < clients.Count(); i++)
             {
-                if (clients[i].id==ids_rec)
+                if (clients[i].id==id_rec)
                 {
                     clients[i].Stream.Write(data, 0, data.Length); //передача данных
                 }

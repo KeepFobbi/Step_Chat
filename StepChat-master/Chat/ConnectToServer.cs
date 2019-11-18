@@ -17,7 +17,7 @@ namespace Chat
     public static class ConnectToServer
     {
         //37.115.128.11  178.92.84.69
-        private const string host = "192.168.1.65";
+        private const string host = "127.0.0.1";
         //private const string host = "37.115.128.11";
         private const int port = 9090;
         private const int V = 500000;
@@ -58,7 +58,7 @@ namespace Chat
         {
             while (true)
             {
-                byte[] data = new byte[120000];
+                byte[] data = new byte[10000000];
                 StringBuilder builder = new StringBuilder();
                 int bytes;
                 try
@@ -127,7 +127,7 @@ namespace Chat
 
                 //= JsonConvert.DeserializeObject<JObject>(textReceiveMessage);
 
-                var message_Json = JObject.Parse(textReceiveMessage);
+                    var message_Json = JObject.Parse(textReceiveMessage);
 
                 if (message_Json.IsValid(jSendAfterLoginSchema))
                 {
@@ -145,8 +145,13 @@ namespace Chat
 
                 else if (message_Json.IsValid(messageEventSchema))
                 {
-
+                    
                     var jSend = JsonConvert.DeserializeObject<MessageEvent>(textReceiveMessage);
+                    if(jSend.statusType== "sendRespounse")
+                    {
+                        OpenCorrespondence openCorrespondence = new OpenCorrespondence("chat", System.Convert.ToInt32(ChatWindow.selectedId));
+                        ConnectToServer.SendRequestOpenCorr(openCorrespondence);
+                    }
                     UserMessEvent(jSend, true);
                 }
 
@@ -170,24 +175,25 @@ namespace Chat
             stream.Write(data, 0, data.Length);
         }
 
-        public static void SendRequest(MessageEvent @event)
+        public static void SendRequestMessEv(MessageEvent @event)
         {
             var jSend = JsonConvert.SerializeObject(@event, Formatting.Indented);
 
+            var message_Json = JObject.Parse(jSend);
+             
+            byte[] data = Encoding.Unicode.GetBytes(message_Json.ToString());
+            stream.Write(data, 0, data.Length);
+        }
+
+        public static void SendRequestLogin(LoginEvent @event)
+        {
+            var jSend = JsonConvert.SerializeObject(@event, Formatting.Indented);
 
             byte[] data = Encoding.Unicode.GetBytes(jSend.ToString());
             stream.Write(data, 0, data.Length);
         }
 
-        public static void SendRequest(LoginEvent @event)
-        {
-            var jSend = JsonConvert.SerializeObject(@event, Formatting.Indented);
-
-            byte[] data = Encoding.Unicode.GetBytes(jSend.ToString());
-            stream.Write(data, 0, data.Length);
-        }
-
-        public static void SendRequest(OpenCorrespondence @event)
+        public static void SendRequestOpenCorr(OpenCorrespondence @event)
         {
             var jSend = JsonConvert.SerializeObject(@event, Formatting.Indented);
 

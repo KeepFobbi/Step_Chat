@@ -56,6 +56,8 @@ namespace ChatServer
 
                     var message_Json = JObject.Parse(message);
 
+                    Console.WriteLine(message_Json);
+
                     if (message_Json.IsValid(loginSchema))
                     {
 
@@ -105,10 +107,10 @@ namespace ChatServer
 
                 }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine(e.Message);
+            //}
             finally
             {
                 // в случае выхода из цикла закрываем ресурсы
@@ -120,7 +122,7 @@ namespace ChatServer
 
         private string GetMessage()
         {
-            byte[] data = new byte[500000];
+            byte[] data = new byte[10000000];
             StringBuilder builder = new StringBuilder();
             int bytes = 0;
             string message;
@@ -141,27 +143,30 @@ namespace ChatServer
             {
                 SendMessages(messageEvent);
             }
-            //else if (messageEvent.statusType == "Delete")
-            //{
-            //    List<MessageEvent> listDeleted = new List<MessageEvent>();
-            //    int[] ids_del = new int[messageEvent.messages.Count()];
+            else if (messageEvent.statusType == "Delete")
+            {
+                List<MessageEvent> listDeleted = new List<MessageEvent>();
+                // int[] ids_del = new int[messageEvent.messages.Count()];
+                int id_del = messageEvent.messages.Keys.FirstOrDefault();
 
-            //    for (int i = 0; i < messageEvent.messages.Count(); i++)
-            //    {
-            //        int id_del = messageEvent.messages.Keys.ElementAt(i);
-            //        ids_del[i] = id_del;
+                //for (int i = 0; i < messageEvent.messages.Count(); i++)messageEvent.messages[messageEvent.messages.Keys.FirstOrDefault()]
+                //{
 
-            //        userMessages delMessage = db.userMessages.Where(um => um.messageId == id_del).FirstOrDefault();
+                // ids_del[i] = id_del;
 
-            //        listDeleted.Add(new MessageEvent(("sendRespounse", messageEvent.recipientTtype, messageEvent.recipientIid.ToString(), messageEvent.eventTime, -1, messageEvent.messages[-1])));
+                userMessages delMessage = db.userMessages.Where(um => um.messageId == id_del).FirstOrDefault();
+                //"sendRespounse", messageEvent.recipientTtype, messageEvent.recipientIid.ToString(), messageEvent.eventTime, -1, messageEvent.messages[-1]
+                MessageEvent mEvent = new MessageEvent("sendRespounse", messageEvent.recipientTtype, messageEvent.recipientIid.ToString(), messageEvent.eventTime, -2, messageEvent.messages[messageEvent.messages.Keys.FirstOrDefault()]);
+                //listDeleted.Add(mEvent);
 
 
-            //        db.userMessages.Remove(delMessage);
-            //    }
-            //    var jsonDeleted = JsonConvert.SerializeObject(listDeleted, Formatting.Indented);
-            //    server.BroadcastMessage(jsonDeleted, ids_del);
-            //    db.SaveChanges();
-            //}
+                db.userMessages.Remove(delMessage);
+                // }
+                var jsonDeleted = JsonConvert.SerializeObject(listDeleted, Formatting.Indented);
+
+                //server.BroadcastMessage(jsonDeleted, id);
+                db.SaveChanges();
+            }
             else if (messageEvent.statusType == "Update")
             {
                 int id_update = messageEvent.messages.Keys.ElementAt(0);
@@ -239,6 +244,18 @@ namespace ChatServer
 
         private string СompileResponseAfterLogin()
         {
+
+            //userMessages userMessage = new userMessages();
+
+            //    userMessage.recipientChatId = 8;
+            //    userMessage.createAt = DateTime.Parse("2019-09-13 00:00:00");
+            //    userMessage.senderId = 6;
+            //    userMessage.content = "Здравствуй, Юра!";
+
+            //    db.userMessages.Add(userMessage);
+            //    db.SaveChanges();
+
+
             int _id = id;
 
             var query_groupsMembers = from g in db.Groups
@@ -246,7 +263,7 @@ namespace ChatServer
                                       where gm.userId == _id
                                       select gm;
 
-            var q_groupsMembersList = query_groupsMembers.ToList();
+            var q_groupsMembersList = query_groupsMembers.Distinct().ToList();
 
             var query_privateChats = from u in db.Users
                                      from pc in db.PrivateChats
@@ -254,17 +271,17 @@ namespace ChatServer
 
                                      select pc;
 
-            var q_privateChatsList = query_privateChats.ToList();
+            var q_privateChatsList = query_privateChats.Distinct().ToList();
 
 
             var query_usersInGroups = from u in db.Users
                                       from gm in db.GroupsMembers
-                                      from q_gml in q_groupsMembersList
+                                      from q_gml in query_groupsMembers
                                       where (gm.userId == u.userId && gm.groupId == q_gml.groupId)
 
                                       select u;
 
-            var q_usersInGroupList = query_usersInGroups.ToList();
+            var q_usersInGroupList = query_usersInGroups.Distinct().ToList();
 
             var query_usersInChats = from u in db.Users
                                      from pc in db.PrivateChats
@@ -272,7 +289,7 @@ namespace ChatServer
 
                                      select u;
 
-            var q_userInChatsList = query_usersInChats.ToList();
+            var q_userInChatsList = query_usersInChats.Distinct().ToList();
 
             var q_last_mess_g = from um in db.userMessages
                                 join mt in (
@@ -285,7 +302,7 @@ namespace ChatServer
                                            on new { um.recipientGroupId, um.createAt } equals new { mt.recipientGroupId, mt.createAt }
                                 select um;
 
-            var q_lastMessageJoint = q_last_mess_g.ToList();
+            var q_lastMessageJoint = q_last_mess_g.Distinct().ToList();
 
             var query_last_mess_c = from um in db.userMessages
                                     join mt in (
@@ -298,7 +315,7 @@ namespace ChatServer
                                     select um;
 
 
-            var q_lastMessagesInChatsList = query_last_mess_c.ToList();
+            var q_lastMessagesInChatsList = query_last_mess_c.Distinct().ToList();
 
             for (int i = 0; i < q_privateChatsList.Count(); i++)
             {
@@ -314,15 +331,13 @@ namespace ChatServer
                 q_lastMessageJoint.Add(mess);
             }
 
-            var query_groupMembersList = db.GroupsMembers;
 
-            var q_groupMembersList = query_groupMembersList.ToList();
 
             var query_groups = from g in db.Groups
 
                                select g;
 
-            var q_groupsList = query_groups.ToList();
+            var q_groupsList = query_groups.Distinct().ToList();
 
             foreach (var groupM in q_groupsMembersList)
             {
@@ -345,8 +360,8 @@ namespace ChatServer
                 StartInfo startInfo = new StartInfo
                 {
                     chatId = chat.chatId,
-                    groupName = q_userInChatsList.Find(u => u.userId == chat.user_1_Id || u.userId == chat.user_2_Id).userName,
-                    userName = q_userInChatsList.Find(u => u.userId == q_lastMessagesInChatsList.Find(m => m.recipientChatId == chat.chatId).senderId).userName,
+                    //  groupName = q_userInChatsList.Find(u => u.userId == (chat.user_1_Id == (q_lastMessagesInChatsList.Find(m=>m.recipientChatId==chat.chatId).senderId) ? chat.user_2_Id : chat.user_1_Id)).userName,
+                    userName = q_userInChatsList.Find(u => u.userId == (chat.user_1_Id == _id ? chat.user_2_Id : chat.user_1_Id)).userName,
                     content = q_lastMessagesInChatsList.Find(m => m.recipientChatId == chat.chatId).content
                 };
 
@@ -370,12 +385,13 @@ namespace ChatServer
             if (messageEvent.recipientTtype == "chat")
             {
 
-                //  userMessage.recipientChatId = messageEvent.recipientIid;
 
                 userMessage.recipientChatId = messageEvent.recipientIid;
                 userMessage.createAt = messageEvent.eventTime;
                 userMessage.senderId = id;
                 userMessage.content = messageEvent.messages[-1];
+
+
 
                 db.userMessages.Add(userMessage);
                 db.SaveChanges();

@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using Newtonsoft.Json;
+using System.Threading;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -30,10 +32,11 @@ namespace Chat
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
         {
             MessageEvent @event = new MessageEvent("Delete", "chat", ChatWindow.selectedId, System.DateTime.Now, Id, "");
-            ConnectToServer.SendRequest(@event);
-
+        
+            ConnectToServer.SendRequestMessEv(@event);
+            Thread.Sleep(150);
             OpenCorrespondence openCorrespondence = new OpenCorrespondence("chat", System.Convert.ToInt32(ChatWindow.selectedId));
-            ConnectToServer.SendRequest(openCorrespondence);
+            ConnectToServer.SendRequestOpenCorr(openCorrespondence);
         }
 
         private void MenuItem_Click_3(object sender, RoutedEventArgs e)

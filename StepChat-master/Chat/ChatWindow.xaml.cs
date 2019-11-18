@@ -136,13 +136,13 @@ namespace Chat
             if (selectedId != null && !selectedStatus)
             {
                 MessageEvent @event = new MessageEvent("Send", "chat", selectedId, DateTime.Now, -1, messageTextBox.Text);
-                ConnectToServer.SendRequest(@event);
+                ConnectToServer.SendRequestMessEv(@event);
             }
             //ConnectToServer.SendRequest($"send chat {selectedId} {DateTime.Now.ToShortTimeString()} {messageTextBox.Text}");
             else
             {
                 MessageEvent @event = new MessageEvent("Send", "group", selectedId, DateTime.Now, -1, messageTextBox.Text);
-                ConnectToServer.SendRequest(@event);
+                ConnectToServer.SendRequestMessEv(@event);
             }
             //ConnectToServer.SendRequest($"send group {selectedId} {DateTime.Now.ToShortTimeString()} {messageTextBox.Text}");
             userControlMessageSent.timeSent.Text = DateTime.Now.ToShortTimeString().ToString();
@@ -286,13 +286,13 @@ namespace Chat
             if ((bool)viewItem.Tag)
             {
                 OpenCorrespondence openCorrespondence = new OpenCorrespondence("group", Convert.ToInt32(selectedId));
-                ConnectToServer.SendRequest(openCorrespondence);
+                ConnectToServer.SendRequestOpenCorr(openCorrespondence);
             }
             //ConnectToServer.SendRequest($"group {selectedId}");
             else
             {
                 OpenCorrespondence openCorrespondence = new OpenCorrespondence("chat", Convert.ToInt32(selectedId));
-                ConnectToServer.SendRequest(openCorrespondence);
+                ConnectToServer.SendRequestOpenCorr(openCorrespondence);
             }
                 //ConnectToServer.SendRequest($"chat {selectedId}");
 
@@ -410,7 +410,7 @@ namespace Chat
         {
             UserControlMessageReceived userControlMessageReceived = new UserControlMessageReceived();
             MessageEvent @event = new MessageEvent("Delete", "chat", selectedId, DateTime.Now, 3030, "");
-            ConnectToServer.SendRequest(@event);
+            ConnectToServer.SendRequestMessEv(@event);
         }
 
         private void Button_Click_6(object sender, RoutedEventArgs e)

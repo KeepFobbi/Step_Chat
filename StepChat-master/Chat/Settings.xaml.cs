@@ -44,9 +44,9 @@ namespace Chat
 
         private void RadioButton_Checked_1(object sender, RoutedEventArgs e)
         {
-            AboutPanel.Visibility = Visibility.Visible;
-            ChangeProfileButton.Visibility = Visibility.Visible;
-            ChangePasswordButton.Visibility = Visibility.Visible;
+           // AboutPanel.Visibility = Visibility.Visible;
+           // ChangeProfileButton.Visibility = Visibility.Visible;
+           // ChangePasswordButton.Visibility = Visibility.Visible;
         }
     }
 }
