@@ -42,8 +42,6 @@ namespace ChatServer
 
                 while (true)
                 {
-                    //JObject message_Json = null;
-
                     message = GetMessage();
 
                     var loginSchemaFrame = NJsonSchema.JsonSchema.FromType<LoginEvent>();
@@ -80,18 +78,13 @@ namespace ChatServer
 
                             server.BroadcastMessage(СompileResponseAfterLogin(), ids_rec);
 
-
-
                         }
                     }
                     if (message_Json.IsValid(messageSchema))
                     {
-
-
                         MessageEvent messageEvent = JsonConvert.DeserializeObject<MessageEvent>(message_Json.ToString());
 
                         MessagesEventsFunc(messageEvent);
-
                     }
 
                     if (message_Json.IsValid(openCorrSchema))
@@ -103,14 +96,12 @@ namespace ChatServer
                         server.BroadcastMessage(AfterOpenChat(openCorrespondence), ids_rec);
                     }
 
-
-
                 }
             }
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.Message);
-            //}
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
             finally
             {
                 // в случае выхода из цикла закрываем ресурсы
@@ -245,17 +236,6 @@ namespace ChatServer
         private string СompileResponseAfterLogin()
         {
 
-            //userMessages userMessage = new userMessages();
-
-            //    userMessage.recipientChatId = 8;
-            //    userMessage.createAt = DateTime.Parse("2019-09-13 00:00:00");
-            //    userMessage.senderId = 6;
-            //    userMessage.content = "Здравствуй, Юра!";
-
-            //    db.userMessages.Add(userMessage);
-            //    db.SaveChanges();
-
-
             int _id = id;
 
             var query_groupsMembers = from g in db.Groups
@@ -379,8 +359,8 @@ namespace ChatServer
         private string SaveAfterReceiveMessage(MessageEvent messageEvent)
         {
             userMessages userMessage = new userMessages();
-            MessageEvent mEvent = new MessageEvent("sendRespounse", messageEvent.recipientTtype, messageEvent.recipientIid.ToString(), messageEvent.eventTime, -1, messageEvent.messages[-1]);
-
+           // MessageEvent mEvent = new MessageEvent("SendRespounse", messageEvent.recipientTtype, messageEvent.recipientIid.ToString(), messageEvent.eventTime, -1, messageEvent.messages[-1]);
+            userMessagesList userMessagesList = new userMessagesList();
 
             if (messageEvent.recipientTtype == "chat")
             {
@@ -391,16 +371,15 @@ namespace ChatServer
                 userMessage.senderId = id;
                 userMessage.content = messageEvent.messages[-1];
 
-
+                userMessagesList.uMList.Add(userMessage);
 
                 db.userMessages.Add(userMessage);
                 db.SaveChanges();
 
 
-                string jsonData = JsonConvert.SerializeObject(mEvent, Formatting.Indented);
+                string jsonData = JsonConvert.SerializeObject(userMessagesList, Formatting.Indented);
 
                 Console.WriteLine(jsonData);
-
 
 
                 return jsonData;
@@ -418,7 +397,7 @@ namespace ChatServer
 
 
 
-                string jsonData = JsonConvert.SerializeObject(mEvent, Formatting.Indented);
+                string jsonData = JsonConvert.SerializeObject(userMessage, Formatting.Indented);
 
 
                 Console.WriteLine(jsonData);

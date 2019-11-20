@@ -137,12 +137,20 @@ namespace Chat
             {
                 MessageEvent @event = new MessageEvent("Send", "chat", selectedId, DateTime.Now, -1, messageTextBox.Text);
                 ConnectToServer.SendRequestMessEv(@event);
+
+                Thread.Sleep(150);
+                OpenCorrespondence openCorrespondence = new OpenCorrespondence("chat", System.Convert.ToInt32(ChatWindow.selectedId));
+                ConnectToServer.SendRequestOpenCorr(openCorrespondence);
             }
             //ConnectToServer.SendRequest($"send chat {selectedId} {DateTime.Now.ToShortTimeString()} {messageTextBox.Text}");
             else
             {
                 MessageEvent @event = new MessageEvent("Send", "group", selectedId, DateTime.Now, -1, messageTextBox.Text);
                 ConnectToServer.SendRequestMessEv(@event);
+
+                Thread.Sleep(150);
+                OpenCorrespondence openCorrespondence = new OpenCorrespondence("chat", System.Convert.ToInt32(ChatWindow.selectedId));
+                ConnectToServer.SendRequestOpenCorr(openCorrespondence);
             }
             //ConnectToServer.SendRequest($"send group {selectedId} {DateTime.Now.ToShortTimeString()} {messageTextBox.Text}");
             userControlMessageSent.timeSent.Text = DateTime.Now.ToShortTimeString().ToString();

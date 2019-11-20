@@ -147,11 +147,7 @@ namespace Chat
                 {
                     
                     var jSend = JsonConvert.DeserializeObject<MessageEvent>(textReceiveMessage);
-                    if(jSend.statusType== "sendRespounse")
-                    {
-                        OpenCorrespondence openCorrespondence = new OpenCorrespondence("chat", System.Convert.ToInt32(ChatWindow.selectedId));
-                        ConnectToServer.SendRequestOpenCorr(openCorrespondence);
-                    }
+          
                     UserMessEvent(jSend, true);
                 }
 
@@ -179,9 +175,9 @@ namespace Chat
         {
             var jSend = JsonConvert.SerializeObject(@event, Formatting.Indented);
 
-            var message_Json = JObject.Parse(jSend);
+           // var message_Json = JObject.Parse(jSend);
              
-            byte[] data = Encoding.Unicode.GetBytes(message_Json.ToString());
+            byte[] data = Encoding.Unicode.GetBytes(jSend.ToString());
             stream.Write(data, 0, data.Length);
         }
 

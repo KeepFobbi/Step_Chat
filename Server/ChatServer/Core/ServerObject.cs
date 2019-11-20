@@ -19,8 +19,6 @@ namespace ChatServer
         static TcpListener tcpListener; // сервер для прослушивания
         public List<ClientObject> clients = new List<ClientObject>(); // все подключения
 
-        //public Dictionary<int, string[]> countries = new Dictionary<int, string[]>(5);
-
         protected internal void AddConnection(ClientObject clientObject)
         {
             clients.Add(clientObject);
@@ -65,41 +63,7 @@ namespace ChatServer
         // трансляция сообщения подключенным клиентам
         protected internal void BroadcastMessage(string message, int id_rec, Image image = null)
         {
-            /*if(image!=null)
-            {
-                //BinaryFormatter formatter = new BinaryFormatter();
-
-                var ms = new MemoryStream();
-                    image.Save(ms, image.RawFormat);
-                     byte[] data_ = ms.ToArray();
-                    ms.Dispose();
-                    ms.Close();
-                using (var db = new  UserContext())
-                {
-                    var result = db.Users.SingleOrDefault(u => u.userId == 2);
-                    if (result != null)
-                    {
-                        result.userImage = data_;
-                        db.SaveChanges();
-                    }
-                }
-
-                for (int i = 0; i < clients.Count; i++)
-                {
-                    if (clients[i].id == id) 
-                    {
-                        //image.Save(clients[i].Stream, image.RawFormat);
-                        // formatter.Serialize(clients[i].Stream, image);
-                        //clients[i].Stream.Write()
-
-                        // BinaryWriter binaryWriter = new BinaryWriter(clients[i].Stream, Encoding.Unicode);
-
-                        clients[i].Stream.Write(data_, 0, data_.Length); //передача данных
-
-                    }
-                }
-            }*/
-
+           
 
             byte[] data = Encoding.Unicode.GetBytes(message);
 
