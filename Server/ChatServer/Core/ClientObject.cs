@@ -113,18 +113,21 @@ namespace ChatServer
 
         private string GetMessage()
         {
-            byte[] data = new byte[10000000];
+          //  byte[] data = new byte[10000000];
             StringBuilder builder = new StringBuilder();
-            int bytes = 0;
+            BinaryReader binaryReader = new BinaryReader(Stream, Encoding.Unicode);
+            // int bytes = 0;
             string message;
-            do
-            {
-                bytes = Stream.Read(data, 0, data.Length);
-                builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
-                message = builder.ToString();
-            }
-            while (Stream.DataAvailable);
+            //do
+            //{
+            //    bytes = Stream.Read(data, 0, data.Length);
+            //    builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
+            //    message = builder.ToString();
+            //}
+            //while (Stream.DataAvailable);
 
+            builder.Append(binaryReader.ReadString());
+            message = builder.ToString();
             return message;
         }
 

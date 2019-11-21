@@ -65,13 +65,24 @@ namespace ChatServer
         {
            
 
-            byte[] data = Encoding.Unicode.GetBytes(message);
+           // byte[] data = Encoding.Unicode.GetBytes(message);
+
+           // int byte_count = data.Count();
+            //byte[] data_count = Encoding.Unicode.GetBytes(byte_count.ToString());
+
+            
+
 
             for (int i = 0; i < clients.Count(); i++)
             {
                 if (clients[i].id==id_rec)
                 {
-                    clients[i].Stream.Write(data, 0, data.Length); //передача данных
+                    BinaryWriter binaryWriter = new BinaryWriter(clients[i].Stream, Encoding.Unicode);
+                  //  binaryWriter.Write(byte_count);
+                    binaryWriter.Write(message);
+              
+                    //clients[i].Stream.Write(data_count, 0, data_count.Length); //передача данных
+                    //clients[i].Stream.Write(data, 0, data.Length);
                 }
             }
 
