@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Threading;
 using NJsonSchema;
 using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace Chat
 {
@@ -58,24 +59,24 @@ namespace Chat
         {
             while (true)
             {
-                byte[] data = new byte[10000000];
+               // byte[] data = new byte[10000000];
                 StringBuilder builder = new StringBuilder();
+                BinaryReader binaryReader = new BinaryReader(stream, Encoding.Unicode);
                 int bytes;
                 try
                 {
-                    do
-                    {
+                    
                         try
                         {
-                                bytes = stream.Read(data, 0, data.Length);
+                          
                             try
                             {
-                                builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
+                                builder.Append(binaryReader.ReadString());
                             }
                             catch
                             {
-                                Image image = (Bitmap)((new ImageConverter()).ConvertFrom(data));
-                                image.Save(@"D:\photo_test.jpg");
+                                //Image image = (Bitmap)((new ImageConverter()).ConvertFrom(data));
+                                //image.Save(@"D:\photo_test.jpg");
                             }
                         }
                         catch
@@ -85,8 +86,7 @@ namespace Chat
                             Thread.Sleep(1500);
                             continue;
                         }
-                    }
-                    while (stream.DataAvailable);
+                  
                 }
                 catch
                 {
@@ -167,34 +167,34 @@ namespace Chat
             var LoginEvent = @event;
             string jSend = JsonConvert.SerializeObject(LoginEvent, Formatting.Indented);
 
-            byte[] data = Encoding.Unicode.GetBytes(jSend.ToString());
-            stream.Write(data, 0, data.Length);
+            BinaryWriter binaryWriter = new BinaryWriter(stream, Encoding.Unicode);
+            binaryWriter.Write(jSend);
         }
 
         public static void SendRequestMessEv(MessageEvent @event)
         {
             var jSend = JsonConvert.SerializeObject(@event, Formatting.Indented);
 
-           // var message_Json = JObject.Parse(jSend);
-             
-            byte[] data = Encoding.Unicode.GetBytes(jSend.ToString());
-            stream.Write(data, 0, data.Length);
+            // var message_Json = JObject.Parse(jSend);
+
+            BinaryWriter binaryWriter = new BinaryWriter(stream, Encoding.Unicode);
+            binaryWriter.Write(jSend);
         }
 
         public static void SendRequestLogin(LoginEvent @event)
         {
             var jSend = JsonConvert.SerializeObject(@event, Formatting.Indented);
 
-            byte[] data = Encoding.Unicode.GetBytes(jSend.ToString());
-            stream.Write(data, 0, data.Length);
+            BinaryWriter binaryWriter = new BinaryWriter(stream, Encoding.Unicode);
+            binaryWriter.Write(jSend);
         }
 
         public static void SendRequestOpenCorr(OpenCorrespondence @event)
         {
             var jSend = JsonConvert.SerializeObject(@event, Formatting.Indented);
 
-            byte[] data = Encoding.Unicode.GetBytes(jSend.ToString());
-            stream.Write(data, 0, data.Length);
+            BinaryWriter binaryWriter = new BinaryWriter(stream, Encoding.Unicode);
+            binaryWriter.Write(jSend);
         }
 
         public static void Disconnect()
