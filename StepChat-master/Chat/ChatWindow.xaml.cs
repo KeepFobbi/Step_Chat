@@ -29,38 +29,8 @@ namespace Chat
             InitializeComponent();
             ConnectToServer.UserMessListItem += senderMessage;
             ConnectToServer.receiveLoginEv += addUserChat;
-            ConnectToServer.SystemErrorConnectToServer += SystemError;
             messageTextBox.AcceptsReturn = true;
             messageTextBox.Focus();
-        }
-
-        private void OpenContextMenu(FrameworkElement element)
-        {
-            if (element.ContextMenu != null)
-            {
-                element.ContextMenu.PlacementTarget = element;
-                element.ContextMenu.IsOpen = true;
-            }
-        }
-
-        private void SystemError(bool Connect)
-        {
-            Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
-            {
-            //ServerNotFaund notFaund = new ServerNotFaund();
-            if (!Connect)
-            {
-                //ConnectToServer.createStream();
-                //ConnectToServer.SendRequest();
-                    //ServerError error = new ServerError();
-                   // error.Show();
-                //notFaund.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                //notFaund.Visibility = Visibility.Collapsed;
-                }
-            }));
         }
 
         public void ChangeMessTextBox(string messageTextBox)
@@ -137,20 +107,12 @@ namespace Chat
             {
                 MessageEvent @event = new MessageEvent("Send", "chat", selectedId, DateTime.Now, -1, messageTextBox.Text);
                 ConnectToServer.SendRequestMessEv(@event);
-
-                Thread.Sleep(150);
-                OpenCorrespondence openCorrespondence = new OpenCorrespondence("chat", System.Convert.ToInt32(ChatWindow.selectedId));
-                ConnectToServer.SendRequestOpenCorr(openCorrespondence);
             }
             //ConnectToServer.SendRequest($"send chat {selectedId} {DateTime.Now.ToShortTimeString()} {messageTextBox.Text}");
             else
             {
                 MessageEvent @event = new MessageEvent("Send", "group", selectedId, DateTime.Now, -1, messageTextBox.Text);
                 ConnectToServer.SendRequestMessEv(@event);
-
-                Thread.Sleep(150);
-                OpenCorrespondence openCorrespondence = new OpenCorrespondence("chat", System.Convert.ToInt32(ChatWindow.selectedId));
-                ConnectToServer.SendRequestOpenCorr(openCorrespondence);
             }
             //ConnectToServer.SendRequest($"send group {selectedId} {DateTime.Now.ToShortTimeString()} {messageTextBox.Text}");
             userControlMessageSent.timeSent.Text = DateTime.Now.ToShortTimeString().ToString();
@@ -179,7 +141,7 @@ namespace Chat
                         }));
                     }
                     else
-                    {
+                    {   
                         Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
                         {
                             UserControlMessageReceived userControlMessageReceived = new UserControlMessageReceived();

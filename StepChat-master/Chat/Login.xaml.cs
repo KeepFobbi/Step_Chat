@@ -11,8 +11,6 @@ namespace Chat
         public Login()
         {
             InitializeComponent();
-            ConnectToServer.receiveLoginEv += createMainWindow;
-            ConnectToServer.SystemErrorConnectToServer += SystemError;
 
             loginBox.Text = "Fobbi";
             passwordBox.Password = "Fobbi";
@@ -20,24 +18,19 @@ namespace Chat
 
         }
 
-        private void SystemError(bool Connect)
-        {
-            Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
-            {
-                //ServerNotFaund notFaund = new ServerNotFaund();
-                //this.Content = new ServerNotFaund();
-                //notFaund.Visibility = Visibility.Visible;
-            }));
-        }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             ConnectStatus.Visibility = Visibility.Visible;
-            ConnectToServer.createStream();
+
+            Thread receiveThread = new Thread(new ThreadStart(ConnectToServer.createStream));
+            receiveThread.Start();
+
+            ConnectToServer.receiveLoginEv += createMainWindow;
             ConnectToServer.loginToServer = loginBox.Text;
             ConnectToServer.passwordToServer = passwordBox.Password.ToString();
             ConnectToServer.SendRequest();
-        }                          
+        }
+
         ChatWindow chatWindow = new ChatWindow();
         private void createMainWindow(JSendAfterLogin jSend)
         {

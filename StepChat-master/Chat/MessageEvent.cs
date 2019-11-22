@@ -6,8 +6,8 @@ namespace Chat
     public class MessageEvent
     {
         public string statusType;
-        public string recipientTtype; 
-        public int recipientIid; 
+        public string recipientTtype;  // чат или группа
+        public int recipientIid; // Получатель
         public DateTime eventTime;
         public Dictionary<int, string> messages = new Dictionary<int, string>();
 
