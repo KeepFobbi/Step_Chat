@@ -17,7 +17,7 @@ namespace Chat
         public static string selectedId = null;
         bool selectedStatus;
         List<ListViewItem> listViewI = new List<ListViewItem>();
-        int userId;
+        public static int userId;
         string MyUserName;
         string userPassword;
         string userFio;
@@ -105,13 +105,13 @@ namespace Chat
             userControlMessageSent.HorizontalAlignment = HorizontalAlignment.Right;
             if (selectedId != null && !selectedStatus)
             {
-                MessageEvent @event = new MessageEvent("Send", "chat", selectedId, DateTime.Now, -1, messageTextBox.Text);
+                MessageEvent @event = new MessageEvent("Send", "chat", selectedId, userId, DateTime.Now, -1, messageTextBox.Text);
                 ConnectToServer.SendRequestMessEv(@event);
             }
             //ConnectToServer.SendRequest($"send chat {selectedId} {DateTime.Now.ToShortTimeString()} {messageTextBox.Text}");
             else
             {
-                MessageEvent @event = new MessageEvent("Send", "group", selectedId, DateTime.Now, -1, messageTextBox.Text);
+                MessageEvent @event = new MessageEvent("Send", "group", selectedId, userId, DateTime.Now, -1, messageTextBox.Text);
                 ConnectToServer.SendRequestMessEv(@event);
             }
             //ConnectToServer.SendRequest($"send group {selectedId} {DateTime.Now.ToShortTimeString()} {messageTextBox.Text}");
@@ -237,6 +237,8 @@ namespace Chat
             }
         }
 
+        
+
         private void ListViewItem_1_Selected(object sender, RoutedEventArgs e)
         {
             this.Width = 1080;
@@ -244,6 +246,7 @@ namespace Chat
             MessPanelGrid.Visibility = Visibility.Visible;
             MessPanel.Visibility = Visibility.Visible;
             messagePlace.Children.Clear();
+
             object obj = e.Source;
             ListViewItem viewItem = (ListViewItem)obj;
             TextBlock block = (TextBlock)viewItem.FindName("userName");
@@ -378,9 +381,7 @@ namespace Chat
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
-            UserControlMessageReceived userControlMessageReceived = new UserControlMessageReceived();
-            MessageEvent @event = new MessageEvent("Delete", "chat", selectedId, DateTime.Now, 3030, "");
-            ConnectToServer.SendRequestMessEv(@event);
+            
         }
 
         private void Button_Click_6(object sender, RoutedEventArgs e)

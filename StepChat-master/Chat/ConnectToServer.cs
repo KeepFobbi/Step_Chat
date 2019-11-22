@@ -22,11 +22,11 @@ namespace Chat
         //private const string host = "37.115.128.11";
         private const int port = 9090;
         static TcpClient client;
-        static NetworkStream stream;
+        public static NetworkStream stream;
 
         public delegate void receiveLogin(JSendAfterLogin mess);
         public static event receiveLogin receiveLoginEv;
-        public delegate void UserMess(MessageEvent mess, bool totalFlag);
+        public delegate void UserMess(MessageEvent mess);
         public static event UserMess UserMessEvent;
         public delegate void UserMessList(userMessagesList mess, bool totalFlag);
         public static event UserMessList UserMessListItem;
@@ -96,7 +96,7 @@ namespace Chat
                 else if (message_Json.IsValid(messageEventSchema))
                 {
                     var jSend = JsonConvert.DeserializeObject<MessageEvent>(textReceiveMessage);
-                    UserMessEvent(jSend, true);
+                    UserMessEvent(jSend);
                 }
                 else continue;
             }

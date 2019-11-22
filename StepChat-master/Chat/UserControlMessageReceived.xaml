@@ -10,7 +10,6 @@
         <Grid.ContextMenu>
             <ContextMenu x:Name="SelContextMenu">
                 <MenuItem Header="Выбрать" Click="MenuItem_Click_1"/>
-                <MenuItem Header="Удалить" Click="MenuItem_Click_2"/>
                 <MenuItem Header="Переслать" Click="MenuItem_Click_3"/>
             </ContextMenu>
         </Grid.ContextMenu>

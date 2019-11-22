@@ -13,22 +13,28 @@ namespace Chat
         public UserControlMessageReceived()
         {
             InitializeComponent();
+            ConnectToServer.UserMessEvent += MessEventCh;
+        }
+
+        public void MessEventCh(MessageEvent mess)
+        {
+            switch (mess.statusType)
+            {
+                case "DeleteRespounse":
+                    if (mess.messages.Count == 1 && mess.messages.ContainsKey(Id))
+                        this.Visibility = Visibility.Collapsed;
+                    break;
+                case "UpdateRespounse":
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
             //TextBlock tbl = (TextBlock) SOMETHING???;
             //MessageBox.Show(tbl.Text);
-        }
-
-        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
-        {
-            MessageEvent @event = new MessageEvent("Delete", "chat", ChatWindow.selectedId, System.DateTime.Now, Id, "");
-           
-            ConnectToServer.SendRequestMessEv(@event);
-            Thread.Sleep(150);
-            OpenCorrespondence openCorrespondence = new OpenCorrespondence("chat", System.Convert.ToInt32(ChatWindow.selectedId));
-            ConnectToServer.SendRequestOpenCorr(openCorrespondence);
         }
 
         private void MenuItem_Click_3(object sender, RoutedEventArgs e)

@@ -31,12 +31,14 @@ namespace Chat
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
         {
-            MessageEvent @event = new MessageEvent("Delete", "chat", ChatWindow.selectedId, System.DateTime.Now, Id, "");
+            MessageEvent @event = new MessageEvent("Delete", "chat", ChatWindow.selectedId, ChatWindow.userId, System.DateTime.Now, Id, "");
         
             ConnectToServer.SendRequestMessEv(@event);
-            Thread.Sleep(150);
-            OpenCorrespondence openCorrespondence = new OpenCorrespondence("chat", System.Convert.ToInt32(ChatWindow.selectedId));
-            ConnectToServer.SendRequestOpenCorr(openCorrespondence);
+
+            Visibility = Visibility.Collapsed;
+            //Thread.Sleep(150);
+            //OpenCorrespondence openCorrespondence = new OpenCorrespondence("chat", System.Convert.ToInt32(ChatWindow.selectedId));
+            //ConnectToServer.SendRequestOpenCorr(openCorrespondence);
         }
 
         private void MenuItem_Click_3(object sender, RoutedEventArgs e)

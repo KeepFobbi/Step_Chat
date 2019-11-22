@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
 using System.Threading;
+using System.Windows.Input;
 
 namespace Chat
 {
@@ -15,7 +16,6 @@ namespace Chat
             loginBox.Text = "Fobbi";
             passwordBox.Password = "Fobbi";
             //Button_Click(null, null);
-
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -24,7 +24,6 @@ namespace Chat
 
             Thread receiveThread = new Thread(new ThreadStart(ConnectToServer.createStream));
             receiveThread.Start();
-
             ConnectToServer.receiveLoginEv += createMainWindow;
             ConnectToServer.loginToServer = loginBox.Text;
             ConnectToServer.passwordToServer = passwordBox.Password.ToString();
@@ -66,6 +65,12 @@ namespace Chat
             passwordBox.Foreground = Brushes.Gray;
             passwordBox.Background = Brushes.White;
             loginBox.Clear();
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
         }
     }
 }
