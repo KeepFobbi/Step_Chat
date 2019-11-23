@@ -26,7 +26,6 @@ namespace ChatServer
 
         public ClientObject(TcpClient tcpClient, ServerObject serverObject)
         {
-            id = 0;
             client = tcpClient;
             server = serverObject;
             serverObject.AddConnection(this);
@@ -63,7 +62,7 @@ namespace ChatServer
 
                         bool chek = Authorization(loginEvent);
 
-                        if (chek)
+                        if (chek==true)
                         {
                             Console.WriteLine(loginEvent.login + " вошел в чат");
 
@@ -72,7 +71,11 @@ namespace ChatServer
                                 Console.WriteLine(client.id + "-- idUser");
                             }
 
-                            server.BroadcastMessage(СompileResponseAfterLogin(), new int[1] { id }, "resounse");
+                            server.BroadcastMessage(СompileResponseAfterLogin(), new int[1] { id }, "respounse");
+                        }
+                        else if(chek==false)
+                        {
+                            server.RemoveConnection(id);
                         }
                     }
                     if (message_Json.IsValid(messageSchema))
@@ -287,9 +290,19 @@ namespace ChatServer
             var _login = login.login;
             var _password = login.password;
 
-            var query = from e in db.Users where (e.userName == _login && e.userPassword == _password) select e;
-
+            var query = from u in db.Users where (u.userName == _login && u.userPassword == _password) select u;
+       
             var user = query.FirstOrDefault();
+           
+            var q_clients_list = from cl in server.clients
+                               select cl;
+
+            var clientsList = q_clients_list.ToList();
+
+            //if(clientsList.Contains(id))
+            //{
+            //    return false;
+            //}
 
             jSendAfterLogin.User = user;
 

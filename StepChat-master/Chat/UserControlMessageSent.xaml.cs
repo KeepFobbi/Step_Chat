@@ -55,6 +55,8 @@ namespace Chat
 
                     MessageEvent @event = new MessageEvent("UpdateRespounse", "chat", ChatWindow.selectedId,
                         ChatWindow.userId, System.DateTime.Now, Id, messageText.Text);
+
+                    ConnectToServer.SendRequestMessEv(@event);
                 }
             }
         }

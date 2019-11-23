@@ -60,11 +60,13 @@ namespace ChatServer
             }
         }
 
-        // трансляция сообщения подключенным клиентам
+      
         protected internal void BroadcastMessage(string message, int[] id_rec, string sType)
         {
-            if (sType == "chat" || sType== "resounse")
+            if (sType == "chat" || sType== "respounse")
             {
+
+
                 for (int i = 0; i < clients.Count(); i++)
                 {
                     if (clients[i].id == id_rec[0])
