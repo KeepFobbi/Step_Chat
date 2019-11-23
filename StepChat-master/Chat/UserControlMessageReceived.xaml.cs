@@ -1,8 +1,11 @@
 ﻿using Newtonsoft.Json;
+using System;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace Chat
 {
@@ -18,17 +21,22 @@ namespace Chat
 
         public void MessEventCh(MessageEvent mess)
         {
-            switch (mess.statusType)
+            Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
             {
-                case "DeleteRespounse":
-                    if (mess.messages.Count == 1 && mess.messages.ContainsKey(Id))
-                        this.Visibility = Visibility.Collapsed;
-                    break;
-                case "UpdateRespounse":
-                    break;
-                default:
-                    break;
-            }
+                switch (mess.statusType)
+                {
+                    case "DeleteRespounse":
+                        if (mess.messages.Count == 1 && mess.messages.ContainsKey(Id))
+                            this.Visibility = Visibility.Collapsed;
+                        break;
+                    case "UpdateRespounse":
+                        if (mess.messages.ContainsKey(Id))
+                            messageText.Text = mess.messages.Values.ElementAt(0);
+                        break;
+                    default:
+                        break;
+                }
+            }));
         }
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)

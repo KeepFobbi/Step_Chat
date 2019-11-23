@@ -121,7 +121,7 @@ namespace Chat
             scrollViewerMess.ScrollToBottom();
         }
 
-        public void senderMessage(userMessagesList mess, bool totalFlag)
+        public void senderMessage(userMessagesList mess)
         {
             if (mess.uMList.Count > 1)
                 for (int i = 0; i < mess.uMList.Count; i++)
@@ -141,7 +141,7 @@ namespace Chat
                         }));
                     }
                     else
-                    {   
+                    {
                         Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
                         {
                             UserControlMessageReceived userControlMessageReceived = new UserControlMessageReceived();
@@ -157,87 +157,82 @@ namespace Chat
                 }
             else
             {
-                if (totalFlag)
+                if (mess.uMList[0].recipientGroupId == Convert.ToInt32(selectedId))
                 {
-                    if (mess.uMList[0].recipientGroupId == Convert.ToInt32(selectedId))
+                    Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
                     {
-                        Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
-                        {
-                            UserControlMessageReceived userControlMessageReceived = new UserControlMessageReceived();
-                            userControlMessageReceived.timeRec.Text = mess.uMList[0].createAt.ToString();
-                            userControlMessageReceived.messageText.Text = mess.uMList[0].content;
-                            userControlMessageReceived.Id = mess.uMList[0].messageId;
-                            userControlMessageReceived.HorizontalAlignment = HorizontalAlignment.Left;
-                            messagePlace.Children.Add(userControlMessageReceived);
-                            scrollViewerMess.ScrollToBottom();
-                            messageTextBox.Focus();
-                        }));
-                    }
-                    else
-                    {
-                        Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
-                        {
-                            foreach (ListViewItem lvi in this.listViewI)
-                            {
-                                if (lvi.Name == $"id{mess.uMList[0].recipientGroupId}")
-                                {
-                                    ListViewItem listViewItem = (ListViewItem)listViewI[listViewI.IndexOf(lvi)];
-                                    if ((bool)listViewItem.Tag)
-                                    {
-                                        Border border = (Border)listViewItem.FindName("messageBorderCount");
-                                        TextBlock block = (TextBlock)listViewItem.FindName("messageCount");
-                                        border.Visibility = Visibility.Visible;
-                                        block.Text = Convert.ToString(Convert.ToInt32(block.Text) + 1);
-                                        messageTextBox.Focus();
-                                    }
-
-                                }
-                            }
-                        }));
-                    }
+                        UserControlMessageReceived userControlMessageReceived = new UserControlMessageReceived();
+                        userControlMessageReceived.timeRec.Text = mess.uMList[0].createAt.ToString();
+                        userControlMessageReceived.messageText.Text = mess.uMList[0].content;
+                        userControlMessageReceived.Id = mess.uMList[0].messageId;
+                        userControlMessageReceived.HorizontalAlignment = HorizontalAlignment.Left;
+                        messagePlace.Children.Add(userControlMessageReceived);
+                        scrollViewerMess.ScrollToBottom();
+                        messageTextBox.Focus();
+                    }));
                 }
                 else
                 {
-                    if (mess.uMList[0].recipientChatId == Convert.ToInt32(selectedId))
+                    Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
                     {
-                        Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                        foreach (ListViewItem lvi in this.listViewI)
                         {
-                            UserControlMessageReceived userControlMessageReceived = new UserControlMessageReceived();
-                            userControlMessageReceived.timeRec.Text = mess.uMList[0].createAt.ToString();
-                            userControlMessageReceived.messageText.Text = mess.uMList[0].content;
-                            userControlMessageReceived.Id = mess.uMList[0].messageId;
-                            userControlMessageReceived.HorizontalAlignment = HorizontalAlignment.Left;
-                            messagePlace.Children.Add(userControlMessageReceived);
-                            messageTextBox.Focus();
-                            scrollViewerMess.ScrollToBottom();
-                        }));
-                    }
-                    else
-                    {
-                        Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
-                        {
-                            foreach (ListViewItem lvi in this.listViewI)
+                            if (lvi.Name == $"id{mess.uMList[0].recipientGroupId}")
                             {
-                                if (lvi.Name == $"id{mess.uMList[0].recipientChatId}")
+                                ListViewItem listViewItem = (ListViewItem)listViewI[listViewI.IndexOf(lvi)];
+                                if ((bool)listViewItem.Tag)
                                 {
-                                    ListViewItem listViewItem = (ListViewItem)listViewI[listViewI.IndexOf(lvi)];
-                                    if (!(bool)listViewItem.Tag)
-                                    {
-                                        Border border = (Border)listViewItem.FindName("messageBorderCount");
-                                        TextBlock block = (TextBlock)listViewItem.FindName("messageCount");
-                                        border.Visibility = Visibility.Visible;
-                                        block.Text = Convert.ToString(Convert.ToInt32(block.Text) + 1);
-                                        messageTextBox.Focus();
-                                    }
+                                    Border border = (Border)listViewItem.FindName("messageBorderCount");
+                                    TextBlock block = (TextBlock)listViewItem.FindName("messageCount");
+                                    border.Visibility = Visibility.Visible;
+                                    block.Text = Convert.ToString(Convert.ToInt32(block.Text) + 1);
+                                    messageTextBox.Focus();
+                                }
+
+                            }
+                        }
+                    }));
+                }
+
+                if (mess.uMList[0].recipientChatId == Convert.ToInt32(selectedId))
+                {
+                    Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                    {
+                        UserControlMessageReceived userControlMessageReceived = new UserControlMessageReceived();
+                        userControlMessageReceived.timeRec.Text = mess.uMList[0].createAt.ToString();
+                        userControlMessageReceived.messageText.Text = mess.uMList[0].content;
+                        userControlMessageReceived.Id = mess.uMList[0].messageId;
+                        userControlMessageReceived.HorizontalAlignment = HorizontalAlignment.Left;
+                        messagePlace.Children.Add(userControlMessageReceived);
+                        messageTextBox.Focus();
+                        scrollViewerMess.ScrollToBottom();
+                    }));
+                }
+                else
+                {
+                    Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                    {
+                        foreach (ListViewItem lvi in this.listViewI)
+                        {
+                            if (lvi.Name == $"id{mess.uMList[0].recipientChatId}")
+                            {
+                                ListViewItem listViewItem = (ListViewItem)listViewI[listViewI.IndexOf(lvi)];
+                                if (!(bool)listViewItem.Tag)
+                                {
+                                    Border border = (Border)listViewItem.FindName("messageBorderCount");
+                                    TextBlock block = (TextBlock)listViewItem.FindName("messageCount");
+                                    border.Visibility = Visibility.Visible;
+                                    block.Text = Convert.ToString(Convert.ToInt32(block.Text) + 1);
+                                    messageTextBox.Focus();
                                 }
                             }
-                        }));
-                    }
+                        }
+                    }));
                 }
             }
         }
 
-        
+
 
         private void ListViewItem_1_Selected(object sender, RoutedEventArgs e)
         {
@@ -267,7 +262,7 @@ namespace Chat
                 OpenCorrespondence openCorrespondence = new OpenCorrespondence("chat", Convert.ToInt32(selectedId));
                 ConnectToServer.SendRequestOpenCorr(openCorrespondence);
             }
-                //ConnectToServer.SendRequest($"chat {selectedId}");
+            //ConnectToServer.SendRequest($"chat {selectedId}");
 
             MessPanel.Visibility = Visibility.Visible;
         }
@@ -381,7 +376,7 @@ namespace Chat
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
@@ -392,16 +387,16 @@ namespace Chat
 
         private void Button_Click_7(object sender, RoutedEventArgs e)
         {
-            if(PlusButton.Kind != MaterialDesignThemes.Wpf.PackIconKind.MinusCircle)
+            if (PlusButton.Kind != MaterialDesignThemes.Wpf.PackIconKind.MinusCircle)
             {
                 PlusButton.Kind = MaterialDesignThemes.Wpf.PackIconKind.MinusCircle;
                 this.Width = 1080;
                 InfoPanel.Visibility = Visibility.Visible;
                 MessPanelGrid.Visibility = Visibility.Visible;
                 MessPanel.Visibility = Visibility.Visible;
-            }                
-            else 
-            { 
+            }
+            else
+            {
                 PlusButton.Kind = MaterialDesignThemes.Wpf.PackIconKind.PlusCircle;
                 Width = 275;
                 InfoPanel.Visibility = Visibility.Hidden;

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Chat"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Height="600" Width="1080" ResizeMode="CanResizeWithGrip" 
+        Height="600" Width="275" ResizeMode="CanResizeWithGrip" 
         WindowStartupLocation="CenterScreen" WindowStyle="None" FontFamily="Dosis" MouseDown="Window_MouseDown" Icon="sms-icon.ico">
     <Grid>
         <Grid.RowDefinitions>
@@ -37,7 +37,10 @@
                 <local:ServerError Height="200" Width="531"/>
             </StackPanel>-->
             <ScrollViewer x:Name="scrollViewerMess" VerticalScrollBarVisibility="Auto" Margin="0,100,0,63" CanContentScroll="True">
-                <StackPanel x:Name="messagePlace" VerticalAlignment="Bottom"/>
+                <StackPanel x:Name="messagePlace" VerticalAlignment="Bottom">
+                    <!--<local:UserControlMessageReceived HorizontalAlignment="Left"/>
+                    <local:UserControlMessageSent HorizontalAlignment="Right"/>-->
+                </StackPanel>
             </ScrollViewer>
             <!---Mess                                                               _______________________________________________________________Panel-->
             <Border x:Name="MessPanel" Background="#FFAFE6B2" VerticalAlignment="Bottom" Visibility="Visible" IsVisibleChanged="Border_IsVisibleChanged">

@@ -28,7 +28,7 @@ namespace Chat
         public static event receiveLogin receiveLoginEv;
         public delegate void UserMess(MessageEvent mess);
         public static event UserMess UserMessEvent;
-        public delegate void UserMessList(userMessagesList mess, bool totalFlag);
+        public delegate void UserMessList(userMessagesList mess);
         public static event UserMessList UserMessListItem;
 
         public static string loginToServer { get; set; }
@@ -91,7 +91,7 @@ namespace Chat
                 else if (message_Json.IsValid(userMessagesListSchema))
                 {
                     var jSend = JsonConvert.DeserializeObject<userMessagesList>(textReceiveMessage);
-                    UserMessListItem(jSend, true);
+                    UserMessListItem(jSend);
                 }
                 else if (message_Json.IsValid(messageEventSchema))
                 {
