@@ -61,36 +61,32 @@ namespace ChatServer
         }
 
         // трансляция сообщения подключенным клиентам
-        protected internal void BroadcastMessage(string message, int id_rec, Image image = null)
+        protected internal void BroadcastMessage(string message, int[] id_rec, string sType)
         {
-           
-
-           // byte[] data = Encoding.Unicode.GetBytes(message);
-
-           // int byte_count = data.Count();
-            //byte[] data_count = Encoding.Unicode.GetBytes(byte_count.ToString());
-
-            
-
-
-            for (int i = 0; i < clients.Count(); i++)
+            if (sType == "chat" || sType== "resounse")
             {
-                if (clients[i].id==id_rec)
+                for (int i = 0; i < clients.Count(); i++)
+                {
+                    if (clients[i].id == id_rec[0])
+                    {
+                        BinaryWriter binaryWriter = new BinaryWriter(clients[i].Stream, Encoding.Unicode);
+                        binaryWriter.Write(message);
+
+                    }
+                }
+            }
+            else
+            {
+                var arrRecipients = id_rec.Intersect(clients.Select(co => co.id)).ToArray();
+
+                for (int i = 0; i < arrRecipients.Count(); i++)
                 {
                     BinaryWriter binaryWriter = new BinaryWriter(clients[i].Stream, Encoding.Unicode);
-                  //  binaryWriter.Write(byte_count);
                     binaryWriter.Write(message);
-              
-                    //clients[i].Stream.Write(data_count, 0, data_count.Length); //передача данных
-                    //clients[i].Stream.Write(data, 0, data.Length);
                 }
             }
 
-
-
         }
-
-        // if (clients.Where(c=>c.id==ids_rec[i]).FirstOrDefault().id==ids_rec[i]) // если id клиента не равно id отправляющего
 
         // отключение всех клиентов
         protected internal void Disconnect()

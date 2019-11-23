@@ -87,6 +87,7 @@
     <Compile Include="BD_Entities\User.cs" />
     <Compile Include="BD_Entities\userMessages.cs" />
     <Compile Include="Core\ClientObject.cs" />
+    <Compile Include="Core\Encryption.cs" />
     <Compile Include="Json_Classes\JSendAfterLogin.cs" />
     <Compile Include="Json_Classes\LoginEvent.cs" />
     <Compile Include="Json_Classes\MessageEvent.cs" />

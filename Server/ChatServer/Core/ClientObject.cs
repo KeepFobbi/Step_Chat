@@ -15,7 +15,6 @@ using NJsonSchema.Validation;
 
 namespace ChatServer
 {
-
     public class ClientObject
     {
         protected internal int id { get; private set; }
@@ -66,18 +65,14 @@ namespace ChatServer
 
                         if (chek)
                         {
-
                             Console.WriteLine(loginEvent.login + " вошел в чат");
+
                             foreach (var client in server.clients)
                             {
                                 Console.WriteLine(client.id + "-- idUser");
                             }
-                            //   Image image = Image.FromFile(@"D:\Archive\Archive\StepChat\StepChat\Step_Chat\Server\ChatServer\Photos\1200px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg");
-                            // int[] ids_rec = new int[1];
-                            int ids_rec = id;
 
-                            server.BroadcastMessage(СompileResponseAfterLogin(), ids_rec);
-
+                            server.BroadcastMessage(СompileResponseAfterLogin(), new int[1] { id }, "resounse");
                         }
                     }
                     if (message_Json.IsValid(messageSchema))
@@ -91,9 +86,7 @@ namespace ChatServer
                     {
 
                         OpenCorrespondence openCorrespondence = JsonConvert.DeserializeObject<OpenCorrespondence>(message_Json.ToString());
-                        //int[] ids_rec = new int[1];
-                        int ids_rec = id;
-                        server.BroadcastMessage(AfterOpenChat(openCorrespondence), ids_rec);
+                        server.BroadcastMessage(AfterOpenChat(openCorrespondence), new int[1] { id }, "resounse");
                     }
 
                 }
@@ -113,25 +106,15 @@ namespace ChatServer
 
         private string GetMessage()
         {
-          //  byte[] data = new byte[10000000];
             StringBuilder builder = new StringBuilder();
             BinaryReader binaryReader = new BinaryReader(Stream, Encoding.Unicode);
-            // int bytes = 0;
             string message;
-            //do
-            //{
-            //    bytes = Stream.Read(data, 0, data.Length);
-            //    builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
-            //    message = builder.ToString();
-            //}
-            //while (Stream.DataAvailable);
-
             builder.Append(binaryReader.ReadString());
             message = builder.ToString();
             return message;
         }
 
-        private string MessagesEventsFunc(MessageEvent messageEvent)
+        private void MessagesEventsFunc(MessageEvent messageEvent)
         {
             if (messageEvent.statusType == "Send")
             {
@@ -139,87 +122,172 @@ namespace ChatServer
             }
             else if (messageEvent.statusType == "Delete")
             {
-                List<MessageEvent> listDeleted = new List<MessageEvent>();
-                // int[] ids_del = new int[messageEvent.messages.Count()];
-                int id_del = messageEvent.messages.Keys.FirstOrDefault();
-
-                //for (int i = 0; i < messageEvent.messages.Count(); i++)messageEvent.messages[messageEvent.messages.Keys.FirstOrDefault()]
-                //{
-
-                // ids_del[i] = id_del;
-
-                userMessages delMessage = db.userMessages.Where(um => um.messageId == id_del).FirstOrDefault();
-                //"sendRespounse", messageEvent.recipientTtype, messageEvent.recipientIid.ToString(), messageEvent.eventTime, -1, messageEvent.messages[-1]
-                MessageEvent mEvent = new MessageEvent("sendRespounse", messageEvent.recipientTtype, messageEvent.recipientIid.ToString(), messageEvent.eventTime, -2, messageEvent.messages[messageEvent.messages.Keys.FirstOrDefault()]);
-                //listDeleted.Add(mEvent);
-
-
-                db.userMessages.Remove(delMessage);
-                // }
-                var jsonDeleted = JsonConvert.SerializeObject(listDeleted, Formatting.Indented);
-
-                //server.BroadcastMessage(jsonDeleted, id);
-                db.SaveChanges();
+                DeleteMessage(messageEvent);
             }
             else if (messageEvent.statusType == "Update")
             {
-                int id_update = messageEvent.messages.Keys.ElementAt(0);
-                userMessages updateMessage = db.userMessages.Where(um => um.messageId == id_update).FirstOrDefault();
-
-                db.SaveChanges();
+                UpdateMessage(messageEvent);
             }
-            else if (messageEvent.statusType == "ReSend")
-            {
-
-            }
-            return "kk";
-
         }
 
         private void SendMessages(MessageEvent messageEvent)
         {
-            int _id = Convert.ToInt32(this.id);
-
 
             if (messageEvent.recipientTtype == "chat")
             {
-                PrivateChats privateChatSend = db.PrivateChats.Where(pc => pc.chatId == messageEvent.recipientIid).FirstOrDefault();
+                PrivateChats privateChatSend = db.PrivateChats.Where(pc => pc.chatId == messageEvent.recipientId).FirstOrDefault();
 
-                //int[] ids_rec = new int[1];
-                int ids_rec = privateChatSend.user_1_Id == _id ? privateChatSend.user_2_Id : privateChatSend.user_1_Id;
+                int id_rec = privateChatSend.user_1_Id == id ? privateChatSend.user_2_Id : privateChatSend.user_1_Id;
 
-                server.BroadcastMessage(SaveAfterReceiveMessage(messageEvent), ids_rec);
+                server.BroadcastMessage(SaveAfterReceiveMessage(messageEvent), new int[1] { id_rec }, "chat");
             }
 
-            //else if (messageEvent.recipientTtype == "group")
-            //{
-            //    GroupsMembers groupsMemberSend = db.GroupsMembers.Where(gm => gm.groupId == messageEvent.recipientIid).FirstOrDefault();
+            else if (messageEvent.recipientTtype == "group")
+            {
+                server.BroadcastMessage(SaveAfterReceiveMessage(messageEvent), GetArrayIdUserInGroup(), "group");
+            }
+        }
 
-            //    var userArr = from u in db.Users
-            //                  join gm in db.GroupsMembers on u.userId equals gm.userId
-            //                  where gm.groupId == messageEvent.recipientIid && gm.userId != _id
-            //                  select u.userId;
+        private string SaveAfterReceiveMessage(MessageEvent messageEvent)
+        {
+            userMessages userMessage = new userMessages();
+            userMessagesList userMessagesList = new userMessagesList();
 
-            //    int[] ids_rec = new int[userArr.Count()];
+            if (messageEvent.recipientTtype == "chat")
+            {
+                userMessage.recipientChatId = messageEvent.recipientId;
+                userMessage.createAt = messageEvent.eventTime;
+                userMessage.senderId = id;
+                userMessage.content = messageEvent.messages[-1];
 
-            //    for (int i = 0; i < userArr.Count(); i++)
-            //    {
-            //        ids_rec[i] = userArr.ElementAt(i);
-            //    }
+                userMessagesList.uMList.Add(userMessage);
 
-            //    server.BroadcastMessage(SaveAfterReceiveMessage(messageEvent), ids_rec);
+                db.userMessages.Add(userMessage);
+                db.SaveChanges();
 
-            //}
+                string jsonData = JsonConvert.SerializeObject(userMessagesList, Formatting.Indented);
+
+                Console.WriteLine(jsonData);
+
+                return jsonData;
+            }
+            else if (messageEvent.recipientTtype == "group")
+            {
+                userMessage.recipientGroupId = messageEvent.recipientId;
+                userMessage.createAt = messageEvent.eventTime;
+                userMessage.senderId = id;
+                userMessage.content = messageEvent.messages[-1];
+
+                userMessagesList.uMList.Add(userMessage);
+
+                db.userMessages.Add(userMessage);
+                db.SaveChanges();
+
+                string jsonData = JsonConvert.SerializeObject(userMessagesList, Formatting.Indented);
+
+                Console.WriteLine(jsonData);
+
+                return jsonData;
+            }
+            else
+            {
+                return "MessageEvent type error";
+            }
+        }
+
+        private void DeleteMessage(MessageEvent messageEvent)
+        {
+            int id_del = messageEvent.messages.Keys.FirstOrDefault();
+            userMessages delMessage = db.userMessages.Where(um => um.messageId == id_del).FirstOrDefault();
+            db.userMessages.Remove(delMessage);
+            db.SaveChanges();
+
+            if (messageEvent.recipientTtype == "chat")
+            {
+                PrivateChats privateChatSend = db.PrivateChats.Where(pc => pc.chatId == messageEvent.recipientId).FirstOrDefault();
+
+                int id_rec = privateChatSend.user_1_Id == id ? privateChatSend.user_2_Id : privateChatSend.user_1_Id;
+
+                MessageEvent mEvent = new MessageEvent("DeleteRespounse", messageEvent.recipientTtype, messageEvent.recipientId.ToString(), messageEvent.eventTime, id_del, String.Empty);
+
+                var jsonDeleted = JsonConvert.SerializeObject(mEvent, Formatting.Indented);
+
+                server.BroadcastMessage(jsonDeleted, new int[1] { id_rec }, "chat");
+            }
+            else if (messageEvent.recipientTtype == "group")
+            {
+
+                MessageEvent mEvent = new MessageEvent("DeleteRespounse", messageEvent.recipientTtype, messageEvent.recipientId.ToString(), messageEvent.eventTime, id_del, String.Empty);
+
+                var jsonDeleted = JsonConvert.SerializeObject(mEvent, Formatting.Indented);
+
+                server.BroadcastMessage(jsonDeleted, GetArrayIdUserInGroup(), "group");
+            }
+        }
+
+        private void UpdateMessage(MessageEvent messageEvent)
+        {
+            int id_update = messageEvent.messages.Keys.ElementAt(0);
+            userMessages updateMessage = db.userMessages.Where(um => um.messageId == id_update).FirstOrDefault();
+            updateMessage.content = messageEvent.messages.Values.ElementAt(0);
+            updateMessage.updateAt = messageEvent.eventTime;
+            db.SaveChanges();
+
+            if (messageEvent.recipientTtype == "chat")
+            {
+                PrivateChats privateChatSend = db.PrivateChats.Where(pc => pc.chatId == messageEvent.recipientId).FirstOrDefault();
+
+                int id_rec = privateChatSend.user_1_Id == id ? privateChatSend.user_2_Id : privateChatSend.user_1_Id;
+
+                MessageEvent mEvent = new MessageEvent("UpdateRespounse", messageEvent.recipientTtype, messageEvent.recipientId.ToString(), messageEvent.eventTime, id_update, updateMessage.content);
+
+                var jsonUpdated = JsonConvert.SerializeObject(mEvent, Formatting.Indented);
+
+                server.BroadcastMessage(jsonUpdated, new int[1] { id_rec }, "chat");
+            }
+            else if (messageEvent.recipientTtype == "group")
+            {
+                MessageEvent mEvent = new MessageEvent("UpdateRespounse", messageEvent.recipientTtype, messageEvent.recipientId.ToString(), messageEvent.eventTime, id_update, updateMessage.content);
+
+                var jsonUpdated = JsonConvert.SerializeObject(mEvent, Formatting.Indented);
+
+                server.BroadcastMessage(jsonUpdated, GetArrayIdUserInGroup(), "group");
+            }
+
+        }
+
+        private int[] GetArrayIdUserInGroup()
+        {
+            var query_groupsMembers = from g in db.Groups
+                                      join gm in db.GroupsMembers on g.groupId equals gm.groupId
+                                      where gm.userId == id
+                                      select gm;
+
+            var query_usersInGroups = from u in db.Users
+                                      from gm in db.GroupsMembers
+                                      from q_gml in query_groupsMembers
+                                      where (gm.userId == u.userId && gm.groupId == q_gml.groupId)
+
+                                      select u;
+
+            var q_usersInGroupList = query_usersInGroups.Distinct().ToList();
+
+            int[] array_id_user_in_group = new int[q_usersInGroupList.Count()];
+
+            for (int i = 0; i < array_id_user_in_group.Count(); i++)
+            {
+                array_id_user_in_group[i] = q_usersInGroupList[i].userId;
+            }
+
+            return array_id_user_in_group;
         }
 
         private bool Authorization(LoginEvent login)
         {
-
             var _login = login.login;
             var _password = login.password;
 
             var query = from e in db.Users where (e.userName == _login && e.userPassword == _password) select e;
-
 
             var user = query.FirstOrDefault();
 
@@ -232,25 +300,24 @@ namespace ChatServer
                 return true;
             }
             else
+            {
                 return false;
+            }
 
         }
 
         private string СompileResponseAfterLogin()
         {
-
-            int _id = id;
-
             var query_groupsMembers = from g in db.Groups
                                       join gm in db.GroupsMembers on g.groupId equals gm.groupId
-                                      where gm.userId == _id
+                                      where gm.userId == id
                                       select gm;
 
             var q_groupsMembersList = query_groupsMembers.Distinct().ToList();
 
             var query_privateChats = from u in db.Users
                                      from pc in db.PrivateChats
-                                     where ((u.userId == pc.user_1_Id && (pc.user_1_Id != _id && pc.user_2_Id == _id)) || (u.userId == pc.user_2_Id) && (pc.user_1_Id == _id && pc.user_2_Id != _id))
+                                     where ((u.userId == pc.user_1_Id && (pc.user_1_Id != id && pc.user_2_Id == id)) || (u.userId == pc.user_2_Id) && (pc.user_1_Id == id && pc.user_2_Id != id))
 
                                      select pc;
 
@@ -268,7 +335,7 @@ namespace ChatServer
 
             var query_usersInChats = from u in db.Users
                                      from pc in db.PrivateChats
-                                     where ((u.userId == pc.user_1_Id && (pc.user_1_Id != _id && pc.user_2_Id == _id)) || (u.userId == pc.user_2_Id) && (pc.user_1_Id == _id && pc.user_2_Id != _id))
+                                     where ((u.userId == pc.user_1_Id && (pc.user_1_Id != id && pc.user_2_Id == id)) || (u.userId == pc.user_2_Id) && (pc.user_1_Id == id && pc.user_2_Id != id))
 
                                      select u;
 
@@ -279,7 +346,7 @@ namespace ChatServer
                                          ((from um_ in db.userMessages
                                            join g in db.Groups on um_.recipientGroupId equals g.groupId
                                            join gm in db.GroupsMembers on g.groupId equals gm.groupId
-                                           where um_.senderId == _id || (um_.recipientGroupId == g.groupId && gm.userId == _id)
+                                           where um_.senderId == id || (um_.recipientGroupId == g.groupId && gm.userId == id)
                                            group um_ by new { um_.recipientGroupId } into g
                                            select new { g.Key.recipientGroupId, createAt = (DateTime)g.Max(p => p.createAt) }).Distinct()))
                                            on new { um.recipientGroupId, um.createAt } equals new { mt.recipientGroupId, mt.createAt }
@@ -291,7 +358,7 @@ namespace ChatServer
                                     join mt in (
                                              ((from um_ in db.userMessages
                                                join pc in db.PrivateChats on um_.recipientChatId equals pc.chatId
-                                               where (um_.senderId == _id || ((um_.recipientChatId == pc.chatId && (pc.user_1_Id == _id || pc.user_2_Id == _id))))
+                                               where (um_.senderId == id || ((um_.recipientChatId == pc.chatId && (pc.user_1_Id == id || pc.user_2_Id == id))))
                                                group um_ by new { um_.recipientChatId } into g
                                                select new { g.Key.recipientChatId, createAt = (DateTime)g.Max(p => p.createAt) }).Distinct()))
                                                on new { um.recipientChatId, um.createAt } equals new { mt.recipientChatId, mt.createAt }
@@ -314,8 +381,6 @@ namespace ChatServer
                 q_lastMessageJoint.Add(mess);
             }
 
-
-
             var query_groups = from g in db.Groups
 
                                select g;
@@ -332,8 +397,6 @@ namespace ChatServer
                     content = q_lastMessageJoint.Find(m => m.recipientGroupId == groupM.groupId).content
                 };
 
-
-
                 jSendAfterLogin.startInfos.Add(startInfo);
 
             }
@@ -343,8 +406,8 @@ namespace ChatServer
                 StartInfo startInfo = new StartInfo
                 {
                     chatId = chat.chatId,
-                    //  groupName = q_userInChatsList.Find(u => u.userId == (chat.user_1_Id == (q_lastMessagesInChatsList.Find(m=>m.recipientChatId==chat.chatId).senderId) ? chat.user_2_Id : chat.user_1_Id)).userName,
-                    userName = q_userInChatsList.Find(u => u.userId == (chat.user_1_Id == _id ? chat.user_2_Id : chat.user_1_Id)).userName,
+                    //groupName = q_userInChatsList.Find(u => u.userId == (chat.user_1_Id == (q_lastMessagesInChatsList.Find(m=>m.recipientChatId==chat.chatId).senderId) ? chat.user_2_Id : chat.user_1_Id)).userName,
+                    userName = q_userInChatsList.Find(u => u.userId == (chat.user_1_Id == id ? chat.user_2_Id : chat.user_1_Id)).userName,
                     content = q_lastMessagesInChatsList.Find(m => m.recipientChatId == chat.chatId).content
                 };
 
@@ -359,63 +422,8 @@ namespace ChatServer
             return jsonData.ToString();
         }
 
-        private string SaveAfterReceiveMessage(MessageEvent messageEvent)
-        {
-            userMessages userMessage = new userMessages();
-           // MessageEvent mEvent = new MessageEvent("SendRespounse", messageEvent.recipientTtype, messageEvent.recipientIid.ToString(), messageEvent.eventTime, -1, messageEvent.messages[-1]);
-            userMessagesList userMessagesList = new userMessagesList();
-
-            if (messageEvent.recipientTtype == "chat")
-            {
-
-
-                userMessage.recipientChatId = messageEvent.recipientIid;
-                userMessage.createAt = messageEvent.eventTime;
-                userMessage.senderId = id;
-                userMessage.content = messageEvent.messages[-1];
-
-                userMessagesList.uMList.Add(userMessage);
-
-                db.userMessages.Add(userMessage);
-                db.SaveChanges();
-
-
-                string jsonData = JsonConvert.SerializeObject(userMessagesList, Formatting.Indented);
-
-                Console.WriteLine(jsonData);
-
-
-                return jsonData;
-            }
-            else
-            {
-
-                userMessage = new userMessages
-                {
-                    recipientGroupId = messageEvent.recipientIid,
-                    createAt = messageEvent.eventTime,
-                    senderId = Convert.ToInt32(this.id),
-                    content = messageEvent.messages[-1]
-                };
-
-
-
-                string jsonData = JsonConvert.SerializeObject(userMessage, Formatting.Indented);
-
-
-                Console.WriteLine(jsonData);
-                db.userMessages.Add(userMessage);
-                db.SaveChanges();
-
-                return jsonData;
-            }
-
-        }
-
         private string AfterOpenChat(OpenCorrespondence openCorr)
         {
-
-            int _id = Convert.ToInt32(this.id);
             userMessagesList uMessList = new userMessagesList();
 
             if (openCorr.statusType == "chat")
@@ -433,25 +441,21 @@ namespace ChatServer
 
                 string jsonData = JsonConvert.SerializeObject(uMessList, Formatting.Indented);
 
-
                 Console.WriteLine(jsonData);
 
                 return jsonData;
             }
             else
             {
-
                 var query_mess_g = from um in db.userMessages
                                    where um.recipientGroupId == openCorr.idCorr
                                    select um;
                 var qm = query_mess_g.OrderBy(q => q.createAt).ToList();
 
-
                 foreach (var mess in qm)
                 {
                     uMessList.uMList.Add(mess);
                 }
-
 
                 string jsonData = JsonConvert.SerializeObject(uMessList, Formatting.Indented);
 
@@ -459,10 +463,7 @@ namespace ChatServer
 
                 return jsonData;
             }
-
-
         }
-
 
         // закрытие подключения
         protected internal void Close()

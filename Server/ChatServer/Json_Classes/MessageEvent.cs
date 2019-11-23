@@ -11,7 +11,8 @@ namespace ChatServer.Json_Classes
 
         public string statusType;
         public string recipientTtype;
-        public int recipientIid;
+        public int recipientId;
+        public int senderId;
         public DateTime eventTime;
         public Dictionary<int, string> messages = new Dictionary<int, string>();
 
@@ -19,7 +20,7 @@ namespace ChatServer.Json_Classes
         {
             this.statusType = statusType;
             this.recipientTtype = recipientTtype;
-            this.recipientIid = Convert.ToInt32(recipientIid);
+            this.recipientId = Convert.ToInt32(recipientIid);
             this.eventTime = eventTime;
             this.messages.Add(tempIdMess, content);
         }
