@@ -56,7 +56,7 @@ namespace ChatServer
 
                     if (message_Json.IsValid(loginSchema))
                     {
-
+                      //  SendImage();
                         LoginEvent loginEvent = new LoginEvent();
                         loginEvent = JsonConvert.DeserializeObject<LoginEvent>(message_Json.ToString());
 
@@ -71,7 +71,7 @@ namespace ChatServer
                                 Console.WriteLine(client.id + "-- idUser");
                             }
 
-                            server.BroadcastMessage(СompileResponseAfterLogin(), new int[1] { id }, "respounse");
+                            server.BroadcastMessage(СompileResponseAfterLogin(), new int[] { id }, "respounse");
                         }
                         else if(chek==false)
                         {
@@ -89,7 +89,7 @@ namespace ChatServer
                     {
 
                         OpenCorrespondence openCorrespondence = JsonConvert.DeserializeObject<OpenCorrespondence>(message_Json.ToString());
-                        server.BroadcastMessage(AfterOpenChat(openCorrespondence), new int[1] { id }, "resounse");
+                        server.BroadcastMessage(AfterOpenChat(openCorrespondence), new int[] { id }, "respounse");
                     }
 
                 }
@@ -109,11 +109,18 @@ namespace ChatServer
 
         private string GetMessage()
         {
-            StringBuilder builder = new StringBuilder();
-            BinaryReader binaryReader = new BinaryReader(Stream, Encoding.Unicode);
             string message;
+
+            StringBuilder builder = new StringBuilder();
+
+             BinaryReader binaryReader = new BinaryReader(Stream, Encoding.Unicode);
+            //BinaryReader binaryReader = new BinaryReader(Stream);
+
+
             builder.Append(binaryReader.ReadString());
+
             message = builder.ToString();
+
             return message;
         }
 
@@ -142,7 +149,7 @@ namespace ChatServer
 
                 int id_rec = privateChatSend.user_1_Id == id ? privateChatSend.user_2_Id : privateChatSend.user_1_Id;
 
-                server.BroadcastMessage(SaveAfterReceiveMessage(messageEvent), new int[1] { id_rec }, "chat");
+                server.BroadcastMessage(SaveAfterReceiveMessage(messageEvent), new int[] { id_rec }, "chat");
             }
 
             else if (messageEvent.recipientTtype == "group")
@@ -215,7 +222,7 @@ namespace ChatServer
 
                 var jsonDeleted = JsonConvert.SerializeObject(mEvent, Formatting.Indented);
 
-                server.BroadcastMessage(jsonDeleted, new int[1] { id_rec }, "chat");
+                server.BroadcastMessage(jsonDeleted, new int[] { id_rec }, "chat");
             }
             else if (messageEvent.recipientTtype == "group")
             {
@@ -477,6 +484,21 @@ namespace ChatServer
                 return jsonData;
             }
         }
+
+
+     //private void SendImage()
+     //   {
+     //       Bitmap tImage = new Bitmap(@"D:\Diploma\Step_Chat\Server\ChatServer\Photos\1200px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg");
+     //       byte[] bmpBytes;
+
+     //       using (Image bmp = tImage)
+     //       using (MemoryStream ms = new MemoryStream())
+     //       {
+     //           bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+     //           bmpBytes = ms.ToArray();
+     //       }
+     //   }
+
 
         // закрытие подключения
         protected internal void Close()

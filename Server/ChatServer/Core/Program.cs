@@ -13,15 +13,11 @@ namespace ChatServer
         [Obsolete]
         static void Main(string[] args)
         {
-            
-                //TcpChannel serverChannel = new TcpChannel(8080);
-                //ChannelServices.RegisterChannel(serverChannel);
 
                 server = new ServerObject();
                 listenThread = new Thread(new ThreadStart(server.Listen));
-                listenThread.Start(); //старт потока
-            
-        
+                listenThread.Start(); 
+
         }
     }
 }
