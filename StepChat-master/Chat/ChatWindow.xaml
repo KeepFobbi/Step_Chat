@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Chat"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Height="600" Width="275" ResizeMode="CanResizeWithGrip" 
+        Height="600" Width="270" ResizeMode="CanResizeWithGrip" 
         WindowStartupLocation="CenterScreen" WindowStyle="None" FontFamily="Dosis" MouseDown="Window_MouseDown" Icon="sms-icon.ico">
     <Grid>
         <Grid.RowDefinitions>
@@ -94,35 +94,38 @@
                     <materialDesign:PackIcon Kind="Archive" Foreground="White"/>
                 </Button>
             </Grid>
-            <ListView x:Name="listView1">
-                <ScrollViewer x:Name="scrollViewerListItem" VerticalScrollBarVisibility="Auto" Margin="0,100,0,63" CanContentScroll="True">
-                    <ListViewItem x:Name="listViewItem_1" Visibility="Collapsed" HorizontalAlignment="Stretch" Selected="ListViewItem_1_Selected">
-                        <Grid HorizontalAlignment="Center" Margin="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50"/>
-                                <ColumnDefinition Width="150"/>
-                                <ColumnDefinition Width="50*"/>
-                            </Grid.ColumnDefinitions>
+            <ScrollViewer x:Name="scrollViewerListItem" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
+                <StackPanel VerticalAlignment="Top">
+                    <ListView x:Name="listView1">
 
-                            <Border Width="40" Height="40" CornerRadius="25" BorderBrush="White" BorderThickness="0.6">
-                                <Border.Background>
-                                    <ImageBrush x:Name="userImg" ImageSource="Assets/face1.jpg"/>
-                                </Border.Background>
-                            </Border>
-                            <Border Width="10" Height="10" VerticalAlignment="Bottom" Margin="5" HorizontalAlignment="Right" CornerRadius="15" Background="LightGreen"/>
+                        <ListViewItem x:Name="listViewItem_1" Visibility="Collapsed" HorizontalAlignment="Stretch" Selected="ListViewItem_1_Selected">
+                            <Grid HorizontalAlignment="Center" Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="50*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="1">
-                                <TextBlock x:Name="userName" Text="Rayhan Alvarado" Margin="10 0"/>
-                                <TextBlock x:Name="lastMessage" Text="Today is Mariah's bday!" Margin="10 0" TextTrimming="CharacterEllipsis" Opacity="0.6" FontSize="11"/>
-                            </StackPanel>
+                                <Border Width="40" Height="40" CornerRadius="25" BorderBrush="White" BorderThickness="0.6">
+                                    <Border.Background>
+                                        <ImageBrush x:Name="userImg" ImageSource="Assets/face1.jpg"/>
+                                    </Border.Background>
+                                </Border>
+                                <Border Width="10" Height="10" VerticalAlignment="Bottom" Margin="5" HorizontalAlignment="Right" CornerRadius="15" Background="LightGreen"/>
 
-                            <Border x:Name="messageBorderCount" Visibility="Collapsed" Grid.Column="2" Width="20" Height="20" CornerRadius="15" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
-                                <TextBlock x:Name="messageCount" FontSize="11" Text="0" Foreground="{StaticResource PrimaryHueDarkBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                        </Grid>
-                    </ListViewItem>
-                </ScrollViewer>
-            </ListView>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock x:Name="userName" Text="Rayhan Alvarado" Margin="10 0" Foreground="#DDFFFFFF"/>
+                                    <TextBlock x:Name="lastMessage" Text="Today is Mariah's bday!" Margin="10 0" TextTrimming="CharacterEllipsis" Opacity="0.6" FontSize="11" Foreground="#DDFFFFFF"/>
+                                </StackPanel>
+
+                                <Border x:Name="messageBorderCount" Visibility="Collapsed" Grid.Column="2" Width="20" Height="20" CornerRadius="15" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
+                                    <TextBlock x:Name="messageCount" FontSize="11" Text="0" Foreground="{StaticResource PrimaryHueDarkBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </Grid>
+                        </ListViewItem>
+                    </ListView>
+                </StackPanel>
+            </ScrollViewer>
         </StackPanel>
 
         <StackPanel x:Name="InfoPanel" Grid.Column="2" Grid.RowSpan="2" Visibility="Visible">

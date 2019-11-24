@@ -18,9 +18,9 @@ namespace Chat
     public static class ConnectToServer
     {
         //37.115.128.11  178.92.84.69
-        private const string host = "127.0.0.1";
-        //private const string host = "37.115.128.11";
-        private const int port = 9090;
+        //private const string host = "127.0.0.1";
+        private const string host = "37.115.128.11";
+        private const int port = 777;
         static TcpClient client;
         public static NetworkStream stream;
 
@@ -56,49 +56,61 @@ namespace Chat
 
         public static void ReceiveMessage()
         {
-            while (true)
+            try
             {
-                StringBuilder builder = new StringBuilder();
-                BinaryReader binaryReader = new BinaryReader(stream, Encoding.Unicode);
-
-                try
+                while (true)
                 {
-                    builder.Append(binaryReader.ReadString());
-                }
-                catch
-                {
-                    //Image image = (Bitmap)((new ImageConverter()).ConvertFrom(data));
-                    //image.Save(@"D:\photo_test.jpg");
-                }
+                    StringBuilder builder = new StringBuilder();
+                    BinaryReader binaryReader = new BinaryReader(stream, Encoding.Unicode);
 
-                string textReceiveMessage = builder.ToString();
+                    try
+                    {
+                        builder.Append(binaryReader.ReadString());
+                    }
+                    catch
+                    {
+                        //Image image = (Bitmap)((new ImageConverter()).ConvertFrom(data));
+                        //image.Save(@"D:\photo_test.jpg");
+                    }
 
-                var jSendAfterLoginSchemaFrame = NJsonSchema.JsonSchema.FromType<JSendAfterLogin>();
-                var userMessagesListSchemaFrame = NJsonSchema.JsonSchema.FromType<userMessagesList>();
-                var messageEventSchemaFrame = NJsonSchema.JsonSchema.FromType<MessageEvent>();
+                    string textReceiveMessage = builder.ToString();
 
-                JSchema jSendAfterLoginSchema = JSchema.Parse(jSendAfterLoginSchemaFrame.ToJson().ToString());
-                JSchema userMessagesListSchema = JSchema.Parse(userMessagesListSchemaFrame.ToJson().ToString());
-                JSchema messageEventSchema = JSchema.Parse(messageEventSchemaFrame.ToJson().ToString());
+                    var jSendAfterLoginSchemaFrame = NJsonSchema.JsonSchema.FromType<JSendAfterLogin>();
+                    var userMessagesListSchemaFrame = NJsonSchema.JsonSchema.FromType<userMessagesList>();
+                    var messageEventSchemaFrame = NJsonSchema.JsonSchema.FromType<MessageEvent>();
 
-                var message_Json = JObject.Parse(textReceiveMessage);
+                    JSchema jSendAfterLoginSchema = JSchema.Parse(jSendAfterLoginSchemaFrame.ToJson().ToString());
+                    JSchema userMessagesListSchema = JSchema.Parse(userMessagesListSchemaFrame.ToJson().ToString());
+                    JSchema messageEventSchema = JSchema.Parse(messageEventSchemaFrame.ToJson().ToString());
+                    try
+                    {
+                        var message_Json = JObject.Parse(textReceiveMessage);
 
-                if (message_Json.IsValid(jSendAfterLoginSchema))
-                {
-                    JSendAfterLogin jSend = JsonConvert.DeserializeObject<JSendAfterLogin>(textReceiveMessage);
-                    receiveLoginEv(jSend);
+                        if (message_Json.IsValid(jSendAfterLoginSchema))
+                        {
+                            JSendAfterLogin jSend = JsonConvert.DeserializeObject<JSendAfterLogin>(textReceiveMessage);
+                            receiveLoginEv(jSend);
+                        }
+                        else if (message_Json.IsValid(userMessagesListSchema))
+                        {
+                            var jSend = JsonConvert.DeserializeObject<userMessagesList>(textReceiveMessage);
+                            UserMessListItem(jSend);
+                        }
+                        else if (message_Json.IsValid(messageEventSchema))
+                        {
+                            var jSend = JsonConvert.DeserializeObject<MessageEvent>(textReceiveMessage);
+                            UserMessEvent(jSend);
+                        }
+                    }
+                    catch
+                    {
+
+                    }
                 }
-                else if (message_Json.IsValid(userMessagesListSchema))
-                {
-                    var jSend = JsonConvert.DeserializeObject<userMessagesList>(textReceiveMessage);
-                    UserMessListItem(jSend);
-                }
-                else if (message_Json.IsValid(messageEventSchema))
-                {
-                    var jSend = JsonConvert.DeserializeObject<MessageEvent>(textReceiveMessage);
-                    UserMessEvent(jSend);
-                }
-                else continue;
+            }
+            catch
+            {
+
             }
         }
 
