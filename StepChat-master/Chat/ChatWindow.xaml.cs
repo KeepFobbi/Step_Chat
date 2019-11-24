@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -7,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Markup;
+using System.Windows.Media;
 using System.Windows.Threading;
 using System.Xml;
 
@@ -16,6 +18,7 @@ namespace Chat
     {
         public static string selectedId = null;
         bool selectedStatus;
+        MediaPlayer mediaPlayer = new MediaPlayer();
         List<ListViewItem> listViewI = new List<ListViewItem>();
         public static int userId;
         string MyUserName;
@@ -31,6 +34,12 @@ namespace Chat
             ConnectToServer.receiveLoginEv += addUserChat;
             messageTextBox.AcceptsReturn = true;
             messageTextBox.Focus();
+        }
+
+        private void PlaySon()
+        {
+            mediaPlayer.Open(new Uri(@"D:\Development\Step_Chat\StepChat-master\Chat\Assets\z_uk-pri-otricatelnyh-u_edomleniyah.mp3"));
+            mediaPlayer.Play();
         }
 
         public void ChangeMessTextBox(string messageTextBox)
@@ -157,42 +166,42 @@ namespace Chat
                 }
             else
             {
-                if (mess.uMList[0].recipientGroupId == Convert.ToInt32(selectedId))
-                {
-                    Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
-                    {
-                        UserControlMessageReceived userControlMessageReceived = new UserControlMessageReceived();
-                        userControlMessageReceived.timeRec.Text = mess.uMList[0].createAt.ToString();
-                        userControlMessageReceived.messageText.Text = mess.uMList[0].content;
-                        userControlMessageReceived.Id = mess.uMList[0].messageId;
-                        userControlMessageReceived.HorizontalAlignment = HorizontalAlignment.Left;
-                        messagePlace.Children.Add(userControlMessageReceived);
-                        scrollViewerMess.ScrollToBottom();
-                        messageTextBox.Focus();
-                    }));
-                }
-                else
-                {
-                    Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
-                    {
-                        foreach (ListViewItem lvi in this.listViewI)
-                        {
-                            if (lvi.Name == $"id{mess.uMList[0].recipientGroupId}")
-                            {
-                                ListViewItem listViewItem = (ListViewItem)listViewI[listViewI.IndexOf(lvi)];
-                                if ((bool)listViewItem.Tag)
-                                {
-                                    Border border = (Border)listViewItem.FindName("messageBorderCount");
-                                    TextBlock block = (TextBlock)listViewItem.FindName("messageCount");
-                                    border.Visibility = Visibility.Visible;
-                                    block.Text = Convert.ToString(Convert.ToInt32(block.Text) + 1);
-                                    messageTextBox.Focus();
-                                }
+                //if (mess.uMList[0].recipientGroupId == Convert.ToInt32(selectedId))
+                //{
+                //    Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                //    {
+                //        UserControlMessageReceived userControlMessageReceived = new UserControlMessageReceived();
+                //        userControlMessageReceived.timeRec.Text = mess.uMList[0].createAt.ToString();
+                //        userControlMessageReceived.messageText.Text = mess.uMList[0].content;
+                //        userControlMessageReceived.Id = mess.uMList[0].messageId;
+                //        userControlMessageReceived.HorizontalAlignment = HorizontalAlignment.Left;
+                //        messagePlace.Children.Add(userControlMessageReceived);
+                //        scrollViewerMess.ScrollToBottom();
+                //        messageTextBox.Focus();
+                //    }));
+                //}
+                //else
+                //{
+                //    Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                //    {
+                //        foreach (ListViewItem lvi in this.listViewI)
+                //        {
+                //            if (lvi.Name == $"id{mess.uMList[0].recipientGroupId}")
+                //            {
+                //                ListViewItem listViewItem = (ListViewItem)listViewI[listViewI.IndexOf(lvi)];
+                //                if ((bool)listViewItem.Tag)
+                //                {
+                //                    Border border = (Border)listViewItem.FindName("messageBorderCount");
+                //                    TextBlock block = (TextBlock)listViewItem.FindName("messageCount");
+                //                    border.Visibility = Visibility.Visible;
+                //                    block.Text = Convert.ToString(Convert.ToInt32(block.Text) + 1);
+                //                    messageTextBox.Focus();
+                //                }
 
-                            }
-                        }
-                    }));
-                }
+                //            }
+                //        }
+                //    }));
+                //}
 
                 if (mess.uMList[0].recipientChatId == Convert.ToInt32(selectedId))
                 {
@@ -206,6 +215,7 @@ namespace Chat
                         messagePlace.Children.Add(userControlMessageReceived);
                         messageTextBox.Focus();
                         scrollViewerMess.ScrollToBottom();
+                        PlaySon();
                     }));
                 }
                 else
@@ -224,6 +234,7 @@ namespace Chat
                                     border.Visibility = Visibility.Visible;
                                     block.Text = Convert.ToString(Convert.ToInt32(block.Text) + 1);
                                     messageTextBox.Focus();
+                                    PlaySon();
                                 }
                             }
                         }
@@ -402,6 +413,16 @@ namespace Chat
                 InfoPanel.Visibility = Visibility.Hidden;
                 MessPanelGrid.Visibility = Visibility.Hidden;
                 MessPanel.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void Button_Click_8(object sender, RoutedEventArgs e)
+        {
+            string path = @"D:\Development\Step_Chat\states.dat";
+
+            using (BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.OpenOrCreate)))
+            {
+                writer.Write("Германия");
             }
         }
     }

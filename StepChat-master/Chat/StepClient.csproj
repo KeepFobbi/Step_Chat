@@ -34,6 +34,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <Win32Resource>
+    </Win32Resource>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>sms-icon_1.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MaterialDesignColors, Version=1.2.0.325, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.1.2.0\lib\net45\MaterialDesignColors.dll</HintPath>
@@ -174,22 +181,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\face1.jpg" />
-    <Resource Include="Assets\logo.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\welcome.jpeg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\Ico.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\sms-icon.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="sms-icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\sms-icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\JustHuman.jpg" />
@@ -199,6 +199,12 @@
     <Resource Include="Assets\christal.png" />
     <Resource Include="Assets\coin.png" />
     <Resource Include="Assets\star.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\sms-icon_1.ico" />
+    <Resource Include="sms-icon_1.ico" />
+    <Content Include="Assets\Sound_11084.wav" />
+    <Content Include="Assets\z_uk-pri-otricatelnyh-u_edomleniyah.mp3" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

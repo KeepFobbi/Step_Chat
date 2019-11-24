@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:Chat"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Height="600" Width="270" ResizeMode="CanResizeWithGrip" 
-        WindowStartupLocation="CenterScreen" WindowStyle="None" FontFamily="Dosis" MouseDown="Window_MouseDown" Icon="sms-icon.ico">
+        Height="600" Width="275" ResizeMode="CanResizeWithGrip" 
+        WindowStartupLocation="CenterScreen" WindowStyle="None" FontFamily="Dosis" MouseDown="Window_MouseDown" Icon="sms-icon_1.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="165*"/>
@@ -90,7 +90,7 @@
                 <Button Style="{StaticResource MaterialDesignFlatButton}" Grid.Column="2" Click="Button_Click_4">
                     <materialDesign:PackIcon Kind="Contacts" Foreground="White"/>
                 </Button>
-                <Button Style="{StaticResource MaterialDesignFlatButton}" Grid.Column="3" VerticalAlignment="Top">
+                <Button Style="{StaticResource MaterialDesignFlatButton}" Grid.Column="3" VerticalAlignment="Top" Click="Button_Click_8">
                     <materialDesign:PackIcon Kind="Archive" Foreground="White"/>
                 </Button>
             </Grid>

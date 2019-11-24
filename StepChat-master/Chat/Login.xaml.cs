@@ -4,11 +4,14 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using System.Threading;
 using System.Windows.Input;
+using System.IO;
 
 namespace Chat
 {
     public partial class Login : Window
     {
+        string path = @"states.dat";
+
         public Login()
         {
             InitializeComponent();
@@ -20,14 +23,35 @@ namespace Chat
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ConnectStatus.Visibility = Visibility.Visible;
+            if ((bool)RememberMe.IsChecked)
+            {
+                using (BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.OpenOrCreate)))
+                {
+                    writer.Write(loginBox.Text);
+                    writer.Write(passwordBox.Password);
+                }
+            }
+            Enter(loginBox.Text, passwordBox.Password.ToString());
+        }
 
-            Thread receiveThread = new Thread(new ThreadStart(ConnectToServer.createStream));
-            receiveThread.Start();
-            ConnectToServer.receiveLoginEv += createMainWindow;
-            ConnectToServer.loginToServer = loginBox.Text;
-            ConnectToServer.passwordToServer = passwordBox.Password.ToString();
-            ConnectToServer.SendRequest();
+        private bool Enter(string login, string pass)
+        {
+            try
+            {
+                ConnectStatus.Visibility = Visibility.Visible;
+                Thread receiveThread = new Thread(new ThreadStart(ConnectToServer.createStream));
+                receiveThread.Start();
+                ConnectToServer.receiveLoginEv += createMainWindow;
+                ConnectToServer.loginToServer = login;
+                ConnectToServer.passwordToServer = pass;
+                ConnectToServer.SendRequest();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         ChatWindow chatWindow = new ChatWindow();
@@ -71,6 +95,23 @@ namespace Chat
         {
             if (e.ChangedButton == MouseButton.Left)
                 this.DragMove();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (File.Exists(path))
+            {
+                using (BinaryReader reader = new BinaryReader(File.Open(path, FileMode.Open)))
+                {
+                    while (reader.PeekChar() > -1)
+                    {
+                        loginBox.Text = reader.ReadString();
+                        passwordBox.Password = reader.ReadString();
+
+                        Enter(loginBox.Text, passwordBox.Password.ToString());
+                    }
+                }
+            }
         }
     }
 }
