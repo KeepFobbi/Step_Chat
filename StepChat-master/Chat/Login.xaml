@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="Login" Height="400" Width="600" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen" Icon="sms-icon.ico" MouseDown="Window_MouseDown">
+        Title="Login" Height="400" Width="600" ResizeMode="NoResize" WindowStyle="None" 
+        AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen" Icon="sms-icon_1.ico" MouseDown="Window_MouseDown" Loaded="Window_Loaded">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -40,7 +41,7 @@
                 <PasswordBox x:Name="passwordBox" materialDesign:HintAssist.Hint="Пароль" Width="250" Margin="5"/>
             </StackPanel>
             <Grid>
-                <CheckBox Content="Запомнить меня" Margin="5,10" Foreground="#707070"/>
+                <CheckBox x:Name="RememberMe" Content="Запомнить меня" Margin="5,10" Foreground="#707070"/>
                 <Label Content="Я забыл свой пароль" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10" Foreground="#707070"/>
             </Grid>
             <Button x:Name="buttonLogin" HorizontalAlignment="Center" Content="LOGIN" FontFamily="Impact" FontSize="18" Width="100" Background="#FF307CD6" BorderBrush="#FF307CD6" Click="Button_Click" Margin="95,0" IsDefault="True"/>
