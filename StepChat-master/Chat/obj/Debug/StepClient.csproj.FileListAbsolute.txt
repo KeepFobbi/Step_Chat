@@ -283,3 +283,4 @@ D:\Development\Step_Chat\StepChat-master\Chat\obj\Debug\Chat.exe
 D:\Development\Step_Chat\StepChat-master\Chat\obj\Debug\Chat.pdb
 D:\Development\Step_Chat\StepChat-master\Chat\obj\Debug\GeneratedInternalTypeHelper.g.cs
 D:\Development\Step_Chat\StepChat-master\Chat\obj\Debug\Chat_Content.g.cs
+D:\Diploma\Step_Chat\StepChat-master\Chat\obj\Debug\Chat_Content.g.cs

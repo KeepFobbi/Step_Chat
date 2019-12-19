@@ -17,10 +17,10 @@ namespace Chat
 {
     public static class ConnectToServer
     {
-        //37.115.128.11  178.92.84.69
-        //private const string host = "127.0.0.1";
-        private const string host = "37.115.128.11";
-        private const int port = 777;
+        //37.115.128.11  178.92.84.69  46.211.140.134
+        private const string host = "127.0.0.1";
+        //private const string host = "37.115.128.11";
+        private const int port = 9090;
         static TcpClient client;
         public static NetworkStream stream;
 

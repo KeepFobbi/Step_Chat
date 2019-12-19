@@ -56,7 +56,7 @@ namespace ChatServer
 
                     if (message_Json.IsValid(loginSchema))
                     {
-                      //  SendImage();
+ 
                         LoginEvent loginEvent = new LoginEvent();
                         loginEvent = JsonConvert.DeserializeObject<LoginEvent>(message_Json.ToString());
 
@@ -100,7 +100,7 @@ namespace ChatServer
             }
             finally
             {
-                // в случае выхода из цикла закрываем ресурсы
+ 
                 server.RemoveConnection(this.id);
                 Close();
             }
@@ -114,7 +114,6 @@ namespace ChatServer
             StringBuilder builder = new StringBuilder();
 
              BinaryReader binaryReader = new BinaryReader(Stream, Encoding.Unicode);
-            //BinaryReader binaryReader = new BinaryReader(Stream);
 
 
             builder.Append(binaryReader.ReadString());
@@ -253,7 +252,7 @@ namespace ChatServer
 
                 var jsonUpdated = JsonConvert.SerializeObject(mEvent, Formatting.Indented);
 
-                server.BroadcastMessage(jsonUpdated, new int[1] { id_rec }, "chat");
+                server.BroadcastMessage(jsonUpdated, new int[] { id_rec }, "chat");
             }
             else if (messageEvent.recipientTtype == "group")
             {
